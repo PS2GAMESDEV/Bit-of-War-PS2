@@ -16,17 +16,26 @@ const PLAYER_ANIMATIONS = Object.freeze({
     IDLE_L: "idle_l",
     IDLE_R: "idle_r"
 })
-
 const PLAYER_MOVEMENT = Object.freeze({
-    DEFAULT_GRAVITY: 0.8f,
+    DEFAULT_GRAVITY: 0.8,
     MAX_Y_VELOCITY: 12,
     DEFAULT_SPEED: 2,
     DEFAULT_JUMP_STRENGTH: -14,
     DEFAULT_JUMPS: 2
 })
 
+const CHEST_ANIMATIONS = Object.freeze({
+    OPEN: "open",
+    CLOSED: "closed"
+})
+const CHEST_TYPES = Object.freeze({
+    Life: "Life",
+    MAGIC: "Magic"
+})
+
 const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",
+    OBJECTS: "./assets/images/objects",
     SOUNDS: "./assets/sounds",
     UI: "./assets/images/ui",
     TILES: "./assets/images/tiles",
@@ -39,5 +48,7 @@ export {
     PLAYER_TWO_PORT,
     ASSETS_PATH,
     PLAYER_ANIMATIONS,
-    PLAYER_MOVEMENT
+    PLAYER_MOVEMENT,
+    CHEST_ANIMATIONS,
+    CHEST_TYPES
 }

@@ -2,6 +2,7 @@ import Collision from "../../shared/lib/collision.js";
 import Gamepad from "../../shared/lib/gamepad.js";
 import { ASSETS_PATH, PLAYER_MOVEMENT } from "../../shared/lib/constants.js";
 import Assets from "../../shared/lib/assets.js";
+import { PLAYER_CONTROLS } from "../../shared/config/controls.js";
 
 function Movement2D(options) {
     this.position = { x: options.initialX, y: options.initialY };
@@ -42,11 +43,11 @@ Movement2D.prototype.isIdle = function () {
 };
 
 Movement2D.prototype.isDefending = function () {
-    return Gamepad.player(this.PLAYER_PORT).pressed(Pads.R1) && this.isGrounded();
+    return Gamepad.player(this.PLAYER_PORT).pressed(PLAYER_CONTROLS.BLOCK) && this.isGrounded();
 };
 
 Movement2D.prototype.isAttacking = function () {
-    return Gamepad.player(this.PLAYER_PORT).pressed(Pads.SQUARE);
+    return Gamepad.player(this.PLAYER_PORT).pressed(PLAYER_CONTROLS.ATK);
 }
 
 Movement2D.prototype.isInMaxYVelocity = function () {
@@ -80,7 +81,7 @@ Movement2D.prototype.handleInput = function () {
         this.velocity.x = 0;
     }
 
-    if (Gamepad.player(this.PLAYER_PORT).justPressed(Pads.CROSS) && !this.isDefending()) {
+    if (Gamepad.player(this.PLAYER_PORT).justPressed(PLAYER_CONTROLS.JUMP) && !this.isDefending()) {
         this.jump();
     }
 };

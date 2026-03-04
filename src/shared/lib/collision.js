@@ -8,7 +8,7 @@ class Collision {
         this.colliders = new Map();
         this.staticColliders = new Map();
         this.layers = new Map();
-        this.nextId = 0;
+        this.nextId = 1;
         this.spatialGrid = null;
         this.gridSize = 64;
         this.debugMode = false;

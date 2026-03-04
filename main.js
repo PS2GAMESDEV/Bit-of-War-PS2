@@ -1,9 +1,15 @@
+import Chest from "./src/features/Chest/chest.js";
 import Player from "./src/features/Player/player.js";
 import Collision from "./src/shared/lib/collision.js";
-import { PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
+import { CHEST_TYPES, PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
 
 const player = new Player({ initialX: 0, initialY: SCREEN_HEIGHT - 250 });
+
+const chests = [
+    new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life }),
+    new Chest({ x: 250, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.MAGIC }),
+];
 
 Collision.register({
     type: 'rect',
@@ -30,6 +36,10 @@ while (true) {
     }
 
     player.update(deltaTime);
+
+    for (const chest of chests) {
+        chest.update(player.colliderId, player.PLAYER_PORT);
+    }
     player.draw();
 
     Collision.check();

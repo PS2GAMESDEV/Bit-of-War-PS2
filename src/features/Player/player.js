@@ -41,7 +41,7 @@ Player.prototype._initCollider = function () {
         w: this.spritesheet.frameWidth,
         h: this.spritesheet.frameHeight,
         layer: 'player',
-        mask: ['enemy', 'ground', 'wall', 'platform', 'fruit'],
+        mask: ['enemy', 'ground', 'wall', 'platform', 'chest'],
         tags: ['player', 'damageable'],
         data: { entity: this }
     });
@@ -168,11 +168,9 @@ Player.prototype.handleAnimation = function () {
     if (this.isAttacking && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.ATK_L);
     else if (this.isAttacking && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.ATK_R);
 }
-Player.prototype.updateCollider = function () {
+Player.prototype.updateCollider = function (bounds) {
     if (!this.colliderId) return;
-
-    const bounds = this.getBounds();
-
+    
     Collision.update(this.colliderId, {
         x: bounds.left,
         y: bounds.top,
