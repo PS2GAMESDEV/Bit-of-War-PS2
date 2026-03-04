@@ -23,7 +23,6 @@ function Player(options) {
     this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png")
 
     this.sfxBlades = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
-    this.sfxChests = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/chests.adp");
 
     this.debugColor = Color.new(255, 0, 0, 100);
 
@@ -244,6 +243,7 @@ Player.prototype.destroy = function () {
 
     Assets.free(ASSETS_PATH.SPRITES + "/" + "kratos/spritesheet.png");
     Assets.free(ASSETS_PATH.SPRITES + "/kratos/blade.png");
+    Assets.free(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
 }
 
 export default Player;

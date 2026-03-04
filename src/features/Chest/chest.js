@@ -2,8 +2,34 @@ import { PLAYER_CONTROLS } from "../../shared/config/controls.js";
 import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
 import Assets from "../../shared/lib/assets.js"
 import Collision from "../../shared/lib/collision.js";
-import { ASSETS_PATH, CHEST_ANIMATIONS } from "../../shared/lib/constants.js"
+import { ASSETS_PATH, CHEST_ANIMATIONS, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js"
 import Gamepad from "../../shared/lib/gamepad.js";
+
+export const ScreenFlash = {
+    active: false,
+    color: null,
+    timer: 0,
+    duration: 0.1f,
+    
+    trigger(type) {
+        this.active = true;
+        this.timer = this.duration;
+        const colorKey = type.toUpperCase();
+        this.color = VFX_SCREEN_COLOR[colorKey] || VFX_SCREEN_COLOR.MAGIC;
+    },
+    
+    update(deltaTime) {
+        if (!this.active) return;
+        this.timer -= deltaTime;
+        if (this.timer <= 0) this.active = false;
+    },
+    
+    draw() {
+        if (this.active) {
+            Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this.color);
+        }
+    }
+};
 
 function Chest(options) {
     this.position = { x: options.x, y: options.y }
@@ -13,6 +39,7 @@ function Chest(options) {
     this.colliderId = null;
 
     this.spritesheet = Assets.image(ASSETS_PATH.OBJECTS + "/ob" + this.type + "Chest.png")
+    this.sfxChests = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/chests.adp");
 
     this._initAnimations();
     this._initCollider();
@@ -75,6 +102,8 @@ Chest.prototype.handleInteraction = function (playerColliderId, playerPort) {
 
 Chest.prototype.open = function () {
     this.isOpen = true;
+    if(!this.sfxChests.playing()) this.sfxChests.play();
+    ScreenFlash.trigger(this.type);
 }
 
 Chest.prototype.draw = function() {

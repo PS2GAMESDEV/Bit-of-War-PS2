@@ -1,5 +1,15 @@
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Screen.getMode();
-
+const ASSETS_PATH = Object.freeze({
+    SPRITES: "./assets/images/sprites",
+    OBJECTS: "./assets/images/objects",
+    SOUNDS: "./assets/sounds",
+    UI: "./assets/images/ui",
+    TILES: "./assets/images/tiles",
+})
+const VFX_SCREEN_COLOR = Object.freeze({
+    LIFE: Color.new(28, 237, 37, 100),
+    MAGIC: Color.new(85, 146, 255, 100)
+})
 const PLAYER_ONE_PORT = 0;
 const PLAYER_TWO_PORT = 1
 
@@ -33,14 +43,6 @@ const CHEST_TYPES = Object.freeze({
     MAGIC: "Magic"
 })
 
-const ASSETS_PATH = Object.freeze({
-    SPRITES: "./assets/images/sprites",
-    OBJECTS: "./assets/images/objects",
-    SOUNDS: "./assets/sounds",
-    UI: "./assets/images/ui",
-    TILES: "./assets/images/tiles",
-})
-
 export {
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
@@ -50,5 +52,6 @@ export {
     PLAYER_ANIMATIONS,
     PLAYER_MOVEMENT,
     CHEST_ANIMATIONS,
-    CHEST_TYPES
+    CHEST_TYPES,
+    VFX_SCREEN_COLOR
 }
