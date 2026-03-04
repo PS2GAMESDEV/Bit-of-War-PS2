@@ -11,6 +11,8 @@ function Movement2D(options) {
     this.onGround = false;
     this.jumpsRemaining = PLAYER_MOVEMENT.DEFAULT_JUMPS || 2;
 
+    this.onJump = options.onJump;
+
     this.PLAYER_PORT = options.playerPort;
 }
 
@@ -42,6 +44,10 @@ Movement2D.prototype.isDefending = function() {
     return Gamepad.player(this.PLAYER_PORT).pressed(Pads.R1) && this.isGrounded();
 };
 
+Movement2D.prototype.isAttacking = function(){
+    return Gamepad.player(this.PLAYER_PORT).pressed(Pads.SQUARE);
+}
+
 Movement2D.prototype.isInMaxYVelocity = function() {
     return this.velocity.y <= PLAYER_MOVEMENT.MAX_Y_VELOCITY;
 };
@@ -57,6 +63,8 @@ Movement2D.prototype.moveHorizontally = function(direction) {
 
 Movement2D.prototype.jump = function() {
     if (this.jumpsRemaining === 0) return;
+
+    this.onJump?.();
 
     this.velocity.y = PLAYER_MOVEMENT.DEFAULT_JUMP_STRENGTH;
     this.jumpsRemaining--;

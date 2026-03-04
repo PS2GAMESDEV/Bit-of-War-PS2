@@ -10,7 +10,6 @@ function Player(options) {
     this.PLAYER_PORT = options.PLAYER_PORT || PLAYER_ONE_PORT;
     this._bounds = { left: 0, top: 0, right: 0, bottom: 0 };
     this.HITBOX_WIDTH = 16;
-
     this.movement = new Movement2D({
         initialX: options.initialX || 0,
         initialY: options.initialY || 0,
@@ -18,11 +17,15 @@ function Player(options) {
     });
 
     this.colliderId = null;
+    this.isAttacking = false;
 
-    this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/" + "kratos/spritesheet.png")
+    this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png")
+    this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png")
+
     this.debugColor = Color.new(255, 0, 0, 100);
 
     this._initAnimations();
+    this._initBladeAnimation();
     this._initCollider();
 }
 Player.prototype.shouldRemove = () => false;
@@ -101,6 +104,33 @@ Player.prototype._initAnimations = function () {
 
     setAnimation(this.spritesheet, this.animationState, false);
 }
+Player.prototype._initBladeAnimation = function () {
+    var self = this;
+
+    this.bladeSpritesheet.totalFrames = 7;
+    this.bladeSpritesheet.frameWidth = 48;
+    this.bladeSpritesheet.frameHeight = 16;
+    this.bladeSpritesheet.framesPerRow = 7;
+    this.bladeSpritesheet.fps = 16;
+    this.bladeSpritesheet.loop = false;
+    this.bladeSpritesheet.startFrame = 0;
+    this.bladeSpritesheet.endFrame = 6;
+    this.bladeSpritesheet.currentFrame = 0;
+    this.bladeSpritesheet.playing = false;
+
+    this.bladeSpritesheet.onAnimationEnd = function () {
+        self.bladeSpritesheet.playing = false;
+        self.isAttacking = false;
+    };
+};
+Player.prototype.startAttack = function () {
+    if (this.isAttacking) return;
+
+    this.isAttacking = true;
+    this.bladeSpritesheet.playing = true;
+    this.bladeSpritesheet.currentFrame = 0;
+    this.bladeSpritesheet.frameTimer = 0;
+};
 Player.prototype.getBounds = function () {
     const halfWidth = this.spritesheet.frameWidth / 2;
 
@@ -114,6 +144,11 @@ Player.prototype.getBounds = function () {
 Player.prototype.updateAnimation = function (deltaTime) {
     this.spritesheet.deltaTime = deltaTime;
     animationSprite(this.spritesheet);
+
+    if (this.bladeSpritesheet.playing) {
+        this.bladeSpritesheet.deltaTime = deltaTime;
+        animationSprite(this.bladeSpritesheet);
+    }
 }
 Player.prototype.handleAnimation = function () {
     if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_L);
@@ -124,6 +159,9 @@ Player.prototype.handleAnimation = function () {
     else if (this.movement.isMoving() && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.WALK_R);
     else if (this.movement.isIdle() && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.IDLE_L);
     else if (this.movement.isIdle() && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.IDLE_R);
+
+    if (this.isAttacking && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.ATK_L);
+    else if (this.isAttacking && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.ATK_R);
 }
 Player.prototype.updateCollider = function () {
     if (!this.colliderId) return;
@@ -151,11 +189,27 @@ Player.prototype.drawCollisionBox = function () {
 Player.prototype.draw = function () {
     if (this.shouldRemove()) return;
 
+    if (this.bladeSpritesheet.playing) {
+        var bladeX, bladeY;
+
+        bladeY = this.movement.position.y + (this.spritesheet.frameHeight / 2) - 2;
+
+        if (this.movement.facingLeft) {
+            bladeX = this.movement.position.x - (this.spritesheet.frameWidth / 2) - this.bladeSpritesheet.frameWidth + 2;
+            this.bladeSpritesheet.facingLeft = false;
+        } else {
+            bladeX = this.movement.position.x + (this.spritesheet.frameWidth / 2) - 2;
+            this.bladeSpritesheet.facingLeft = true;
+        }
+
+        this.bladeSpritesheet.draw(bladeX, bladeY);
+    }
+
     this.spritesheet.draw(
-        this.movement.position.x,
+        this.movement.position.x - (this.spritesheet.frameWidth / 2),
         this.movement.position.y
     );
-}
+};
 Player.prototype.update = function (deltaTime) {
     this.movement.update(deltaTime);
     const bounds = this.getBounds();
@@ -163,6 +217,10 @@ Player.prototype.update = function (deltaTime) {
     if (this.movement.canMove) {
         // this.movement.checkWallCollision(this.colliderId, bounds);
         this.movement.checkGroundCollision(this.colliderId, bounds);
+    }
+
+    if (this.movement.isAttacking() && !this.isAttacking) {
+        this.startAttack();
     }
 
     this.updateAnimation(deltaTime);
@@ -176,10 +234,12 @@ Player.prototype.destroy = function () {
     }
 
     this.spritesheet = null;
+    this.bladeSpritesheet = null;
     this.movement = null;
     this.debugColor = null;
 
     Assets.free(ASSETS_PATH.SPRITES + "/" + "kratos/spritesheet.png");
+    Assets.free(ASSETS_PATH.SPRITES + "/kratos/blade.png");
 }
 
 export default Player;
