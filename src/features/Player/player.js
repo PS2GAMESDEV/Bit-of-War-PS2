@@ -22,6 +22,9 @@ function Player(options) {
     this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png")
     this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png")
 
+    this.sfxBlades = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
+    this.sfxChests = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/chests.adp");
+
     this.debugColor = Color.new(255, 0, 0, 100);
 
     this._initAnimations();
@@ -130,6 +133,8 @@ Player.prototype.startAttack = function () {
     this.bladeSpritesheet.playing = true;
     this.bladeSpritesheet.currentFrame = 0;
     this.bladeSpritesheet.frameTimer = 0;
+
+    if (!this.sfxBlades.playing()) this.sfxBlades.play();
 };
 Player.prototype.getBounds = function () {
     const halfWidth = this.spritesheet.frameWidth / 2;
@@ -235,6 +240,7 @@ Player.prototype.destroy = function () {
 
     this.spritesheet = null;
     this.bladeSpritesheet = null;
+    this.movement.destroy();
     this.movement = null;
     this.debugColor = null;
 
