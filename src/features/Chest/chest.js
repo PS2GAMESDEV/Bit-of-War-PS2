@@ -88,15 +88,16 @@ Chest.prototype.handleAnimation = function () {
     else setAnimation(this.spritesheet, CHEST_ANIMATIONS.CLOSED);
 }
 
-Chest.prototype.handleInteraction = function (playerColliderId, playerPort) {
+Chest.prototype.handleInteraction = function (player) {
     if (this.isOpen) return;
 
-    const hits = Collision.checkOne(playerColliderId, ['chest']);
+    const hits = Collision.checkOne(player.colliderId, ['chest']);
 
     const isTouching = hits.some(hit => hit.id === this.colliderId);
 
-    if (isTouching && Gamepad.player(playerPort).justPressed(PLAYER_CONTROLS.OPEN_CHEST)) {
+    if (isTouching && Gamepad.player(player.PLAYER_PORT).justPressed(PLAYER_CONTROLS.OPEN_CHEST)) {
         this.open();
+        player.isOpeningChest = true;
     }
 }
 
@@ -111,8 +112,8 @@ Chest.prototype.draw = function() {
     this.spritesheet.draw(this.position.x, this.position.y)
 }
 
-Chest.prototype.update = function(playerColliderId, playerPort){
-    this.handleInteraction(playerColliderId, playerPort);
+Chest.prototype.update = function(player){
+    this.handleInteraction(player);
     this.handleAnimation();
     this.draw();
 }

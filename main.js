@@ -38,7 +38,7 @@ while (true) {
     player.update(deltaTime);
 
     for (const chest of chests) {
-        chest.update(player.colliderId, player.PLAYER_PORT);
+        chest.update(player);
     }
     ScreenFlash.update(deltaTime);
     player.draw();

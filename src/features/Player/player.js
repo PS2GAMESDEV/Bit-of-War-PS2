@@ -18,9 +18,13 @@ function Player(options) {
 
     this.colliderId = null;
     this.isAttacking = false;
+    this.isOpeningChest = false;
 
     this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png")
     this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png")
+
+    this.hud = Assets.image(ASSETS_PATH.SPRITES + "/kratos/hud.png");
+    this.powerupSpace = Assets.image(ASSETS_PATH.SPRITES + "/kratos/powerup.png")
 
     this.sfxBlades = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
 
@@ -155,6 +159,13 @@ Player.prototype.updateAnimation = function (deltaTime) {
     }
 }
 Player.prototype.handleAnimation = function () {
+    if (this.isOpeningChest) {
+        setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, false);
+        this.spritesheet.currentFrame = this.spritesheet.startFrame;
+        this.spritesheet.frameTimer = 0;
+        return;
+    }
+
     if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_L);
     else if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_R);
     else if (this.movement.isDefending() && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.BLOCK_L);
@@ -169,7 +180,7 @@ Player.prototype.handleAnimation = function () {
 }
 Player.prototype.updateCollider = function (bounds) {
     if (!this.colliderId) return;
-    
+
     Collision.update(this.colliderId, {
         x: bounds.left,
         y: bounds.top,
@@ -211,6 +222,9 @@ Player.prototype.draw = function () {
         this.movement.position.x - (this.spritesheet.frameWidth / 2),
         this.movement.position.y
     );
+
+    this.hud.draw(16, 0);
+    this.powerupSpace.draw(30, this.hud.height / 2 + this.powerupSpace.height / 4);
 };
 Player.prototype.update = function (deltaTime) {
     this.movement.update(deltaTime);
@@ -223,6 +237,10 @@ Player.prototype.update = function (deltaTime) {
 
     if (this.movement.isAttacking() && !this.isAttacking) {
         this.startAttack();
+    }
+
+    if (this.isOpeningChest && (!this.movement.isIdle() || this.isAttacking)) {
+        this.isOpeningChest = false;
     }
 
     this.updateAnimation(deltaTime);

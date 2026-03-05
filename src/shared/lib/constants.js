@@ -27,10 +27,10 @@ const PLAYER_ANIMATIONS = Object.freeze({
     IDLE_R: "idle_r"
 })
 const PLAYER_MOVEMENT = Object.freeze({
-    DEFAULT_GRAVITY: 0.8,
+    DEFAULT_GRAVITY: 0.6f,
     MAX_Y_VELOCITY: 12,
     DEFAULT_SPEED: 2,
-    DEFAULT_JUMP_STRENGTH: -14,
+    DEFAULT_JUMP_STRENGTH: -8,
     DEFAULT_JUMPS: 2
 })
 

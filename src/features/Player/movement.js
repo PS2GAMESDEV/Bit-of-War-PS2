@@ -47,7 +47,7 @@ Movement2D.prototype.isDefending = function () {
 };
 
 Movement2D.prototype.isAttacking = function () {
-    return Gamepad.player(this.PLAYER_PORT).pressed(PLAYER_CONTROLS.ATK);
+    return Gamepad.player(this.PLAYER_PORT).justPressed(PLAYER_CONTROLS.ATK);
 }
 
 Movement2D.prototype.isInMaxYVelocity = function () {
