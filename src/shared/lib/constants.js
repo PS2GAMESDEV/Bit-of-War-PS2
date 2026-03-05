@@ -5,6 +5,7 @@ const ASSETS_PATH = Object.freeze({
     SOUNDS: "./assets/sounds",
     UI: "./assets/images/ui",
     TILES: "./assets/images/tiles",
+    MAPS: "./src/data"
 })
 const VFX_SCREEN_COLOR = Object.freeze({
     LIFE: Color.new(28, 237, 37, 100),

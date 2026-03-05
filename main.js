@@ -1,10 +1,18 @@
 import Chest, { ScreenFlash } from "./src/features/Chest/chest.js";
+import TileMapRenderer from "./src/features/Map/renderer.js";
 import Player from "./src/features/Player/player.js";
 import Collision from "./src/shared/lib/collision.js";
-import { CHEST_TYPES, PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
+import { ASSETS_PATH, CHEST_TYPES, PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
 
-const player = new Player({ initialX: 0, initialY: SCREEN_HEIGHT - 250 });
+const mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/GaiaArm.json"));
+
+const tileMap = new TileMapRenderer(mapData, {
+    scaleX: 1,
+    scaleY: 1,
+});
+
+const player = new Player({ initialX: 32, initialY: 128 });
 
 const chests = [
     new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life }),
@@ -24,9 +32,11 @@ Collision.register({
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 let lastFrameTime = Date.now();
+
 while (true) {
     Screen.clear();
     Gamepad.update();
+
     const now = Date.now();
     const deltaTime = (now - lastFrameTime) / 1000;
     lastFrameTime = now;
@@ -34,6 +44,9 @@ while (true) {
     if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.L1)) {
         Collision.toggleDebug();
     }
+
+    tileMap.updateCamera(0, 0);
+    tileMap.render();
 
     player.update(deltaTime);
 
