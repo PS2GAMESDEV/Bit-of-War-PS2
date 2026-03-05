@@ -1,7 +1,7 @@
 import Chest, { ScreenFlash } from "./src/features/Chest/chest.js";
 import Player from "./src/features/Player/player.js";
 import Collision from "./src/shared/lib/collision.js";
-import { CHEST_TYPES, PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "./src/shared/lib/constants.js";
+import { CHEST_TYPES, PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
 
 const player = new Player({ initialX: 0, initialY: SCREEN_HEIGHT - 250 });
