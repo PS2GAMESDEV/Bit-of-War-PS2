@@ -8,15 +8,15 @@ import Gamepad from "./src/shared/lib/gamepad.js";
 const mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/GaiaArm.json"));
 
 const tileMap = new TileMapRenderer(mapData, {
-    scaleX: 1,
-    scaleY: 1,
+    scaleX: 2,
+    scaleY: 2,
 });
 
-const player = new Player({ initialX: 32, initialY: 128 });
+const player = new Player({ initialX: 32, initialY: 128, scale: 2 });
 
 const chests = [
-    new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life }),
-    new Chest({ x: 250, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.MAGIC }),
+    new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life, scale: 2 }),
+    new Chest({ x: 250, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.MAGIC, scale: 2 }),
 ];
 
 Collision.register({

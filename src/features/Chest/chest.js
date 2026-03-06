@@ -38,6 +38,8 @@ function Chest(options) {
     this.isOpen = false;
     this.colliderId = null;
 
+    this.scale = options.scale || 1;
+
     this.spritesheet = Assets.image(ASSETS_PATH.OBJECTS + "/ob" + this.type + "Chest.png")
     this.sfxChests = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/chests.adp");
 
@@ -56,6 +58,7 @@ Chest.prototype._initAnimations = function () {
     this.spritesheet.frameWidth = 16;
     this.spritesheet.frameHeight = 16;
 
+    this.spritesheet.scale = this.scale;
     this.spritesheet.animations = {
         [CHEST_ANIMATIONS.CLOSED]: {
             start: 0,
@@ -73,8 +76,8 @@ Chest.prototype._initCollider = function () {
         type: 'rect',
         x: this.position.x,
         y: this.position.y,
-        w: this.spritesheet.frameWidth,
-        h: this.spritesheet.frameHeight,
+        w: this.spritesheet.frameWidth * this.scale,
+        h: this.spritesheet.frameHeight * this.scale,
         static: true,
         layer: 'chest',
         mask: ['player'],

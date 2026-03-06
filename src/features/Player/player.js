@@ -9,7 +9,8 @@ function Player(options) {
 
     this.PLAYER_PORT = options.PLAYER_PORT || PLAYER_ONE_PORT;
     this._bounds = { left: 0, top: 0, right: 0, bottom: 0 };
-    this.HITBOX_WIDTH = 16;
+    this.scale = options.scale || 1;
+    this.HITBOX_WIDTH = 16 * this.scale;
     this.movement = new Movement2D({
         initialX: options.initialX || 0,
         initialY: options.initialY || 0,
@@ -24,7 +25,11 @@ function Player(options) {
     this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png")
 
     this.hud = Assets.image(ASSETS_PATH.SPRITES + "/kratos/hud.png");
+    this.hud.width *= this.scale;
+    this.hud.height *= this.scale;
     this.powerupSpace = Assets.image(ASSETS_PATH.SPRITES + "/kratos/powerup.png")
+    this.powerupSpace.width *= this.scale;
+    this.powerupSpace.height *= this.scale;
 
     this.sfxBlades = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
 
@@ -41,8 +46,8 @@ Player.prototype._initCollider = function () {
         type: 'rect',
         x: this.movement.position.x,
         y: this.movement.position.y,
-        w: this.spritesheet.frameWidth,
-        h: this.spritesheet.frameHeight,
+        w: this.spritesheet.frameWidth * this.scale,
+        h: this.spritesheet.frameHeight * this.scale,
         layer: 'player',
         mask: ['enemy', 'ground', 'wall', 'platform', 'chest'],
         tags: ['player', 'damageable'],
@@ -61,6 +66,7 @@ Player.prototype._initAnimations = function () {
     this.spritesheet.frameHeight = 16;
 
     this.spritesheet.fps = 6;
+    this.spritesheet.scale = this.scale
     this.spritesheet.animations = {
         [PLAYER_ANIMATIONS.CLIMB]: {
             start: 0,
@@ -123,6 +129,7 @@ Player.prototype._initBladeAnimation = function () {
     this.bladeSpritesheet.endFrame = 6;
     this.bladeSpritesheet.currentFrame = 0;
     this.bladeSpritesheet.playing = false;
+    this.bladeSpritesheet.scale = this.scale;
 
     this.bladeSpritesheet.onAnimationEnd = function () {
         self.bladeSpritesheet.playing = false;
@@ -140,12 +147,14 @@ Player.prototype.startAttack = function () {
     if (!this.sfxBlades.playing()) this.sfxBlades.play();
 };
 Player.prototype.getBounds = function () {
-    const halfWidth = this.spritesheet.frameWidth / 2;
+    const scaledWidth = this.spritesheet.frameWidth * this.scale;
+    const scaledHeight = this.spritesheet.frameHeight * this.scale;
+    const halfWidth = scaledWidth / 2;
 
     this._bounds.left = this.movement.position.x - halfWidth;
     this._bounds.top = this.movement.position.y;
     this._bounds.right = this.movement.position.x + halfWidth;
-    this._bounds.bottom = this.movement.position.y + this.spritesheet.frameHeight;
+    this._bounds.bottom = this.movement.position.y + scaledHeight;
 
     return this._bounds;
 }
@@ -184,7 +193,7 @@ Player.prototype.updateCollider = function (bounds) {
     Collision.update(this.colliderId, {
         x: bounds.left,
         y: bounds.top,
-        w: this.HITBOX_WIDTH,
+        w: bounds.right - bounds.left,
         h: bounds.bottom - bounds.top
     });
 }
@@ -202,16 +211,22 @@ Player.prototype.drawCollisionBox = function () {
 Player.prototype.draw = function () {
     if (this.shouldRemove()) return;
 
+    const scaledPlayerWidth = this.spritesheet.frameWidth * this.scale;
+    const scaledPlayerHeight = this.spritesheet.frameHeight * this.scale;
+    const scaledBladeWidth = this.bladeSpritesheet.frameWidth * this.scale;
+    // const scaledBladeHeight = this.bladeSpritesheet.frameHeight * this.scale;
+    const pixelOffset = 2 * this.scale;
+
     if (this.bladeSpritesheet.playing) {
         var bladeX, bladeY;
 
-        bladeY = this.movement.position.y + (this.spritesheet.frameHeight / 2) - 2;
+        bladeY = this.movement.position.y + (scaledPlayerHeight / 2) - pixelOffset;
 
         if (this.movement.facingLeft) {
-            bladeX = this.movement.position.x - (this.spritesheet.frameWidth / 2) - this.bladeSpritesheet.frameWidth + 2;
+            bladeX = this.movement.position.x - (scaledPlayerWidth / 2) - scaledBladeWidth + pixelOffset;
             this.bladeSpritesheet.facingLeft = false;
         } else {
-            bladeX = this.movement.position.x + (this.spritesheet.frameWidth / 2) - 2;
+            bladeX = this.movement.position.x + (scaledPlayerWidth / 2) - pixelOffset;
             this.bladeSpritesheet.facingLeft = true;
         }
 
@@ -219,12 +234,13 @@ Player.prototype.draw = function () {
     }
 
     this.spritesheet.draw(
-        this.movement.position.x - (this.spritesheet.frameWidth / 2),
+        this.movement.position.x - (scaledPlayerWidth / 2),
         this.movement.position.y
     );
 
-    this.hud.draw(16, 0);
-    this.powerupSpace.draw(30, this.hud.height / 2 + this.powerupSpace.height / 4);
+    const hudX = 16 * this.scale;
+    this.hud.draw(hudX, 0);
+    this.powerupSpace.draw(hudX + 14 * this.scale, this.hud.height / 2 + this.powerupSpace.height / 4);
 };
 Player.prototype.update = function (deltaTime) {
     this.movement.update(deltaTime);
@@ -259,7 +275,7 @@ Player.prototype.destroy = function () {
     this.movement = null;
     this.debugColor = null;
 
-    Assets.free(ASSETS_PATH.SPRITES + "/" + "kratos/spritesheet.png");
+    Assets.free(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png");
     Assets.free(ASSETS_PATH.SPRITES + "/kratos/blade.png");
     Assets.free(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
 }
