@@ -1,3 +1,4 @@
+import Camera from "./src/features/Camera/camera.js";
 import Chest, { ScreenFlash } from "./src/features/Chest/chest.js";
 import TileMapRenderer from "./src/features/Map/renderer.js";
 import Player from "./src/features/Player/player.js";
@@ -12,7 +13,11 @@ const tileMap = new TileMapRenderer(mapData, {
     scaleY: 2,
 });
 
+const camera = new Camera();
+
 const player = new Player({ initialX: 32, initialY: 128, scale: 2 });
+
+// player.movement.applyGravity = function () {};
 
 const chests = [
     new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life, scale: 2 }),
@@ -45,7 +50,14 @@ while (true) {
         Collision.toggleDebug();
     }
 
-    tileMap.updateCamera(0, 0);
+    // if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.UP)) {
+    //     player.movement.position.y -= 2;
+    // } else if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.DOWN)) {
+    //     player.movement.position.y += 2;
+    // }
+
+    camera.update(player.movement.position.x, player.movement.position.y);
+    tileMap.updateCamera(camera.x, camera.y);
     tileMap.render();
 
     player.update(deltaTime);
