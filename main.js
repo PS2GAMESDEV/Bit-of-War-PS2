@@ -14,10 +14,10 @@ const tileMap = new TileMapRenderer(mapData, {
 });
 
 const camera = new Camera();
+const mapSize = tileMap.getMapSize();
+camera.setBounds(0, mapSize.width, 0, mapSize.height);
 
 const player = new Player({ initialX: 32, initialY: 128, scale: 2 });
-
-// player.movement.applyGravity = function () {};
 
 const chests = [
     new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life, scale: 2 }),
