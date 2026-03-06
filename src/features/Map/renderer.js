@@ -31,7 +31,7 @@ TileMapRenderer.prototype._getTileConfig = function (tileId) {
 TileMapRenderer.prototype._processMapData = function (mapData) {
     const sprites = [];
 
-    for (const [tileId, placements] of Object.entries(mapData)) {
+    for (const [tileId, placements] of Object.entries(mapData.tiles)) {
         const config = this._getTileConfig(tileId);
         if (!config) {
             console.log(`TileMapRenderer: no texture frame found for "${tileId}"`);
