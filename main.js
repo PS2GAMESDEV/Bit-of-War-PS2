@@ -24,16 +24,7 @@ const chests = [
     new Chest({ x: 250, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.MAGIC, scale: 2 }),
 ];
 
-Collision.register({
-    type: 'rect',
-    x: 0,
-    y: SCREEN_HEIGHT - 50,
-    w: SCREEN_WIDTH,
-    h: 50,
-    layer: 'ground',
-    tags: ['ground', 'solid'],
-    static: true
-});
+tileMap.buildColliders(Collision);
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 let lastFrameTime = Date.now();
@@ -50,12 +41,6 @@ while (true) {
         Collision.toggleDebug();
     }
 
-    // if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.UP)) {
-    //     player.movement.position.y -= 2;
-    // } else if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.DOWN)) {
-    //     player.movement.position.y += 2;
-    // }
-
     camera.update(player.movement.position.x, player.movement.position.y);
     tileMap.updateCamera(camera.x, camera.y);
     tileMap.render();
@@ -66,10 +51,10 @@ while (true) {
         chest.update(player);
     }
     ScreenFlash.update(deltaTime);
-    player.draw();
+    player.draw(camera.x, camera.y);
 
     Collision.check();
-    Collision.renderDebug();
+    Collision.renderDebug(camera.x, camera.y);
 
     ScreenFlash.draw();
     Screen.flip();

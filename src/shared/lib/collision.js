@@ -4,7 +4,7 @@ class Collision {
     constructor() {
         if (Collision.#instance) return Collision.#instance;
         Collision.#instance = this;
-        
+
         this.colliders = new Map();
         this.staticColliders = new Map();
         this.layers = new Map();
@@ -79,7 +79,7 @@ class Collision {
 
     check() {
         this.activeCollisions.clear();
-        
+
         const dynamics = [...this.colliders.values()];
         const statics = [...this.staticColliders.values()];
 
@@ -219,38 +219,36 @@ class Collision {
         this.debugMode = enabled;
     }
 
-    renderDebug() {
+    renderDebug(cameraX = 0, cameraY = 0) {
         if (!this.debugMode) return;
 
         for (const collider of this.staticColliders.values()) {
-            this.#drawCollider(collider, this.debugColors.static);
+            this.#drawCollider(collider, this.debugColors.static, cameraX, cameraY);
         }
 
         for (const collider of this.colliders.values()) {
             const isActive = this.activeCollisions.has(collider.id);
             const color = isActive ? this.debugColors.active : this.debugColors.dynamic;
-            this.#drawCollider(collider, color);
+            this.#drawCollider(collider, color, cameraX, cameraY);
         }
     }
 
-    #drawCollider(collider, color) {
+    #drawCollider(collider, color, cameraX = 0, cameraY = 0) {
+        const x = collider.x - cameraX;
+        const y = collider.y - cameraY;
+
         if (collider.type === 'rect') {
-            Draw.rect(collider.x, collider.y, collider.w, collider.h, color);
-            
-            Draw.line(collider.x, collider.y, collider.x + collider.w, collider.y, color);
-            Draw.line(collider.x + collider.w, collider.y, collider.x + collider.w, collider.y + collider.h, color);
-            Draw.line(collider.x + collider.w, collider.y + collider.h, collider.x, collider.y + collider.h, color);
-            Draw.line(collider.x, collider.y + collider.h, collider.x, collider.y, color);
+            Draw.rect(x, y, collider.w, collider.h, color);
+            Draw.line(x, y, x + collider.w, y, color);
+            Draw.line(x + collider.w, y, x + collider.w, y + collider.h, color);
+            Draw.line(x + collider.w, y + collider.h, x, y + collider.h, color);
+            Draw.line(x, y + collider.h, x, y, color);
         } else if (collider.type === 'circle') {
-            Draw.circle(collider.x, collider.y, collider.r, color, true);
-            
+            Draw.circle(x, y, collider.r, color, true);
             const outlineColor = Color.new(
-                Color.getR(color),
-                Color.getG(color),
-                Color.getB(color),
-                255
+                Color.getR(color), Color.getG(color), Color.getB(color), 255
             );
-            Draw.circle(collider.x, collider.y, collider.r, outlineColor, false);
+            Draw.circle(x, y, collider.r, outlineColor, false);
         }
     }
 
@@ -260,7 +258,7 @@ class Collision {
         if (this.test(a, b)) {
             this.activeCollisions.add(a.id);
             this.activeCollisions.add(b.id);
-            
+
             a.onCollision?.(b);
             b.onCollision?.(a);
         }
@@ -272,7 +270,7 @@ class Collision {
 
     #rectRect(a, b) {
         return a.x < b.x + b.w && a.x + a.w > b.x &&
-               a.y < b.y + b.h && a.y + a.h > b.y;
+            a.y < b.y + b.h && a.y + a.h > b.y;
     }
 
     #circleCircle(a, b) {

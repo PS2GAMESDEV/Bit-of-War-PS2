@@ -3399,18 +3399,6 @@
       "locked": false
     }
   ],
-  "doortopper": {
-    "x": 1056,
-    "y": 208,
-    "creationCode": null,
-    "locked": false
-  },
-  "entrydoor": {
-    "x": 1056,
-    "y": 224,
-    "creationCode": null,
-    "locked": false
-  },
   "tileTrunk": [
     {
       "x": 64,
@@ -7667,18 +7655,6 @@
       "locked": false
     }
   ],
-  "controllerMusic1": {
-    "x": 0,
-    "y": 0,
-    "creationCode": null,
-    "locked": false
-  },
-  "enMinotaur": {
-    "x": 496,
-    "y": 288,
-    "creationCode": null,
-    "locked": false
-  },
   "enUndead": [
     {
       "x": 416,
@@ -7711,16 +7687,153 @@
       "locked": false
     }
   ],
-  "enSkelbow": {
-    "x": 976,
-    "y": 176,
-    "creationCode": null,
-    "locked": false
-  },
-  "spriteKratos": {
-    "x": 32,
-    "y": 128,
-    "creationCode": null,
-    "locked": false
-  }
+  "colliders": [
+    {
+      "x": 0,
+      "y": 64,
+      "width": 16,
+      "height": 80,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 144,
+      "width": 96,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 112,
+      "y": 160,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 192,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 144,
+      "y": 208,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 160,
+      "y": 240,
+      "width": 16,
+      "height": 48,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 288,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 304,
+      "width": 176,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 368,
+      "y": 320,
+      "width": 112,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 480,
+      "y": 304,
+      "width": 192,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 672,
+      "y": 320,
+      "width": 128,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 800,
+      "y": 304,
+      "width": 112,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 912,
+      "y": 288,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 928,
+      "y": 272,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 992,
+      "y": 176,
+      "width": 16,
+      "height": 96,
+      "type": "ground"
+    },
+    {
+      "x": 976,
+      "y": 192,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 960,
+      "y": 224,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 944,
+      "y": 256,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 1008,
+      "y": 272,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 1024,
+      "y": 256,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 1040,
+      "y": 240,
+      "width": 48,
+      "height": 16,
+      "type": "ground"
+    }
+  ]
 }

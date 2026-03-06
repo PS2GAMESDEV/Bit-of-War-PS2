@@ -197,36 +197,38 @@ Player.prototype.updateCollider = function (bounds) {
         h: bounds.bottom - bounds.top
     });
 }
-Player.prototype.drawCollisionBox = function () {
+Player.prototype.drawCollisionBox = function (cameraX = 0, cameraY = 0) {
     const bounds = this.getBounds();
 
     Draw.quad(
-        bounds.left, bounds.top,
-        bounds.right, bounds.top,
-        bounds.right, bounds.bottom,
-        bounds.left, bounds.bottom,
+        bounds.left - cameraX,  bounds.top - cameraY,
+        bounds.right - cameraX, bounds.top - cameraY,
+        bounds.right - cameraX, bounds.bottom - cameraY,
+        bounds.left - cameraX,  bounds.bottom - cameraY,
         this.debugColor
     );
 }
-Player.prototype.draw = function () {
+
+Player.prototype.draw = function (cameraX = 0, cameraY = 0) {
     if (this.shouldRemove()) return;
 
     const scaledPlayerWidth = this.spritesheet.frameWidth * this.scale;
     const scaledPlayerHeight = this.spritesheet.frameHeight * this.scale;
     const scaledBladeWidth = this.bladeSpritesheet.frameWidth * this.scale;
-    // const scaledBladeHeight = this.bladeSpritesheet.frameHeight * this.scale;
     const pixelOffset = 2 * this.scale;
 
-    if (this.bladeSpritesheet.playing) {
-        var bladeX, bladeY;
+    const screenX = this.movement.position.x - cameraX;
+    const screenY = this.movement.position.y - cameraY;
 
-        bladeY = this.movement.position.y + (scaledPlayerHeight / 2) - pixelOffset;
+    if (this.bladeSpritesheet.playing) {
+        let bladeX, bladeY;
+        bladeY = screenY + (scaledPlayerHeight / 2) - pixelOffset;
 
         if (this.movement.facingLeft) {
-            bladeX = this.movement.position.x - (scaledPlayerWidth / 2) - scaledBladeWidth + pixelOffset;
+            bladeX = screenX - (scaledPlayerWidth / 2) - scaledBladeWidth + pixelOffset;
             this.bladeSpritesheet.facingLeft = false;
         } else {
-            bladeX = this.movement.position.x + (scaledPlayerWidth / 2) - pixelOffset;
+            bladeX = screenX + (scaledPlayerWidth / 2) - pixelOffset;
             this.bladeSpritesheet.facingLeft = true;
         }
 
@@ -234,20 +236,20 @@ Player.prototype.draw = function () {
     }
 
     this.spritesheet.draw(
-        this.movement.position.x - (scaledPlayerWidth / 2),
-        this.movement.position.y
+        screenX - (scaledPlayerWidth / 2),
+        screenY
     );
 
     const hudX = 16 * this.scale;
     this.hud.draw(hudX, 0);
     this.powerupSpace.draw(hudX + 14 * this.scale, this.hud.height / 2 + this.powerupSpace.height / 4);
-};
+}
 Player.prototype.update = function (deltaTime) {
     this.movement.update(deltaTime);
     const bounds = this.getBounds();
 
     if (this.movement.canMove) {
-        // this.movement.checkWallCollision(this.colliderId, bounds);
+        this.movement.checkWallCollision(this.colliderId, bounds);
         this.movement.checkGroundCollision(this.colliderId, bounds);
     }
 

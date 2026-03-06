@@ -14,6 +14,7 @@ function TileMapRenderer(mapData, options) {
     this.tileConfig = JSON.parse(std.loadFile(texturePath));
     this.SPRITE_SHEET = spritesheetPath;
 
+    this.mapData = mapData;
     this.sprites = this._processMapData(mapData);
     this.instance = this._createInstance();
 }
@@ -119,7 +120,7 @@ TileMapRenderer.prototype.updateSprite = function (index, updates) {
 TileMapRenderer.prototype.getMapSize = function () {
     let maxX = 0;
     let maxY = 0;
-    
+
     for (const sprite of this.sprites) {
         const right = sprite.x + sprite.w;
         const bottom = sprite.y + sprite.h;
@@ -137,6 +138,32 @@ TileMapRenderer.prototype.setScale = function (scaleX, scaleY) {
 TileMapRenderer.prototype.rebuild = function (mapData) {
     this.sprites = this._processMapData(mapData);
     this.instance = this._createInstance();
+}
+
+TileMapRenderer.prototype.buildColliders = function (Collision) {
+    const colliders = this.mapData.colliders;
+    if (!colliders?.length) return [];
+
+    const ids = [];
+
+    for (const c of colliders) {
+        if (c.type !== 'ground') continue;
+
+        const id = Collision.register({
+            type: 'rect',
+            x: c.x * this.scaleX,
+            y: c.y * this.scaleY,
+            w: c.width * this.scaleX,
+            h: c.height * this.scaleY,
+            layer: 'ground',
+            tags: ['ground', 'solid'],
+            static: true,
+        });
+
+        ids.push(id);
+    }
+
+    return ids;
 }
 
 TileMapRenderer.prototype.destroy = function () {

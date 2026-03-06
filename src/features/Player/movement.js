@@ -112,6 +112,60 @@ Movement2D.prototype.checkGroundCollision = function (colliderId, bounds) {
     return this.onGround;
 };
 
+Movement2D.prototype.checkWallCollision = function (colliderId, bounds) {
+    const leftCheck = Collision.checkArea({
+        type: 'rect',
+        x: bounds.left - 2,
+        y: bounds.top + 4,
+        w: 2,
+        h: (bounds.bottom - bounds.top) - 8,
+        mask: ['ground', 'wall', 'platform'],
+        excludeId: colliderId
+    });
+    const rightCheck = Collision.checkArea({
+        type: 'rect',
+        x: bounds.right,
+        y: bounds.top + 4,
+        w: 2,
+        h: (bounds.bottom - bounds.top) - 8,
+        mask: ['ground', 'wall', 'platform'],
+        excludeId: colliderId
+    });
+
+    this.touchingWall = false;
+    this.wallDirection = 0;
+
+    if (leftCheck.length > 0 && this.velocity.x < 0) {
+        const validWalls = leftCheck.filter(hit =>
+            hit.layer !== 'platform' && !hit.tags.includes('platform')
+        );
+
+        if (validWalls.length > 0) {
+            const wall = validWalls[0].collider;
+            this.position.x = wall.x + wall.w + (this.position.x - bounds.left);
+            this.velocity.x = 0;
+            this.touchingWall = true;
+            this.wallDirection = -1;
+        }
+    }
+
+    if (rightCheck.length > 0 && this.velocity.x > 0) {
+        const validWalls = rightCheck.filter(hit =>
+            hit.layer !== 'platform' && !hit.tags.includes('platform')
+        );
+
+        if (validWalls.length > 0) {
+            const wall = validWalls[0].collider;
+            this.position.x = wall.x - (bounds.right - this.position.x);
+            this.velocity.x = 0;
+            this.touchingWall = true;
+            this.wallDirection = 1;
+        }
+    }
+
+    return this.touchingWall;
+}
+
 Movement2D.prototype.updatePosition = function () {
     if (this.isDefending()) return;
     if (this.isInMaxYVelocity()) this.applyGravity();
@@ -125,7 +179,7 @@ Movement2D.prototype.update = function (deltaTime) {
     this.updatePosition(deltaTime);
 };
 
-Movement2D.prototype.destroy = function(){
+Movement2D.prototype.destroy = function () {
     this.sfxJump = null;
 
     Assets.free(ASSETS_PATH.SOUNDS + "/sfx/jump.adp");
