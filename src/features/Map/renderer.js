@@ -195,6 +195,21 @@ TileMapRenderer.prototype.buildColliders = function (Collision) {
     const ids = [];
 
     for (const c of colliders) {
+        if (c.type === 'ladder') {
+            const id = Collision.register({
+                type: 'rect',
+                x: c.x * this.scaleX,
+                y: c.y * this.scaleY,
+                w: c.width * this.scaleX,
+                h: c.height * this.scaleY,
+                layer: 'ladder', 
+                tags: ['ladder', 'climbable'],
+                static: true,
+            });
+            ids.push(id);
+            continue;
+        }
+
         if (c.type !== 'ground') continue;
 
         const id = Collision.register({
@@ -212,7 +227,7 @@ TileMapRenderer.prototype.buildColliders = function (Collision) {
     }
 
     return ids;
-}
+};
 
 TileMapRenderer.prototype.destroy = function () {
     for (const obj of this.objects) obj.destroy?.();

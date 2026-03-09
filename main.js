@@ -6,7 +6,7 @@ import Collision from "./src/shared/lib/collision.js";
 import { ASSETS_PATH, GAME_SCALE, PLAYER_ONE_PORT } from "./src/shared/lib/constants.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
 
-const mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/OlympusMntI01.json"));
+const mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/OlympusMntClimb.json"));
 
 const tileMap = new TileMapRenderer(mapData, {
     scaleX: GAME_SCALE,
@@ -17,7 +17,7 @@ const camera = new Camera();
 const mapSize = tileMap.getMapSize();
 camera.setBounds(0, mapSize.width, 0, mapSize.height);
 
-const player = new Player({ initialX: mapData.tiles.spriteKratos[0].x * GAME_SCALE, initialY: mapData.tiles.spriteKratos[0].y * GAME_SCALE, scale: GAME_SCALE });
+const player = new Player({ initialX: (mapData.tiles.spriteKratos[0].x * GAME_SCALE) + 16, initialY: mapData.tiles.spriteKratos[0].y * GAME_SCALE, scale: GAME_SCALE });
 
 tileMap.buildColliders(Collision);
 

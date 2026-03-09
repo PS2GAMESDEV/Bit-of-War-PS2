@@ -49,7 +49,7 @@ Player.prototype._initCollider = function () {
         w: this.spritesheet.frameWidth * this.scale,
         h: this.spritesheet.frameHeight * this.scale,
         layer: 'player',
-        mask: ['enemy', 'ground', 'wall', 'platform', 'chest'],
+        mask: ['enemy', 'ground', 'wall', 'platform', 'chest', 'ladder'],
         tags: ['player', 'damageable'],
         data: { entity: this }
     });
@@ -175,6 +175,16 @@ Player.prototype.handleAnimation = function () {
         return;
     }
 
+    if (this.movement.isClimbingState()) {
+        if (this.movement.velocity.y !== 0) {
+            setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB);
+        } else {
+            setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, false);
+            this.spritesheet.currentFrame = this.spritesheet.startFrame;
+        }
+        return;
+    }
+
     if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_L);
     else if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_R);
     else if (this.movement.isDefending() && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.BLOCK_L);
@@ -201,10 +211,10 @@ Player.prototype.drawCollisionBox = function (cameraX = 0, cameraY = 0) {
     const bounds = this.getBounds();
 
     Draw.quad(
-        bounds.left - cameraX,  bounds.top - cameraY,
+        bounds.left - cameraX, bounds.top - cameraY,
         bounds.right - cameraX, bounds.top - cameraY,
         bounds.right - cameraX, bounds.bottom - cameraY,
-        bounds.left - cameraX,  bounds.bottom - cameraY,
+        bounds.left - cameraX, bounds.bottom - cameraY,
         this.debugColor
     );
 }
@@ -249,8 +259,12 @@ Player.prototype.update = function (deltaTime) {
     const bounds = this.getBounds();
 
     if (this.movement.canMove) {
-        this.movement.checkWallCollision(this.colliderId, bounds);
-        this.movement.checkGroundCollision(this.colliderId, bounds);
+        this.movement.checkLadderCollision(this.colliderId, bounds);
+
+        if (!this.movement.isClimbingState()) {
+            this.movement.checkWallCollision(this.colliderId, bounds);
+            this.movement.checkGroundCollision(this.colliderId, bounds);
+        }
     }
 
     if (this.movement.isAttacking() && !this.isAttacking) {

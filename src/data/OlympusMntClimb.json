@@ -1,0 +1,6833 @@
+{
+  "backgroundColor": "001020",
+  "tiles": {
+    "tileGRBackground": [
+      {
+        "x": 16,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 0,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 16,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 16,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 32,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 32,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 16,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 16,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 32,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 64,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 64,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 32,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "door": [
+      {
+        "x": 240,
+        "y": 32,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "tilePlatformSingle": [
+      {
+        "x": 192,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "tilePlatformLeft": [
+      {
+        "x": 112,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 64,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "tilePlatformRight": [
+      {
+        "x": 128,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "tilePlatformMiddle": [
+      {
+        "x": 176,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 64,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "grockmm": [
+      {
+        "x": 0,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 96,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 160,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 1072,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 896,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 912,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 928,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 976,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 992,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 1008,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 1024,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 1040,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 384,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 400,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 416,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 512,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 528,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 544,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 624,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 640,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 656,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 304,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 272,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 64,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 48,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 32,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 16,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 256,
+        "y": 0,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "grocktr": [
+      {
+        "x": 32,
+        "y": 944,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 0,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "grocktl": [
+      {
+        "x": 240,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "grockbm": [
+      {
+        "x": 16,
+        "y": 880,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 16,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 32,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "tileLadder": [
+      {
+        "x": 208,
+        "y": 592,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 608,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 464,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 480,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 496,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 336,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 352,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 256,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 240,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 224,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 208,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 176,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 160,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 128,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 80,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 96,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 704,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 736,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 784,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 832,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 128,
+        "y": 864,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "tileLadderTop": [
+      {
+        "x": 128,
+        "y": 688,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 576,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 448,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 48,
+        "y": 320,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 240,
+        "y": 112,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 64,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "enSkelbowR": [
+      {
+        "x": 64,
+        "y": 816,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 768,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 64,
+        "y": 720,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 144,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 192,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "enSkelbow": [
+      {
+        "x": 192,
+        "y": 752,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 800,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 192,
+        "y": 848,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 144,
+        "y": 288,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "enMinotaur": [
+      {
+        "x": 16,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 224,
+        "y": 672,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 80,
+        "y": 432,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "enUndead": [
+      {
+        "x": 176,
+        "y": 960,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 208,
+        "y": 1056,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 112,
+        "y": 368,
+        "creationCode": null,
+        "locked": false
+      },
+      {
+        "x": 176,
+        "y": 560,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "spriteKratos": [
+      {
+        "x": 16,
+        "y": 1040,
+        "locked": false
+      }
+    ]
+  },
+  "colliders": [
+    {
+      "x": 128,
+      "y": 704,
+      "width": 16,
+      "height": 176,
+      "type": "ladder"
+    },
+    {
+      "x": 208,
+      "y": 592,
+      "width": 16,
+      "height": 32,
+      "type": "ladder"
+    },
+    {
+      "x": 48,
+      "y": 464,
+      "width": 16,
+      "height": 48,
+      "type": "ladder"
+    },
+    {
+      "x": 48,
+      "y": 336,
+      "width": 16,
+      "height": 48,
+      "type": "ladder"
+    },
+    {
+      "x": 240,
+      "y": 128,
+      "width": 16,
+      "height": 144,
+      "type": "ladder"
+    },
+    {
+      "x": 208,
+      "y": 80,
+      "width": 16,
+      "height": 32,
+      "type": "ladder"
+    },
+    {
+      "x": 240,
+      "y": 32,
+      "width": 16,
+      "height": 32,
+      "type": "door"
+    },
+    {
+      "x": 0,
+      "y": 176,
+      "width": 16,
+      "height": 880,
+      "type": "ground"
+    },
+    {
+      "x": 256,
+      "y": 0,
+      "width": 16,
+      "height": 1088,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 1056,
+      "width": 80,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 1072,
+      "width": 240,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 1056,
+      "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 1040,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 144,
+      "y": 1040,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 1056,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 976,
+      "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 1056,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 960,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 880,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 912,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 944,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 1008,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 864,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 32,
+      "y": 880,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 960,
+      "width": 64,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 32,
+      "y": 944,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 80,
+      "y": 912,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 880,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 864,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 736,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 784,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 832,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 784,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 768,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 816,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 144,
+      "y": 688,
+      "width": 96,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 672,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 688,
+      "width": 112,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 80,
+      "y": 672,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 112,
+      "y": 656,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 640,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 208,
+      "y": 624,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 224,
+      "y": 576,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 576,
+      "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 512,
+      "width": 48,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 80,
+      "y": 528,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 544,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 448,
+      "width": 48,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 144,
+      "y": 448,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 176,
+      "y": 448,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 432,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 400,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 48,
+      "y": 384,
+      "width": 144,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 320,
+      "width": 48,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 144,
+      "y": 304,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 288,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 240,
+      "y": 64,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 208,
+      "y": 112,
+      "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 112,
+      "y": 160,
+      "width": 48,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 160,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 208,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    }
+  ]
+}
