@@ -3,6 +3,7 @@ const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",
     OBJECTS: "./assets/images/objects",
     SOUNDS: "./assets/sounds",
+    ENEMIES: "./assets/images/enemies",
     UI: "./assets/images/ui",
     TILES: "./assets/images/tiles",
     MAPS: "./src/data"
@@ -35,6 +36,13 @@ const PLAYER_MOVEMENT = Object.freeze({
     DEFAULT_JUMPS: 2
 })
 
+const ENEMIES_ANIMATIONS = Object.freeze({
+    IDLE: "idle",
+    WALK: "walk"
+})
+
+const GAME_SCALE = 2;
+
 const CHEST_ANIMATIONS = Object.freeze({
     OPEN: "open",
     CLOSED: "closed"
@@ -47,6 +55,7 @@ const CHEST_TYPES = Object.freeze({
 export {
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
+    GAME_SCALE,
     PLAYER_ONE_PORT,
     PLAYER_TWO_PORT,
     ASSETS_PATH,
@@ -54,5 +63,6 @@ export {
     PLAYER_MOVEMENT,
     CHEST_ANIMATIONS,
     CHEST_TYPES,
-    VFX_SCREEN_COLOR
+    VFX_SCREEN_COLOR,
+    ENEMIES_ANIMATIONS
 }

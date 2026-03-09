@@ -1,10 +1,29 @@
-import { ASSETS_PATH } from "../../shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE } from "../../shared/lib/constants.js";
+import Chest from "../Chest/chest.js";
+import HarpieEnemy from "../Enemies/Harpie/harpie.js";
+import MinotaurEnemy from "../Enemies/Minotaur/minotaur.js";
+import SkelbowEnemy from "../Enemies/Skelbow/skelbow.js";
+import UndeadEnemy from "../Enemies/Undead/undead.js";
+
+const OBJECT_TILE_MAP = {
+    'obLifeChest':  Chest,
+    'obMagicChest': Chest,
+    'enUndead': UndeadEnemy,
+    'enMinotaur': MinotaurEnemy,
+    'enSkelbow': SkelbowEnemy,
+    'enSkelbowR': SkelbowEnemy,
+    'enHarpie': HarpieEnemy
+};
+
+function extractTileType(tileId) {
+    return tileId.replace(/^ob/, '').replace(/Chest$/, '');
+}
 
 function TileMapRenderer(mapData, options) {
     options = options || {};
 
-    this.scaleX = options.scaleX ?? 1;
-    this.scaleY = options.scaleY ?? 1;
+    this.scaleX = GAME_SCALE ?? 1;
+    this.scaleY = GAME_SCALE ?? 1;
     this.cameraX = 0;
     this.cameraY = 0;
 
@@ -17,6 +36,8 @@ function TileMapRenderer(mapData, options) {
     this.mapData = mapData;
     this.sprites = this._processMapData(mapData);
     this.instance = this._createInstance();
+
+    this.objects = this._processObjectTiles(mapData);
 }
 
 TileMapRenderer.prototype._resolveFrameKey = function (tileId) {
@@ -28,10 +49,36 @@ TileMapRenderer.prototype._getTileConfig = function (tileId) {
     return this.tileConfig.frames?.[key] ?? null;
 }
 
+TileMapRenderer.prototype._processObjectTiles = function (mapData) {
+    const objects = [];
+
+    for (const [tileId, placements] of Object.entries(mapData.tiles)) {
+        const ClassRef = OBJECT_TILE_MAP[tileId];
+        if (!ClassRef) continue;
+
+        const type = extractTileType(tileId);
+
+        for (const placement of placements) {
+            const instance = new ClassRef({
+                x:     placement.x * this.scaleX,
+                y:     placement.y * this.scaleY,
+                type,
+                scale: this.scaleX,
+            });
+
+            objects.push(instance);
+        }
+    }
+
+    return objects;
+}
+
 TileMapRenderer.prototype._processMapData = function (mapData) {
     const sprites = [];
 
     for (const [tileId, placements] of Object.entries(mapData.tiles)) {
+        if (OBJECT_TILE_MAP[tileId]) continue;
+
         const config = this._getTileConfig(tileId);
         if (!config) {
             console.log(`TileMapRenderer: no texture frame found for "${tileId}"`);
@@ -138,6 +185,7 @@ TileMapRenderer.prototype.setScale = function (scaleX, scaleY) {
 TileMapRenderer.prototype.rebuild = function (mapData) {
     this.sprites = this._processMapData(mapData);
     this.instance = this._createInstance();
+    this.objects = this._processObjectTiles(mapData);
 }
 
 TileMapRenderer.prototype.buildColliders = function (Collision) {
@@ -167,6 +215,8 @@ TileMapRenderer.prototype.buildColliders = function (Collision) {
 }
 
 TileMapRenderer.prototype.destroy = function () {
+    for (const obj of this.objects) obj.destroy?.();
+    this.objects = [];
     this.instance = null;
     this.tileConfig = null;
     this.sprites = null;

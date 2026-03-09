@@ -2,7 +2,7 @@ import { PLAYER_CONTROLS } from "../../shared/config/controls.js";
 import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
 import Assets from "../../shared/lib/assets.js"
 import Collision from "../../shared/lib/collision.js";
-import { ASSETS_PATH, CHEST_ANIMATIONS, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js"
+import { ASSETS_PATH, CHEST_ANIMATIONS, GAME_SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js"
 import Gamepad from "../../shared/lib/gamepad.js";
 
 export const ScreenFlash = {
@@ -38,7 +38,7 @@ function Chest(options) {
     this.isOpen = false;
     this.colliderId = null;
 
-    this.scale = options.scale || 1;
+    this.scale = GAME_SCALE;
 
     this.spritesheet = Assets.image(ASSETS_PATH.OBJECTS + "/ob" + this.type + "Chest.png")
     this.sfxChests = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/chests.adp");
@@ -110,15 +110,15 @@ Chest.prototype.open = function () {
     ScreenFlash.trigger(this.type);
 }
 
-Chest.prototype.draw = function() {
+Chest.prototype.draw = function(cameraX, cameraY) {
     animationSprite(this.spritesheet)
-    this.spritesheet.draw(this.position.x, this.position.y)
+    this.spritesheet.draw(this.position.x - (cameraX || 0), this.position.y - (cameraY || 0));
 }
 
-Chest.prototype.update = function(player){
+Chest.prototype.update = function(player, deltaTime, cameraX, cameraY){
     this.handleInteraction(player);
     this.handleAnimation();
-    this.draw();
+    this.draw(cameraX, cameraY);
 }
 
 Chest.prototype.destroy = function () {

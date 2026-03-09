@@ -1,28 +1,23 @@
 import Camera from "./src/features/Camera/camera.js";
-import Chest, { ScreenFlash } from "./src/features/Chest/chest.js";
+import { ScreenFlash } from "./src/features/Chest/chest.js";
 import TileMapRenderer from "./src/features/Map/renderer.js";
 import Player from "./src/features/Player/player.js";
 import Collision from "./src/shared/lib/collision.js";
-import { ASSETS_PATH, CHEST_TYPES, PLAYER_ONE_PORT, SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE, PLAYER_ONE_PORT } from "./src/shared/lib/constants.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
 
-const mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/GaiaArm.json"));
+const mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/OlympusMntI01.json"));
 
 const tileMap = new TileMapRenderer(mapData, {
-    scaleX: 2,
-    scaleY: 2,
+    scaleX: GAME_SCALE,
+    scaleY: GAME_SCALE,
 });
 
 const camera = new Camera();
 const mapSize = tileMap.getMapSize();
 camera.setBounds(0, mapSize.width, 0, mapSize.height);
 
-const player = new Player({ initialX: 32, initialY: 128, scale: 2 });
-
-const chests = [
-    new Chest({ x: 100, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.Life, scale: 2 }),
-    new Chest({ x: 250, y: SCREEN_HEIGHT - 66, type: CHEST_TYPES.MAGIC, scale: 2 }),
-];
+const player = new Player({ initialX: mapData.tiles.spriteKratos[0].x * GAME_SCALE, initialY: mapData.tiles.spriteKratos[0].y * GAME_SCALE, scale: GAME_SCALE });
 
 tileMap.buildColliders(Collision);
 
@@ -47,9 +42,8 @@ while (true) {
 
     player.update(deltaTime);
 
-    for (const chest of chests) {
-        chest.update(player);
-    }
+    for (const obj of tileMap.objects) obj.update(player, deltaTime, camera.x, camera.y);
+
     ScreenFlash.update(deltaTime);
     player.draw(camera.x, camera.y);
 

@@ -1,7 +1,7 @@
 import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
 import Assets from "../../shared/lib/assets.js";
 import Collision from "../../shared/lib/collision.js";
-import { ASSETS_PATH, PLAYER_ANIMATIONS, PLAYER_ONE_PORT } from "../../shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE, PLAYER_ANIMATIONS, PLAYER_ONE_PORT } from "../../shared/lib/constants.js";
 import Movement2D from "./movement.js";
 
 function Player(options) {
@@ -9,7 +9,7 @@ function Player(options) {
 
     this.PLAYER_PORT = options.PLAYER_PORT || PLAYER_ONE_PORT;
     this._bounds = { left: 0, top: 0, right: 0, bottom: 0 };
-    this.scale = options.scale || 1;
+    this.scale = GAME_SCALE || 1;
     this.HITBOX_WIDTH = 16 * this.scale;
     this.movement = new Movement2D({
         initialX: options.initialX || 0,
@@ -114,7 +114,7 @@ Player.prototype._initAnimations = function () {
         }
     }
 
-    setAnimation(this.spritesheet, this.animationState, false);
+    setAnimation(this.spritesheet, PLAYER_ANIMATIONS.IDLE_R, false);
 }
 Player.prototype._initBladeAnimation = function () {
     var self = this;
