@@ -176,11 +176,21 @@ Player.prototype.handleAnimation = function () {
     }
 
     if (this.movement.isClimbingState()) {
-        if (this.movement.velocity.y !== 0) {
-            setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB);
+        const isMovingOnLadder = this.movement.velocity.y !== 0;
+        const isClimbAnim = this.spritesheet.currentAnimation === PLAYER_ANIMATIONS.CLIMB;
+
+        if (isMovingOnLadder) {
+            if (!isClimbAnim) {
+                setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, true);
+            } else {
+                this.spritesheet.loop = true; 
+            }
         } else {
-            setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, false);
-            this.spritesheet.currentFrame = this.spritesheet.startFrame;
+            if (!isClimbAnim) {
+                setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, false);
+            } else {
+                this.spritesheet.loop = false;
+            }
         }
         return;
     }

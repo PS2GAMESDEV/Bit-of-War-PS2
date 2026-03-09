@@ -94,7 +94,7 @@ Movement2D.prototype.stopClimbing = function () {
 Movement2D.prototype.climb = function (direction) {
     if (!this.isClimbing) return;
 
-    this.velocity.y = direction * (PLAYER_MOVEMENT.DEFAULT_SPEED * 0.6);
+    this.velocity.y = direction * (PLAYER_MOVEMENT.DEFAULT_SPEED * 0.95f);
 };
 
 Movement2D.prototype.jump = function () {
@@ -126,6 +126,7 @@ Movement2D.prototype.handleInput = function () {
             this.stopClimbing();
 
             if (gamepad.justPressed(PLAYER_CONTROLS.JUMP)) {
+                this.jumpsRemaining = PLAYER_MOVEMENT.DEFAULT_JUMPS;
                 this.jump();
             }
         }
@@ -246,9 +247,11 @@ Movement2D.prototype.checkLadderCollision = function (colliderId, bounds) {
         const gamepad = Gamepad.player(this.PLAYER_PORT);
         const atLadderTop = this.onGround && ladder.y < this.position.y;
         const atLadderBottom = this.position.y < ladder.y + ladder.h;
+        const inAir = !this.onGround;
 
         if ((gamepad.pressed(Pads.UP) && atLadderTop) ||
-            (gamepad.pressed(Pads.DOWN) && atLadderBottom && !this.onGround)) {
+            (gamepad.pressed(Pads.DOWN) && atLadderBottom && !this.onGround) ||
+            (inAir && (gamepad.pressed(Pads.UP) || gamepad.pressed(Pads.DOWN)))) {
             this.startClimbing(this.ladderX);
         }
     }
