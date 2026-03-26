@@ -2,6 +2,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Screen.getMode();
 const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",
     OBJECTS: "./assets/images/objects",
+    IMAGES: "./assets/images",
     SOUNDS: "./assets/sounds",
     ENEMIES: "./assets/images/enemies",
     UI: "./assets/images/ui",

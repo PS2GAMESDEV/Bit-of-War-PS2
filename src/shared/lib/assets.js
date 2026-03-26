@@ -14,6 +14,13 @@ export default class Assets {
         }
 
         const img = new Image(path);
+        
+        img.scale = function(scale) {
+           img.width *= scale;
+           img.height *= scale;
+           return this;
+       }
+       
         if (Object.keys(options).length > 0) {
             if (options.optimize) img.optimize();
             if (options.animConfig && Object.keys(options.animConfig).length > 0)
@@ -69,7 +76,7 @@ export default class Assets {
             for (const item of manifest) {
                 if (item.type === 'image')      Assets.image(item.path, item.options || {});
                 else if (item.type === 'sound') Assets.sound(item.path);
-                else if (item.type === 'font')  Assets.font(item.path);
+                else if (item.type === 'font') Assets.font(item.path);
             }
             if (typeof onDone === 'function') onDone();
         }, "Assets: Preloader");
