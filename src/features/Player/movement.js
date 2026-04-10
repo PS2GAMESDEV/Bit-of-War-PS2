@@ -148,12 +148,14 @@ Movement2D.prototype.handleInput = function () {
 };
 
 Movement2D.prototype.checkGroundCollision = function (colliderId, bounds) {
+    const checkHeight = Math.max(4, this.velocity.y);
+
     const groundCheck = Collision.checkArea({
         type: 'rect',
         x: bounds.left + 4,
         y: bounds.bottom,
         w: (bounds.right - bounds.left) - 8,
-        h: 4,
+        h: checkHeight,
         mask: ['ground', 'platform'],
         excludeId: colliderId
     });
@@ -166,7 +168,6 @@ Movement2D.prototype.checkGroundCollision = function (colliderId, bounds) {
             this.position.y = ground.y - (bounds.bottom - this.position.y);
             this.velocity.y = 0;
         }
-
         this.jumpsRemaining = PLAYER_MOVEMENT.DEFAULT_JUMPS;
     }
 
