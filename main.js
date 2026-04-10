@@ -1,7 +1,6 @@
 import Gamepad from "./src/shared/lib/gamepad.js";
 import { SceneManager } from "./src/shared/lib/scenemanager.js";
 import { Menu } from "./src/scenes/menu.js";
-import { Cutscene01 } from "./src/scenes/cutscene01.js";
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 

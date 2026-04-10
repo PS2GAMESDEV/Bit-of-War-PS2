@@ -14,14 +14,12 @@ export default class Assets {
         }
 
         const img = new Image(path);
-        
-        img.scale = function(scale) {
-           img.width *= scale;
-           img.height *= scale;
-           return this;
-       }
        
         if (Object.keys(options).length > 0) {
+            if(options.scale) {
+                img.width *= options.scale;
+                img.height *= options.scale;
+            }
             if (options.optimize) img.optimize();
             if (options.animConfig && Object.keys(options.animConfig).length > 0)
                 Object.assign(img, options.animConfig);

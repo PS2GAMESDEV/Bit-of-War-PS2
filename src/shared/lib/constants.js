@@ -32,9 +32,9 @@ const PLAYER_ANIMATIONS = Object.freeze({
 const PLAYER_MOVEMENT = Object.freeze({
     DEFAULT_GRAVITY: 0.6f,
     MAX_Y_VELOCITY: 12,
-    DEFAULT_SPEED: 2,
-    DEFAULT_JUMP_STRENGTH: -8,
-    DEFAULT_JUMPS: 2
+    DEFAULT_SPEED: 3,
+    DEFAULT_JUMP_STRENGTH: -10,
+    DEFAULT_JUMPS: 1
 })
 
 const ENEMIES_ANIMATIONS = Object.freeze({
