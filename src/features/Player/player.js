@@ -266,16 +266,16 @@ Player.prototype.draw = function (cameraX = 0, cameraY = 0) {
 }
 Player.prototype.update = function (deltaTime) {
     this.movement.update(deltaTime);
-    const bounds = this.getBounds();
 
     if (this.movement.canMove) {
-        this.movement.checkLadderCollision(this.colliderId, bounds);
-
         if (!this.movement.isClimbingState()) {
-            this.movement.checkWallCollision(this.colliderId, bounds);
-            this.movement.checkGroundCollision(this.colliderId, bounds);
+            this.movement.checkGroundCollision(this.colliderId, this.getBounds());
+            this.movement.checkWallCollision(this.colliderId, this.getBounds());
         }
+        this.movement.checkLadderCollision(this.colliderId, this.getBounds());
     }
+
+    const bounds = this.getBounds();
 
     if (this.movement.isAttacking() && !this.isAttacking) {
         this.startAttack();
@@ -288,7 +288,7 @@ Player.prototype.update = function (deltaTime) {
     this.updateAnimation(deltaTime);
     this.updateCollider(bounds);
     this.handleAnimation();
-}
+};
 Player.prototype.destroy = function () {
     if (this.colliderId !== null) {
         Collision.unregister(this.colliderId);
