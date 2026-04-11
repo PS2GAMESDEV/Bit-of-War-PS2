@@ -160,15 +160,42 @@ Movement2D.prototype.checkGroundCollision = function (colliderId, bounds) {
         excludeId: colliderId
     });
 
-    this.onGround = groundCheck.length > 0 && this.velocity.y >= 0;
+    const validHits = groundCheck.filter(hit => {
+        const isPlatform = hit.layer === 'platform' || hit.tags.includes('platform');
+        if (isPlatform) {
+            const wasAbove = (bounds.bottom - this.velocity.y) <= hit.collider.y + 1;
+            return wasAbove;
+        }
+        return this.velocity.y >= 0;
+    });
+
+    this.onGround = validHits.length > 0 && this.velocity.y >= 0;
 
     if (this.onGround) {
         if (this.velocity.y > 0) {
-            const ground = groundCheck[0].collider;
+            const ground = validHits[0].collider;
             this.position.y = ground.y - (bounds.bottom - this.position.y);
             this.velocity.y = 0;
         }
         this.jumpsRemaining = PLAYER_MOVEMENT.DEFAULT_JUMPS;
+    }
+
+    if (this.velocity.y < 0) {
+        const ceilingCheck = Collision.checkArea({
+            type: 'rect',
+            x: bounds.left + 4,
+            y: bounds.top + this.velocity.y,
+            w: (bounds.right - bounds.left) - 8,
+            h: Math.abs(this.velocity.y) + 4,
+            mask: ['ground'],
+            excludeId: colliderId
+        });
+
+        if (ceilingCheck.length > 0) {
+            const ceiling = ceilingCheck[0].collider;
+            this.position.y = ceiling.y + ceiling.h - (bounds.top - this.position.y);
+            this.velocity.y = 0;
+        }
     }
 
     return this.onGround;
