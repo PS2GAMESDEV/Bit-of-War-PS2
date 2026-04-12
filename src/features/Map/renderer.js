@@ -5,7 +5,6 @@ import MinotaurEnemy from "../Enemies/Minotaur/minotaur.js";
 import SkelbowEnemy from "../Enemies/Skelbow/skelbow.js";
 import UndeadEnemy from "../Enemies/Undead/undead.js";
 import Torch from "../Objects/Torch/torch.js";
-import Spikes from "../Objects/Spikes/spikes.js";
 
 const OBJECT_TILE_MAP = {
     'obLifeChest': Chest,
@@ -15,8 +14,7 @@ const OBJECT_TILE_MAP = {
     'enSkelbow': SkelbowEnemy,
     'enSkelbowR': SkelbowEnemy,
     'enHarpie': HarpieEnemy,
-    'spriteTorch': Torch,
-    'spriteSpikes': Spikes
+    'spriteTorch': Torch
 };
 
 function extractTileType(tileId) {
