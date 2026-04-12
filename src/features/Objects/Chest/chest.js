@@ -1,9 +1,9 @@
-import { PLAYER_CONTROLS } from "../../shared/config/controls.js";
-import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
-import Assets from "../../shared/lib/assets.js"
-import Collision from "../../shared/lib/collision.js";
-import { ASSETS_PATH, CHEST_ANIMATIONS, GAME_SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js"
-import Gamepad from "../../shared/lib/gamepad.js";
+import { PLAYER_CONTROLS } from "../../../shared/config/controls.js";
+import { animationSprite, setAnimation } from "../../../shared/lib/animation.js";
+import Assets from "../../../shared/lib/assets.js"
+import Collision from "../../../shared/lib/collision.js";
+import { ASSETS_PATH, CHEST_ANIMATIONS, GAME_SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../../shared/lib/constants.js"
+import Gamepad from "../../../shared/lib/gamepad.js";
 
 export const ScreenFlash = {
     active: false,
@@ -115,7 +115,8 @@ Chest.prototype.draw = function(cameraX, cameraY) {
     this.spritesheet.draw(this.position.x - (cameraX || 0), this.position.y - (cameraY || 0));
 }
 
-Chest.prototype.update = function(player, deltaTime, cameraX, cameraY){
+Chest.prototype.update = function(cameraX, cameraY, context = {}) {
+    const { player } = context;
     this.handleInteraction(player);
     this.handleAnimation();
     this.draw(cameraX, cameraY);

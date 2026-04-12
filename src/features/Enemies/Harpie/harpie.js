@@ -39,7 +39,7 @@ HarpieEnemy.prototype._initAnimations = function () {
     setAnimation(this.spritesheet, ENEMIES_ANIMATIONS.IDLE);
 }
 
-HarpieEnemy.prototype.update = function (player, deltaTime, cameraX, cameraY) {
+HarpieEnemy.prototype.update = function(cameraX, cameraY, context = {}) {
     this.draw(cameraX, cameraY);
 }
 

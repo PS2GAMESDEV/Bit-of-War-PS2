@@ -39,7 +39,7 @@ UndeadEnemy.prototype._initAnimations = function () {
     setAnimation(this.spritesheet, ENEMIES_ANIMATIONS.IDLE);
 }
 
-UndeadEnemy.prototype.update = function (player, deltaTime, cameraX, cameraY) {
+UndeadEnemy.prototype.update = function(cameraX, cameraY, context = {}) {
     this.draw(cameraX, cameraY);
 }
 

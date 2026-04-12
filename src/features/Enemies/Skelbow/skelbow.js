@@ -39,7 +39,7 @@ SkelbowEnemy.prototype._initAnimations = function () {
     setAnimation(this.spritesheet, ENEMIES_ANIMATIONS.IDLE);
 }
 
-SkelbowEnemy.prototype.update = function (player, deltaTime, cameraX, cameraY) {
+SkelbowEnemy.prototype.update = function(cameraX, cameraY, context = {}) {
     this.draw(cameraX, cameraY);
 }
 

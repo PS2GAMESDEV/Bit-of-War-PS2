@@ -1,5 +1,5 @@
 import Camera from "../features/Camera/camera.js";
-import { ScreenFlash } from "../features/Chest/chest.js";
+import { ScreenFlash } from "../features/Objects/Chest/chest.js";
 import TileMapRenderer from "../features/Map/renderer.js";
 import Player from "../features/Player/player.js";
 import Collision from "../shared/lib/collision.js";
@@ -8,7 +8,7 @@ import Gamepad from "../shared/lib/gamepad.js";
 
 const GAME_ROOMS = Object.freeze({
     world1: {
-        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json"],
+        sequence: ["OlympusMntI01.json", "OlympusMntClimb.json"],
     }
 });
 
@@ -192,7 +192,10 @@ Game.prototype.update = function (deltaTime) {
 
     this.player.update(deltaTime);
     for (const obj of this.tileMap.objects) {
-        obj.update(this.player, deltaTime, this.camera.x, this.camera.y);
+        obj.update(this.camera.x, this.camera.y, {
+            player: this.player,
+            deltaTime: deltaTime,
+        });
     }
 
     ScreenFlash.update(deltaTime);

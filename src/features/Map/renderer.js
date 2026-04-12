@@ -1,9 +1,11 @@
 import { ASSETS_PATH, GAME_SCALE } from "../../shared/lib/constants.js";
-import Chest from "../Chest/chest.js";
+import Chest from "../Objects/Chest/chest.js";
 import HarpieEnemy from "../Enemies/Harpie/harpie.js";
 import MinotaurEnemy from "../Enemies/Minotaur/minotaur.js";
 import SkelbowEnemy from "../Enemies/Skelbow/skelbow.js";
 import UndeadEnemy from "../Enemies/Undead/undead.js";
+import Torch from "../Objects/Torch/torch.js";
+import Spikes from "../Objects/Spikes/spikes.js";
 
 const OBJECT_TILE_MAP = {
     'obLifeChest': Chest,
@@ -12,7 +14,9 @@ const OBJECT_TILE_MAP = {
     'enMinotaur': MinotaurEnemy,
     'enSkelbow': SkelbowEnemy,
     'enSkelbowR': SkelbowEnemy,
-    'enHarpie': HarpieEnemy
+    'enHarpie': HarpieEnemy,
+    'spriteTorch': Torch,
+    'spriteSpikes': Spikes
 };
 
 function extractTileType(tileId) {
