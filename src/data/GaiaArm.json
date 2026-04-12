@@ -1,5 +1,5 @@
 {
-  "backgroundColor": "#000000",
+  "backgroundColor": "000000",
   "tiles": {
     "rocktr": [
       {
@@ -7700,6 +7700,13 @@
         "creationCode": null,
         "locked": false
       }
+    ],
+    "spriteKratos": [
+      {
+        "x": 32,
+        "y": 128,
+        "locked": false
+      }
     ]
   },
   "colliders": [
@@ -7802,17 +7809,10 @@
       "type": "ground"
     },
     {
-      "x": 992,
-      "y": 176,
+      "x": 944,
+      "y": 256,
       "width": 16,
-      "height": 96,
-      "type": "ground"
-    },
-    {
-      "x": 976,
-      "y": 192,
-      "width": 16,
-      "height": 32,
+      "height": 16,
       "type": "ground"
     },
     {
@@ -7823,10 +7823,17 @@
       "type": "ground"
     },
     {
-      "x": 944,
-      "y": 256,
+      "x": 976,
+      "y": 192,
       "width": 16,
-      "height": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 992,
+      "y": 176,
+      "width": 16,
+      "height": 96,
       "type": "ground"
     },
     {
@@ -7849,6 +7856,13 @@
       "width": 48,
       "height": 16,
       "type": "ground"
+    },
+    {
+      "x": 1056,
+      "y": 208,
+      "width": 16,
+      "height": 32,
+      "type": "door"
     }
   ]
 }
