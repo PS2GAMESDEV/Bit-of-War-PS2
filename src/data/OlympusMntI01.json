@@ -7695,7 +7695,7 @@
         "locked": false
       }
     ],
-    "tileDirtRoad": [
+    "tileGround": [
       {
         "x": 16,
         "y": 400,
