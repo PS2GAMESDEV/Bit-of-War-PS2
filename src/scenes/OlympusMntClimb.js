@@ -29,36 +29,36 @@ export function OlympusMntClimb(Scene) {
     });
 
     tileMap.buildColliders(Collision);
-    
+
 
     return {
         update(deltaTime) {
             // Input
-if (Gamepad.player(PLAYER_ONE_PORT).justPressed(Pads.L1)) {
-    Collision.toggleDebug();
-}
+            if (Gamepad.player(PLAYER_ONE_PORT).justPressed(Pads.L1)) {
+                Collision.toggleDebug();
+            }
 
-// Update entidades
-player.update(deltaTime);
+            // Update entidades
+            player.update(deltaTime);
 
-for (const obj of tileMap.objects) {
-    obj.update(player, deltaTime);
-}
+            for (const obj of tileMap.objects) {
+                obj.update(player, deltaTime);
+            }
 
-// Colisão (logo após movimento)
-Collision.check();
+            // Colisão (logo após movimento)
+            Collision.check();
 
-// Câmera (já com posição corrigida)
-camera.update(
-    player.movement.position.x,
-    player.movement.position.y
-);
+            // Câmera (já com posição corrigida)
+            camera.update(
+                player.movement.position.x,
+                player.movement.position.y
+            );
 
-// Tilemap baseado na câmera
-tileMap.updateCamera(camera.x, camera.y);
+            // Tilemap baseado na câmera
+            tileMap.updateCamera(camera.x, camera.y);
 
-// Efeitos
-ScreenFlash.update(deltaTime);
+            // Efeitos
+            ScreenFlash.update(deltaTime);
 
 
 

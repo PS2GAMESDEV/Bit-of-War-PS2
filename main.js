@@ -13,13 +13,13 @@ let lastFrameTime = Date.now();
 while (true) {
     Screen.clear();
     Gamepad.update();
-    
+
     const now = Date.now();
     const deltaTime = (now - lastFrameTime) / 1000;
     lastFrameTime = now;
-    
+
     sceneManager.update(deltaTime);
     sceneManager.draw();
-    
+
     Screen.flip();
 }

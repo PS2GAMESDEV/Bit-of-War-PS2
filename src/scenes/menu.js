@@ -6,9 +6,8 @@ import Gamepad from "src/shared/lib/gamepad.js";
 import { Cutscene01 } from "./Cutscene01.js";
 
 let font = Assets.font("assets/font/font.ttf");
-
 export function Menu(Scene) {
-    let pad;
+    let pad = Gamepad.player(0);;
 
     const gray = Color.new(72, 72, 72);
     const red = Color.new(255, 0, 0);
