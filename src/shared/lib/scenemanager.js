@@ -18,19 +18,16 @@ export class SceneManager {
 
     changeScene(Scene) {
         this.isLoading = true;
-        
-        if(this.currentScene && this.currentScene.unload) {
+
+        if (this.currentScene && this.currentScene.unload) {
             this.currentScene.unload();
-            // this.currentScene = null;
         }
-    
+
         const thread = new Thread(() => {
-            
-            this.currentScene = Scene(this);
+            this.currentScene = new Scene(this);
             this.isLoading = false;
-            
         }, "Load Scene");
-        
+
         thread.start();
     }
 
@@ -47,16 +44,16 @@ export class SceneManager {
     }
 
     draw() {
-        if(this.isLoading) {
+        if (this.isLoading) {
             this.drawLoading();
             return;
         }
 
-        if(this.currentScene && this.currentScene.draw) {
+        if (this.currentScene && this.currentScene.draw) {
             this.currentScene.draw();
         }
     }
-    
+
     drawLoading() {
         Draw.rect(0, 0, 640, 448, Color.new(8, 8, 8));
         loading.draw(460, 400);

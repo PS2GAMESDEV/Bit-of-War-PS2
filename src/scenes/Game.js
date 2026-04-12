@@ -8,7 +8,7 @@ import Gamepad from "../shared/lib/gamepad.js";
 
 const GAME_ROOMS = Object.freeze({
     world1: {
-        sequence: ["OlympusMntI01.json", "OlympusMntClimb.json"],
+        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json"],
     }
 });
 
@@ -18,74 +18,57 @@ const GAME_STATE = Object.freeze({
     COMPLETED: 2
 });
 
-export default function Game() {
+export default function Game(sceneManager) {
+    this.sceneManager = sceneManager;
+
     this.currentWorld = 'world1';
     this.state = GAME_STATE.PLAYING;
     this.transitionTimer = 0;
     this.fadeAlpha = 0;
+    this.deltaTime = 0;
 
     this.tileMap = null;
     this.player = null;
     this.camera = null;
     this.mapData = null;
 
-    this.levelGenerator = this._createLevelGenerator();
+    this.levelSequence = GAME_ROOMS[this.currentWorld].sequence;
+    this.levelIndex = 0;
 
-    this._initGame();
-}
-
-Game.prototype._createLevelGenerator = function* () {
-    const sequence = GAME_ROOMS[this.currentWorld].sequence;
-
-    for (let i = 0; i < sequence.length; i++) {
-        yield {
-            index: i,
-            mapFile: sequence[i],
-            isLast: i === sequence.length - 1
-        };
-    }
-
-    return null;
-};
-
-Game.prototype._initGame = function () {
-    const firstLevel = this.levelGenerator.next();
-    if (!firstLevel.done) {
-        this._loadLevel(firstLevel.value);
-    }
+    this._loadLevel();
 }
 
 Game.prototype._cleanupCurrentLevel = function () {
-    if (this.tileMap) {
-        for (const obj of this.tileMap.objects) {
-            obj.destroy?.();
-        }
+    if (!this.tileMap) return;
 
-        const statics = [...Collision.staticColliders.values()];
-        for (const c of statics) {
+    for (const obj of this.tileMap.objects) {
+        obj.destroy?.();
+    }
+
+    const statics = [...Collision.staticColliders.values()];
+    for (const c of statics) {
+        Collision.unregister(c.id);
+    }
+
+    const dynamics = [...Collision.colliders.values()];
+    for (const c of dynamics) {
+        if (!c.tags.includes('player')) {
             Collision.unregister(c.id);
         }
-
-        const dynamics = [...Collision.colliders.values()];
-        for (const c of dynamics) {
-            if (!c.tags.includes('player')) {
-                Collision.unregister(c.id);
-            }
-        }
-
-        this.tileMap = null;
     }
-}
 
-Game.prototype._loadLevel = function (levelInfo) {
-    if (!levelInfo) {
+    this.tileMap = null;
+};
+
+Game.prototype._loadLevel = function () {
+    if (this.levelIndex >= this.levelSequence.length) {
         this.state = GAME_STATE.COMPLETED;
         return;
     }
 
     this._cleanupCurrentLevel();
 
-    const mapFile = levelInfo.mapFile;
+    const mapFile = this.levelSequence[this.levelIndex];
     this.mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/" + mapFile));
 
     this.tileMap = new TileMapRenderer(this.mapData, {
@@ -115,7 +98,7 @@ Game.prototype._loadLevel = function (levelInfo) {
     this.state = GAME_STATE.PLAYING;
     this.transitionTimer = 0;
     this.fadeAlpha = 0;
-}
+};
 
 Game.prototype._findSpawnPoint = function () {
     if (this.mapData.tiles.spriteKratos && this.mapData.tiles.spriteKratos.length > 0) {
@@ -124,9 +107,8 @@ Game.prototype._findSpawnPoint = function () {
             y: this.mapData.tiles.spriteKratos[0].y * GAME_SCALE
         };
     }
-
     return { x: 100, y: 100 };
-}
+};
 
 Game.prototype._checkDoorInteraction = function () {
     if (this.state !== GAME_STATE.PLAYING) return;
@@ -148,13 +130,13 @@ Game.prototype._checkDoorInteraction = function () {
     if (doorCheck.length > 0) {
         this._startTransition();
     }
-}
+};
 
 Game.prototype._startTransition = function () {
     this.state = GAME_STATE.TRANSITIONING;
     this.transitionTimer = Date.now();
     this.player.movement.canMove = false;
-}
+};
 
 Game.prototype._updateTransition = function (deltaTime) {
     const elapsed = Date.now() - this.transitionTimer;
@@ -163,18 +145,16 @@ Game.prototype._updateTransition = function (deltaTime) {
     this.fadeAlpha = Math.floor(progress * 128);
 
     if (progress >= 1) {
-        const nextLevel = this.levelGenerator.next();
-        this._loadLevel(nextLevel.value);
+        this.levelIndex++;
+        this._loadLevel();
         this.player.movement.canMove = true;
     }
-}
+};
 
 Game.prototype.update = function (deltaTime) {
-    if (this.state === GAME_STATE.COMPLETED) {
-        return;
-    }
+    if (this.state === GAME_STATE.COMPLETED) return;
 
-    Gamepad.update();
+    this.deltaTime = deltaTime;
 
     if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.L1)) {
         Collision.toggleDebug();
@@ -188,26 +168,53 @@ Game.prototype.update = function (deltaTime) {
 
     this.camera.update(this.player.movement.position.x, this.player.movement.position.y);
     this.tileMap.updateCamera(this.camera.x, this.camera.y);
-    this.tileMap.render();
 
     this.player.update(deltaTime);
+
     for (const obj of this.tileMap.objects) {
-        obj.update(this.camera.x, this.camera.y, {
-            player: this.player,
-            deltaTime: deltaTime,
-        });
+        if (typeof obj.logic === 'function') {
+            obj.logic(this.camera.x, this.camera.y, {
+                player: this.player,
+                deltaTime: deltaTime,
+            });
+        } else {
+            if (typeof obj.handleInteraction === 'function') {
+                obj.handleInteraction(this.player);
+            }
+            if (typeof obj.handleAnimation === 'function') {
+                obj.handleAnimation();
+            }
+        }
     }
 
     ScreenFlash.update(deltaTime);
+    Collision.check();
+};
+
+Game.prototype.draw = function () {
+    this.tileMap.render();
+
+    for (const obj of this.tileMap.objects) {
+        if (typeof obj.draw === 'function') {
+            obj.draw(this.camera.x, this.camera.y, this.deltaTime);
+        }
+    }
+
     this.player.draw(this.camera.x, this.camera.y);
 
-    Collision.check();
-    Collision.renderDebug(this.camera.x, this.camera.y);
-
     ScreenFlash.draw();
+    Collision.renderDebug(this.camera.x, this.camera.y);
 
     if (this.state === GAME_STATE.TRANSITIONING) {
         const fadeColor = Color.new(0, 0, 0, this.fadeAlpha);
         Draw.rect(0, 0, Screen.getMode().width, Screen.getMode().height, fadeColor);
     }
-}
+};
+
+Game.prototype.unload = function () {
+    this._cleanupCurrentLevel();
+    if (this.player) {
+        this.player.destroy?.();
+        this.player = null;
+    }
+};

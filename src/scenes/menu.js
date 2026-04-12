@@ -3,247 +3,215 @@ import { LANG } from "src/shared/lang/lang.js";
 import Assets from "../shared/lib/assets.js";
 import Gamepad from "src/shared/lib/gamepad.js";
 
-import { Cutscene01 } from "./Cutscene01.js";
+import { Cutscene01 } from "./cutscene01.js";
 
 let font = Assets.font("assets/font/font.ttf");
-export function Menu(Scene) {
-    let pad = Gamepad.player(0);
 
-    const gray = Color.new(72, 72, 72);
-    const red = Color.new(255, 0, 0);
-    const white = Color.new(255, 255, 255);
+export function Menu(sceneManager) {
+    this.sceneManager = sceneManager;
 
-    let musicMenu = Assets.sound(ASSETS_PATH.SOUNDS + "/music/menu.wav");
-    let selectedSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selected.adp");
-    let selectorSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selector.adp");
+    this.pad = Gamepad.player(0);
 
-    musicMenu.loop = true;
+    this.gray = Color.new(72, 72, 72);
+    this.red = Color.new(255, 0, 0);
+    this.white = Color.new(255, 255, 255);
 
-    let bgMain = Assets.image(ASSETS_PATH.IMAGES + "/ui/main.png", { scale: 2 });
-    let bgLogo = Assets.image(ASSETS_PATH.IMAGES + "/ui/logo.png", { scale: 2 });
+    this.musicMenu = Assets.sound(ASSETS_PATH.SOUNDS + "/music/menu.wav");
+    this.selectedSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selected.adp");
+    this.selectorSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selector.adp");
 
-    let selected = 0;
-    let currentScreen;
+    this.musicMenu.loop = true;
 
-    let music = 10;
-    let sfx = 10;
-    let vibration = true;
+    this.bgMain = Assets.image(ASSETS_PATH.IMAGES + "/ui/main.png", { scale: 2 });
+    this.bgLogo = Assets.image(ASSETS_PATH.IMAGES + "/ui/logo.png", { scale: 2 });
 
-    let currentLang = "en";
+    this.selected = 0;
+    this.currentScreen = null;
 
-    const langs = ["en", "br", "sp"];
-    let index = langs.indexOf(currentLang);
+    this.music = 10;
+    this.sfx = 10;
+    this.vibration = true;
 
-    function t(key) {
-        return LANG[currentLang][key] || key;
+    this.currentLang = "en";
+    this.langs = ["en", "br", "sp"];
+    this.langIndex = this.langs.indexOf(this.currentLang);
+
+    this._initScreens();
+    this._changeScreen("main");
+    this.musicMenu.play();
+}
+
+Menu.prototype.t = function (key) {
+    return LANG[this.currentLang][key] || key;
+};
+
+Menu.prototype._drawText = function (x, y, text, color, scale = 0.7) {
+    font.color = color;
+    font.scale = scale;
+    const textX = x === 0 ? 320 - font.getTextSize(text).width / 2 : x;
+    font.print(textX, y, text);
+};
+
+Menu.prototype._changeScreen = function (name, newSelected = 0) {
+    this.currentScreen = this.screens[name];
+    this.selected = newSelected;
+};
+
+Menu.prototype._updateSelection = function (max) {
+    const old = this.selected;
+    if (this.pad.justPressed(Pads.UP)) this.selected--;
+    if (this.pad.justPressed(Pads.DOWN)) this.selected++;
+    this.selected = Math.min(Math.max(this.selected, 0), max);
+    if (old !== this.selected) {
+        this.selectorSFX.play();
     }
+};
 
-    const drawText = (x, y, text, color, scale = 0.7) => {
-        font.color = color;
-        font.scale = scale;
+Menu.prototype._initScreens = function () {
+    const self = this;
 
-        let textX = x === 0 ? 320 - font.getTextSize(text).width / 2 : x;
-
-        font.print(textX, y, text);
-    };
-
-    const changeScreen = (name, newSelected = 0) => {
-        currentScreen = screens[name];
-        selected = newSelected;
-    };
-
-    const updateSelection = (max) => {
-        const old = selected;
-
-        if (pad.justPressed(Pads.UP)) selected--;
-        if (pad.justPressed(Pads.DOWN)) selected++;
-
-        selected = Math.min(Math.max(selected, 0), max);
-
-        if (old !== selected) {
-            selectorSFX.play();
-        }
-    };
-
-    const screens = {
+    this.screens = {
         main: {
             update() {
-                updateSelection(3);
-
-                if (pad.justPressed(Pads.CROSS)) {
-                    if (selected === 0) Scene.changeScene(Cutscene01);
-                    if (selected === 1) changeScreen("load");
-                    if (selected === 2) changeScreen("options");
-                    if (selected === 3) changeScreen("extras");
+                self._updateSelection(3);
+                if (self.pad.justPressed(Pads.CROSS)) {
+                    if (self.selected === 0) self.sceneManager.changeScene(Cutscene01);
+                    if (self.selected === 1) self._changeScreen("load");
+                    if (self.selected === 2) self._changeScreen("options");
+                    if (self.selected === 3) self._changeScreen("extras");
                 }
             },
-
             draw() {
-                bgMain.draw(48, 16);
-
-                drawText(0, 244, t("newgame"), selected === 0 ? red : white);
-                drawText(0, 264, t("load"), selected === 1 ? red : white);
-                drawText(0, 284, t("options"), selected === 2 ? red : white);
-                drawText(0, 304, t("extra"), selected === 3 ? red : white);
+                self.bgMain.draw(48, 16);
+                self._drawText(0, 244, self.t("newgame"), self.selected === 0 ? self.red : self.white);
+                self._drawText(0, 264, self.t("load"),    self.selected === 1 ? self.red : self.white);
+                self._drawText(0, 284, self.t("options"), self.selected === 2 ? self.red : self.white);
+                self._drawText(0, 304, self.t("extra"),   self.selected === 3 ? self.red : self.white);
             }
         },
 
         load: {
             update() {
-                if (pad.justPressed(Pads.CROSS)) {
-                    changeScreen("main", 1);
-                }
+                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("main", 1);
             },
-
             draw() {
-                bgLogo.draw(0, 0);
-                drawText(0, 205, t("LOAD"), gray, 0.8);
+                self.bgLogo.draw(0, 0);
+                self._drawText(0, 205, self.t("LOAD"), self.gray, 0.8);
             }
         },
 
         options: {
             update() {
-                updateSelection(4);
-
+                self._updateSelection(4);
                 let dir = 0;
-
-                if (pad.justPressed(Pads.LEFT)) dir = -1;
-                if (pad.justPressed(Pads.RIGHT)) dir = 1;
+                if (self.pad.justPressed(Pads.LEFT))  dir = -1;
+                if (self.pad.justPressed(Pads.RIGHT)) dir = 1;
 
                 if (dir !== 0) {
-                    if (selected === 0) {
-                        music = Math.min(Math.max(music + dir, 0), 10);
-                        Sound.setVolume(music * 10);
+                    if (self.selected === 0) {
+                        self.music = Math.min(Math.max(self.music + dir, 0), 10);
+                        Sound.setVolume(self.music * 10);
                     }
-
-                    if (selected === 1) {
-                        sfx = Math.min(Math.max(sfx + dir, 0), 10);
-                        selectorSFX.volume = sfx * 10;
-                        selectedSFX.volume = sfx * 10;
+                    if (self.selected === 1) {
+                        self.sfx = Math.min(Math.max(self.sfx + dir, 0), 10);
+                        self.selectorSFX.volume = self.sfx * 10;
+                        self.selectedSFX.volume = self.sfx * 10;
                     }
-
-                    if (selected === 3) {
-                        index = (index + dir + langs.length) % langs.length;
-                        currentLang = langs[index];
-                        selectedSFX.play();
+                    if (self.selected === 3) {
+                        self.langIndex = (self.langIndex + dir + self.langs.length) % self.langs.length;
+                        self.currentLang = self.langs[self.langIndex];
+                        self.selectedSFX.play();
                     }
                 }
 
-                if (pad.justPressed(Pads.CROSS)) {
-                    if (selected === 2) changeScreen("controls");
-                    if (selected === 4) changeScreen("main", 2);
+                if (self.pad.justPressed(Pads.CROSS)) {
+                    if (self.selected === 2) self._changeScreen("controls");
+                    if (self.selected === 4) self._changeScreen("main", 2);
                 }
             },
-
             draw() {
-                bgLogo.draw(0, 0);
-
-                drawText(0, 205, t("OPTIONS"), gray, 0.8);
-
-                drawText(0, 245, t("music") + music, selected === 0 ? red : white);
-                drawText(0, 265, t("sfx") + sfx, selected === 1 ? red : white);
-                drawText(0, 285, t("controller"), selected === 2 ? red : white);
-                drawText(0, 305, t("language"), selected === 3 ? red : white);
-
-                drawText(0, 345, t("back"), selected === 4 ? red : white);
+                self.bgLogo.draw(0, 0);
+                self._drawText(0, 205, self.t("OPTIONS"),  self.gray, 0.8);
+                self._drawText(0, 245, self.t("music") + self.music,  self.selected === 0 ? self.red : self.white);
+                self._drawText(0, 265, self.t("sfx") + self.sfx,      self.selected === 1 ? self.red : self.white);
+                self._drawText(0, 285, self.t("controller"),           self.selected === 2 ? self.red : self.white);
+                self._drawText(0, 305, self.t("language"),             self.selected === 3 ? self.red : self.white);
+                self._drawText(0, 345, self.t("back"),                 self.selected === 4 ? self.red : self.white);
             }
         },
 
         controls: {
             update() {
-                if (pad.justPressed(Pads.CROSS)) {
-                    changeScreen("options", 2);
-                }
+                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("options", 2);
             },
-
             draw() {
-                bgLogo.draw(0, 0);
-
-                drawText(0, 205, t("controller"), gray, 0.8);
-
-                drawText(0, 245, "ATTACK: SQUARE", white);
-                drawText(0, 265, "JUMP: CROSS", white);
-                drawText(0, 285, "MOVE: < >", white);
-                drawText(0, 305, "MAGIC: L2", white);
-                drawText(0, 325, "BLOCK: L1", white);
+                self.bgLogo.draw(0, 0);
+                self._drawText(0, 205, self.t("controller"), self.gray, 0.8);
+                self._drawText(0, 245, "ATTACK: SQUARE", self.white);
+                self._drawText(0, 265, "JUMP: CROSS",    self.white);
+                self._drawText(0, 285, "MOVE: < >",      self.white);
+                self._drawText(0, 305, "MAGIC: L2",      self.white);
+                self._drawText(0, 325, "BLOCK: L1",      self.white);
             }
         },
 
         extras: {
             update() {
-                updateSelection(3);
-
-                if (pad.justPressed(Pads.CROSS)) {
-                    if (selected === 1) changeScreen("challenges");
-                    if (selected === 2) changeScreen("credits");
-                    if (selected === 3) changeScreen("main", 3);
+                self._updateSelection(3);
+                if (self.pad.justPressed(Pads.CROSS)) {
+                    if (self.selected === 1) self._changeScreen("challenges");
+                    if (self.selected === 2) self._changeScreen("credits");
+                    if (self.selected === 3) self._changeScreen("main", 3);
                 }
             },
-
             draw() {
-                bgLogo.draw(0, 0);
-
-                drawText(0, 205, "EXTRAS", gray, 0.8);
-
-                drawText(0, 245, t("gauntlet"), selected === 0 ? red : white);
-                drawText(0, 265, t("challenges"), selected === 1 ? red : white);
-                drawText(0, 285, t("credits"), selected === 2 ? red : white);
-
-                drawText(0, 325, t("back"), selected === 3 ? red : white);
+                self.bgLogo.draw(0, 0);
+                self._drawText(0, 205, "EXTRAS",              self.gray, 0.8);
+                self._drawText(0, 245, self.t("gauntlet"),    self.selected === 0 ? self.red : self.white);
+                self._drawText(0, 265, self.t("challenges"),  self.selected === 1 ? self.red : self.white);
+                self._drawText(0, 285, self.t("credits"),     self.selected === 2 ? self.red : self.white);
+                self._drawText(0, 325, self.t("back"),        self.selected === 3 ? self.red : self.white);
             }
         },
 
         challenges: {
             update() {
-                if (pad.justPressed(Pads.CROSS)) {
-                    changeScreen("extras", 1);
-                }
+                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("extras", 1);
             },
-
             draw() {
-                drawText(0, 205, t("EXTRAS"), gray, 0.8);
+                self._drawText(0, 205, self.t("EXTRAS"), self.gray, 0.8);
             }
         },
 
         credits: {
             update() {
-                if (pad.justPressed(Pads.CROSS)) {
-                    changeScreen("extras", 2);
-                }
+                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("extras", 2);
             },
-
             draw() {
-                bgLogo.draw(0, 0);
-
-                drawText(0, 200, "PROGRAMMING", red, 0.8);
-                drawText(0, 225, "GIBRAN KHALIL", white);
-                drawText(0, 245, "EDUARDO SOUSA", white);
-                drawText(0, 265, "DEV NOOB", white);
-
-                drawText(0, 305, "ORIGINALLY CREATED BY", red, 0.7);
-                drawText(0, 330, "HOLMODE GAMES", white);
+                self.bgLogo.draw(0, 0);
+                self._drawText(0, 200, "PROGRAMMING",          self.red, 0.8);
+                self._drawText(0, 225, "GIBRAN KHALIL",        self.white);
+                self._drawText(0, 245, "EDUARDO SOUSA",        self.white);
+                self._drawText(0, 265, "DEV NOOB",             self.white);
+                self._drawText(0, 305, "ORIGINALLY CREATED BY",self.red, 0.7);
+                self._drawText(0, 330, "HOLMODE GAMES",        self.white);
             }
         }
     };
+};
 
-    changeScreen("main");
-    musicMenu.play();
+Menu.prototype.update = function (dt) {
+    this.pad = Gamepad.player(0);
+    this.currentScreen.update();
+};
 
-    return {
-        update() {
-            pad = Gamepad.player(0);
-            currentScreen.update();
-        },
+Menu.prototype.draw = function () {
+    this.currentScreen.draw();
+};
 
-        draw() {
-            currentScreen.draw();
-        },
-
-        unload() {
-            musicMenu.pause();
-            musicMenu.free();
-            bgMain.free();
-            bgLogo.free();
-        }
-    };
-}
+Menu.prototype.unload = function () {
+    this.musicMenu.pause();
+    this.musicMenu.free();
+    this.bgMain.free();
+    this.bgLogo.free();
+};
