@@ -49,7 +49,7 @@ Player.prototype._initCollider = function () {
         w: this.spritesheet.frameWidth * this.scale,
         h: this.spritesheet.frameHeight * this.scale,
         layer: 'player',
-        mask: ['enemy', 'ground', 'wall', 'platform', 'chest', 'ladder'],
+        mask: ['enemy', 'ground', 'wall', 'platform', 'chest', 'ladder', 'door'],
         tags: ['player', 'damageable'],
         data: { entity: this }
     });
@@ -305,5 +305,26 @@ Player.prototype.destroy = function () {
     Assets.free(ASSETS_PATH.SPRITES + "/kratos/blade.png");
     Assets.free(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
 }
+
+Player.prototype.reposition = function (x, y) {
+    this.movement.position.x = x;
+    this.movement.position.y = y;
+    this.movement.velocity.x = 0;
+    this.movement.velocity.y = 0;
+    this.movement.onGround = false;
+    this.movement.isClimbing = false;
+    this.movement.canClimb = false;
+    
+    this.isAttacking = false;
+    this.bladeSpritesheet.playing = false;
+};
+
+Player.prototype.getFeetPosition = function () {
+    const bounds = this.getBounds();
+    return {
+        x: this.movement.position.x,
+        y: bounds.bottom
+    };
+};
 
 export default Player;

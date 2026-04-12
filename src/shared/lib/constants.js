@@ -13,6 +13,11 @@ const VFX_SCREEN_COLOR = Object.freeze({
     LIFE: Color.new(28, 237, 37, 100),
     MAGIC: Color.new(85, 146, 255, 100)
 })
+const DOOR_CONFIG = Object.freeze({
+    TRANSITION_DELAY: 500,
+    SPAWN_OFFSET_X: 16,
+    SPAWN_OFFSET_Y: 0
+});
 const PLAYER_ONE_PORT = 0;
 const PLAYER_TWO_PORT = 1
 
@@ -65,5 +70,6 @@ export {
     CHEST_ANIMATIONS,
     CHEST_TYPES,
     VFX_SCREEN_COLOR,
-    ENEMIES_ANIMATIONS
+    ENEMIES_ANIMATIONS,
+    DOOR_CONFIG
 }

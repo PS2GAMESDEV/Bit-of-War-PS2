@@ -68,6 +68,8 @@ Movement2D.prototype.isInMaxYVelocity = function () {
 };
 
 Movement2D.prototype.applyGravity = function () {
+    if(!this.canMove) return;
+
     this.velocity.y += PLAYER_MOVEMENT.DEFAULT_GRAVITY;
 };
 

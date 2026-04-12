@@ -6,7 +6,7 @@ import SkelbowEnemy from "../Enemies/Skelbow/skelbow.js";
 import UndeadEnemy from "../Enemies/Undead/undead.js";
 
 const OBJECT_TILE_MAP = {
-    'obLifeChest':  Chest,
+    'obLifeChest': Chest,
     'obMagicChest': Chest,
     'enUndead': UndeadEnemy,
     'enMinotaur': MinotaurEnemy,
@@ -60,8 +60,8 @@ TileMapRenderer.prototype._processObjectTiles = function (mapData) {
 
         for (const placement of placements) {
             const instance = new ClassRef({
-                x:     placement.x * this.scaleX,
-                y:     placement.y * this.scaleY,
+                x: placement.x * this.scaleX,
+                y: placement.y * this.scaleY,
                 type,
                 scale: this.scaleX,
             });
@@ -137,6 +137,34 @@ TileMapRenderer.prototype._createInstance = function () {
     });
 }
 
+TileMapRenderer.prototype.rebuild = function (mapData) {
+    for (const obj of this.objects) {
+        obj.destroy?.();
+    }
+    this.objects = [];
+
+    this.instance = null;
+
+    this.sprites = this._processMapData(mapData);
+    this.instance = this._createInstance();
+    this.objects = this._processObjectTiles(mapData);
+}
+
+TileMapRenderer.prototype.clearColliders = function (Collision) {
+    const statics = [...Collision.staticColliders.values()];
+
+    for (const collider of statics) {
+        Collision.unregister(collider.id);
+    }
+
+    const dynamics = [...Collision.colliders.values()];
+    for (const collider of dynamics) {
+        if (!collider.tags.includes('player')) {
+            Collision.unregister(collider.id);
+        }
+    }
+};
+
 TileMapRenderer.prototype.updateCamera = function (cameraX, cameraY) {
     this.cameraX = cameraX;
     this.cameraY = cameraY;
@@ -182,12 +210,6 @@ TileMapRenderer.prototype.setScale = function (scaleX, scaleY) {
     this.scaleY = scaleY;
 }
 
-TileMapRenderer.prototype.rebuild = function (mapData) {
-    this.sprites = this._processMapData(mapData);
-    this.instance = this._createInstance();
-    this.objects = this._processObjectTiles(mapData);
-}
-
 TileMapRenderer.prototype.buildColliders = function (Collision) {
     const colliders = this.mapData.colliders;
     if (!colliders?.length) return [];
@@ -195,6 +217,21 @@ TileMapRenderer.prototype.buildColliders = function (Collision) {
     const ids = [];
 
     for (const c of colliders) {
+        if (c.type === 'door') {
+            const id = Collision.register({
+                type: 'rect',
+                x: c.x * this.scaleX,
+                y: c.y * this.scaleY,
+                w: c.width * this.scaleX,
+                h: c.height * this.scaleY,
+                layer: 'door',
+                tags: ['door', 'transition'],
+                static: true,
+            });
+            ids.push(id);
+            continue;
+        }
+
         if (c.type === 'ladder') {
             const id = Collision.register({
                 type: 'rect',
@@ -202,7 +239,7 @@ TileMapRenderer.prototype.buildColliders = function (Collision) {
                 y: c.y * this.scaleY,
                 w: c.width * this.scaleX,
                 h: c.height * this.scaleY,
-                layer: 'ladder', 
+                layer: 'ladder',
                 tags: ['ladder', 'climbable'],
                 static: true,
             });
