@@ -4,6 +4,7 @@ import Assets from "../shared/lib/assets.js";
 import Gamepad from "src/shared/lib/gamepad.js";
 
 import { Cutscene01 } from "./cutscene01.js";
+import Game from "./Game.js";
 
 let font = Assets.font("assets/font/font.ttf");
 
@@ -75,7 +76,9 @@ Menu.prototype._initScreens = function () {
             update() {
                 self._updateSelection(3);
                 if (self.pad.justPressed(Pads.CROSS)) {
-                    if (self.selected === 0) self.sceneManager.changeScene(Cutscene01);
+                    if (self.selected === 0) {
+                        self.sceneManager.changeScene((sm) => new Cutscene01(sm, Game));
+                    }
                     if (self.selected === 1) self._changeScreen("load");
                     if (self.selected === 2) self._changeScreen("options");
                     if (self.selected === 3) self._changeScreen("extras");
@@ -84,9 +87,9 @@ Menu.prototype._initScreens = function () {
             draw() {
                 self.bgMain.draw(48, 16);
                 self._drawText(0, 244, self.t("newgame"), self.selected === 0 ? self.red : self.white);
-                self._drawText(0, 264, self.t("load"),    self.selected === 1 ? self.red : self.white);
+                self._drawText(0, 264, self.t("load"), self.selected === 1 ? self.red : self.white);
                 self._drawText(0, 284, self.t("options"), self.selected === 2 ? self.red : self.white);
-                self._drawText(0, 304, self.t("extra"),   self.selected === 3 ? self.red : self.white);
+                self._drawText(0, 304, self.t("extra"), self.selected === 3 ? self.red : self.white);
             }
         },
 
@@ -104,7 +107,7 @@ Menu.prototype._initScreens = function () {
             update() {
                 self._updateSelection(4);
                 let dir = 0;
-                if (self.pad.justPressed(Pads.LEFT))  dir = -1;
+                if (self.pad.justPressed(Pads.LEFT)) dir = -1;
                 if (self.pad.justPressed(Pads.RIGHT)) dir = 1;
 
                 if (dir !== 0) {
@@ -131,12 +134,12 @@ Menu.prototype._initScreens = function () {
             },
             draw() {
                 self.bgLogo.draw(0, 0);
-                self._drawText(0, 205, self.t("OPTIONS"),  self.gray, 0.8);
-                self._drawText(0, 245, self.t("music") + self.music,  self.selected === 0 ? self.red : self.white);
-                self._drawText(0, 265, self.t("sfx") + self.sfx,      self.selected === 1 ? self.red : self.white);
-                self._drawText(0, 285, self.t("controller"),           self.selected === 2 ? self.red : self.white);
-                self._drawText(0, 305, self.t("language"),             self.selected === 3 ? self.red : self.white);
-                self._drawText(0, 345, self.t("back"),                 self.selected === 4 ? self.red : self.white);
+                self._drawText(0, 205, self.t("OPTIONS"), self.gray, 0.8);
+                self._drawText(0, 245, self.t("music") + self.music, self.selected === 0 ? self.red : self.white);
+                self._drawText(0, 265, self.t("sfx") + self.sfx, self.selected === 1 ? self.red : self.white);
+                self._drawText(0, 285, self.t("controller"), self.selected === 2 ? self.red : self.white);
+                self._drawText(0, 305, self.t("language"), self.selected === 3 ? self.red : self.white);
+                self._drawText(0, 345, self.t("back"), self.selected === 4 ? self.red : self.white);
             }
         },
 
@@ -148,10 +151,10 @@ Menu.prototype._initScreens = function () {
                 self.bgLogo.draw(0, 0);
                 self._drawText(0, 205, self.t("controller"), self.gray, 0.8);
                 self._drawText(0, 245, "ATTACK: SQUARE", self.white);
-                self._drawText(0, 265, "JUMP: CROSS",    self.white);
-                self._drawText(0, 285, "MOVE: < >",      self.white);
-                self._drawText(0, 305, "MAGIC: L2",      self.white);
-                self._drawText(0, 325, "BLOCK: L1",      self.white);
+                self._drawText(0, 265, "JUMP: CROSS", self.white);
+                self._drawText(0, 285, "MOVE: < >", self.white);
+                self._drawText(0, 305, "MAGIC: L2", self.white);
+                self._drawText(0, 325, "BLOCK: L1", self.white);
             }
         },
 
@@ -166,11 +169,11 @@ Menu.prototype._initScreens = function () {
             },
             draw() {
                 self.bgLogo.draw(0, 0);
-                self._drawText(0, 205, "EXTRAS",              self.gray, 0.8);
-                self._drawText(0, 245, self.t("gauntlet"),    self.selected === 0 ? self.red : self.white);
-                self._drawText(0, 265, self.t("challenges"),  self.selected === 1 ? self.red : self.white);
-                self._drawText(0, 285, self.t("credits"),     self.selected === 2 ? self.red : self.white);
-                self._drawText(0, 325, self.t("back"),        self.selected === 3 ? self.red : self.white);
+                self._drawText(0, 205, "EXTRAS", self.gray, 0.8);
+                self._drawText(0, 245, self.t("gauntlet"), self.selected === 0 ? self.red : self.white);
+                self._drawText(0, 265, self.t("challenges"), self.selected === 1 ? self.red : self.white);
+                self._drawText(0, 285, self.t("credits"), self.selected === 2 ? self.red : self.white);
+                self._drawText(0, 325, self.t("back"), self.selected === 3 ? self.red : self.white);
             }
         },
 
@@ -189,12 +192,12 @@ Menu.prototype._initScreens = function () {
             },
             draw() {
                 self.bgLogo.draw(0, 0);
-                self._drawText(0, 200, "PROGRAMMING",          self.red, 0.8);
-                self._drawText(0, 225, "GIBRAN KHALIL",        self.white);
-                self._drawText(0, 245, "EDUARDO SOUSA",        self.white);
-                self._drawText(0, 265, "DEV NOOB",             self.white);
-                self._drawText(0, 305, "ORIGINALLY CREATED BY",self.red, 0.7);
-                self._drawText(0, 330, "HOLMODE GAMES",        self.white);
+                self._drawText(0, 200, "PROGRAMMING", self.red, 0.8);
+                self._drawText(0, 225, "GIBRAN KHALIL", self.white);
+                self._drawText(0, 245, "EDUARDO SOUSA", self.white);
+                self._drawText(0, 265, "DEV NOOB", self.white);
+                self._drawText(0, 305, "ORIGINALLY CREATED BY", self.red, 0.7);
+                self._drawText(0, 330, "HOLMODE GAMES", self.white);
             }
         }
     };

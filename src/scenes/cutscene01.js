@@ -4,15 +4,16 @@ import { ASSETS_PATH } from "../shared/lib/constants.js";
 
 import Game from "./Game.js";
 
-export function Cutscene01(sceneManager) {
+export function Cutscene01(sceneManager, next) {
     this.sceneManager = sceneManager;
+    this.next = next;
 
     this.music = Assets.sound(ASSETS_PATH.SOUNDS + "/music/level1.ogg");
 
     this.textScroll = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/c01/text01.png", { scale: 2 });
-    this.textEnd    = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/c01/text02.png", { scale: 2 });
-    this.textMask   = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/black.png",      { scale: 2 });
-    this.arrow      = Assets.image(ASSETS_PATH.IMAGES + "/ui/arrow.png", { scale: 1.5 });
+    this.textEnd = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/c01/text02.png", { scale: 2 });
+    this.textMask = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/black.png", { scale: 2 });
+    this.arrow = Assets.image(ASSETS_PATH.IMAGES + "/ui/arrow.png", { scale: 1.5 });
 
     this.frames = [];
     for (let i = 0; i < 51; i++) {
@@ -27,15 +28,15 @@ export function Cutscene01(sceneManager) {
 
     this.textScrollY = 448;
 
-    this.scrollSpeed     = 30;
+    this.scrollSpeed = 30;
     this.fastScrollSpeed = 120;
 
     this.normalFrameSpeed = 60;
-    this.fastFrameSpeed   = 360;
+    this.fastFrameSpeed = 360;
 
     this.waitTimer = 0;
     this.startWait = false;
-    this.waitTime  = 3;
+    this.waitTime = 3;
 
     this.fast = false;
 
@@ -64,7 +65,7 @@ Cutscene01.prototype.update = function (dt) {
     if (this.startWait) {
         this.waitTimer += dt;
         if (this.waitTimer >= this.waitTime) {
-            this.sceneManager.changeScene(Game);
+            this.sceneManager.resumeScene(this.next);
         }
     }
 };

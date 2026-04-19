@@ -24,9 +24,34 @@ export class SceneManager {
         }
 
         const thread = new Thread(() => {
-            this.currentScene = new Scene(this);
+            try {
+                this.currentScene = new Scene(this);
+            } catch (e) {
+                this.currentScene = Scene(this);
+            }
             this.isLoading = false;
         }, "Load Scene");
+        thread.start();
+    }
+
+    resumeScene(next) {
+        this.isLoading = true;
+
+        if (this.currentScene && this.currentScene.unload) {
+            this.currentScene.unload();
+        }
+
+        const thread = new Thread(() => {
+            if (typeof next === 'function') {
+                this.currentScene = new next(this);
+            } else {
+                this.currentScene = next;
+                this.currentScene._pausedForCutscene = false;
+                this.currentScene._doLoadLevel();
+                this.currentScene.player.movement.canMove = true;
+            }
+            this.isLoading = false;
+        }, "Resume Scene");
 
         thread.start();
     }

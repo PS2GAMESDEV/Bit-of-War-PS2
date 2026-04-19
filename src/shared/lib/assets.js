@@ -9,6 +9,7 @@ export default class Assets {
         cacheMutex.lock();
         if (imageCache.has(path)) {
             const cached = imageCache.get(path);
+            ++cached.ref;
             cacheMutex.unlock();
             return cached.asset;
         }

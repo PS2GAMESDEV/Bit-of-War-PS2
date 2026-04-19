@@ -8,7 +8,7 @@ import Gamepad from "../shared/lib/gamepad.js";
 
 const GAME_ROOMS = Object.freeze({
     world1: {
-        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json"],
+        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json", "Summit.json", "BossHall1.json"],
     }
 });
 
@@ -35,7 +35,7 @@ export default function Game(sceneManager) {
     this.levelSequence = GAME_ROOMS[this.currentWorld].sequence;
     this.levelIndex = 0;
 
-    this._loadLevel();
+    this._doLoadLevel();
 }
 
 Game.prototype._cleanupCurrentLevel = function () {
@@ -45,16 +45,14 @@ Game.prototype._cleanupCurrentLevel = function () {
         obj.destroy?.();
     }
 
+    this.tileMap.destroy();
+
     const statics = [...Collision.staticColliders.values()];
-    for (const c of statics) {
-        Collision.unregister(c.id);
-    }
+    for (const c of statics) Collision.unregister(c.id);
 
     const dynamics = [...Collision.colliders.values()];
     for (const c of dynamics) {
-        if (!c.tags.includes('player')) {
-            Collision.unregister(c.id);
-        }
+        if (!c.tags.includes('player')) Collision.unregister(c.id);
     }
 
     this.tileMap = null;
@@ -66,6 +64,23 @@ Game.prototype._loadLevel = function () {
         return;
     }
 
+    const CUTSCENES = { 1: Cutscene02 };
+
+    const CutsceneClass = CUTSCENES[this.levelIndex];
+    if (CutsceneClass) {
+        this._cleanupCurrentLevel();
+        this._pausedForCutscene = true;
+        const self = this;
+        function CutsceneCtor(sm) { CutsceneClass.call(this, sm, self); }
+        CutsceneCtor.prototype = CutsceneClass.prototype;
+        this.sceneManager.changeScene(CutsceneCtor);
+        return;
+    }
+
+    this._pausedForCutscene = false;
+    this._doLoadLevel();
+};
+Game.prototype._doLoadLevel = function () {
     this._cleanupCurrentLevel();
 
     const mapFile = this.levelSequence[this.levelIndex];
@@ -147,9 +162,9 @@ Game.prototype._updateTransition = function (deltaTime) {
     if (progress >= 1) {
         this.levelIndex++;
         this._loadLevel();
-        this.player.movement.canMove = true;
     }
 };
+
 
 Game.prototype.update = function (deltaTime) {
     if (this.state === GAME_STATE.COMPLETED) return;
@@ -212,6 +227,8 @@ Game.prototype.draw = function () {
 };
 
 Game.prototype.unload = function () {
+    if (this._pausedForCutscene) return;
+
     this._cleanupCurrentLevel();
     if (this.player) {
         this.player.destroy?.();
