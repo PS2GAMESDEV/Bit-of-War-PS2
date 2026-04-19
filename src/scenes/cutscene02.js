@@ -65,7 +65,8 @@ Cutscene02.prototype.draw = function () {
 };
 
 Cutscene02.prototype.unload = function () {
-    this.selectorSFX.free();
-    this.arrow.free();
-    this.frames.forEach(f => f.free());
+    Assets.free(this.selectorSFX);
+    Assets.free(this.arrow);
+    this.frames.forEach(f => Assets.free(f));
+    this.frames = [];
 };

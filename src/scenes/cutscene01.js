@@ -87,13 +87,14 @@ Cutscene01.prototype.draw = function () {
 
 Cutscene01.prototype.unload = function () {
     this.music.pause();
-    this.music.free();
-    this.textScroll.free();
-    this.textEnd.free();
-    this.textMask.free();
-    this.arrow.free();
+    Assets.free(this.music);
+    Assets.free(this.textScroll);
+    Assets.free(this.textEnd);
+    Assets.free(this.textMask);
+    Assets.free(this.arrow);
 
     for (let i = 0; i < this.frames.length; i++) {
-        this.frames[i].free();
+        Assets.free(this.frames[i]);
     }
+    this.frames = [];
 };

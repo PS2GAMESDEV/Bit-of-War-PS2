@@ -48,4 +48,9 @@ MinotaurEnemy.prototype.draw = function (cameraX, cameraY) {
     this.spritesheet.draw(this.position.x - (cameraX || 0), this.position.y - (cameraY || 0));
 }
 
+MinotaurEnemy.prototype.destroy = function () {
+    Assets.free(ASSETS_PATH.ENEMIES + "/enMinotaur.png");
+    this.spritesheet = null;
+}
+
 export default MinotaurEnemy;

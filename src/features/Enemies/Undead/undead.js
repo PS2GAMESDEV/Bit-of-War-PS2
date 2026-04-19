@@ -48,4 +48,9 @@ UndeadEnemy.prototype.draw = function (cameraX, cameraY) {
     this.spritesheet.draw(this.position.x - (cameraX || 0), this.position.y - (cameraY || 0));
 }
 
+UndeadEnemy.prototype.destroy = function () {
+    Assets.free(ASSETS_PATH.ENEMIES + "/enUndead.png");
+    this.spritesheet = null;
+}
+
 export default UndeadEnemy;

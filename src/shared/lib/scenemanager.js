@@ -9,61 +9,81 @@ loading.framesPerRow = 2;
 loading.fps = 10;
 loading.scale = 2;
 
-
 export class SceneManager {
     constructor() {
         this.currentScene = null;
         this.isLoading = false;
+        this.loadingTimer = 0;
+        this.minLoadingFrames = 3;
     }
 
-    changeScene(Scene) {
+    _showLoading() {
         this.isLoading = true;
+        Screen.clear();
+        this.drawLoading();
+        Screen.flip();
+    }
 
-        if (this.currentScene && this.currentScene.unload) {
-            this.currentScene.unload();
+    changeScene(SceneClass, extraArg) {
+        this._showLoading();
+
+        if (this.currentScene?.unload) {
+            try { this.currentScene.unload(); } catch (e) { }
+        }
+        this.currentScene = null;
+        std.gc();
+
+        try {
+            this.currentScene = extraArg !== undefined
+                ? new SceneClass(this, extraArg)
+                : new SceneClass(this);
+        } catch (e) {
+            this.currentScene = SceneClass(this);
         }
 
-        const thread = new Thread(() => {
-            try {
-                this.currentScene = new Scene(this);
-            } catch (e) {
-                this.currentScene = Scene(this);
-            }
-            this.isLoading = false;
-        }, "Load Scene");
-        thread.start();
+        this.loadingTimer = this.minLoadingFrames;
     }
 
     resumeScene(next) {
-        this.isLoading = true;
+        this._showLoading();
 
-        if (this.currentScene && this.currentScene.unload) {
-            this.currentScene.unload();
+        if (this.currentScene?.unload) {
+            try { this.currentScene.unload(); } catch (e) { }
         }
+        this.currentScene = null;
+        std.gc();
 
-        const thread = new Thread(() => {
+        try {
             if (typeof next === 'function') {
                 this.currentScene = new next(this);
             } else {
                 this.currentScene = next;
                 this.currentScene._pausedForCutscene = false;
                 this.currentScene._doLoadLevel();
-                this.currentScene.player.movement.canMove = true;
+                if (this.currentScene.player) {
+                    this.currentScene.player.movement.canMove = true;
+                }
             }
-            this.isLoading = false;
-        }, "Resume Scene");
+        } catch (e) {
+            console.log("[SceneManager] Resume Error: " + e);
+        }
 
-        thread.start();
+        this.loadingTimer = this.minLoadingFrames;
     }
 
     update(dt) {
         if (this.isLoading) {
             loading.deltaTime = dt;
             animationSprite(loading);
+
+            this.loadingTimer--;
+            if (this.loadingTimer <= 0) {
+                this.isLoading = false;
+            }
             return;
         }
 
-        if (this.currentScene && this.currentScene.update) {
+        if (this.currentScene?.update) {
             this.currentScene.update(dt);
         }
     }
@@ -74,7 +94,7 @@ export class SceneManager {
             return;
         }
 
-        if (this.currentScene && this.currentScene.draw) {
+        if (this.currentScene?.draw) {
             this.currentScene.draw();
         }
     }

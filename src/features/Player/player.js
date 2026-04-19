@@ -21,8 +21,8 @@ function Player(options) {
     this.isAttacking = false;
     this.isOpeningChest = false;
 
-    this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png")
-    this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png")
+    this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png", { lock: true })
+    this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png", { lock: true })
 
     this.hud = Assets.image(ASSETS_PATH.SPRITES + "/kratos/hud.png");
     this.hud.width *= this.scale;
@@ -295,15 +295,21 @@ Player.prototype.destroy = function () {
         this.colliderId = null;
     }
 
+    Assets.free(this.spritesheet);
+    Assets.free(this.bladeSpritesheet);
+    Assets.free(this.hud);
+    Assets.free(this.powerupSpace);
+    Assets.free(this.sfxBlades);
+
     this.spritesheet = null;
     this.bladeSpritesheet = null;
+    this.hud = null;
+    this.powerupSpace = null;
+    this.sfxBlades = null;
+
     this.movement.destroy();
     this.movement = null;
     this.debugColor = null;
-
-    Assets.free(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png");
-    Assets.free(ASSETS_PATH.SPRITES + "/kratos/blade.png");
-    Assets.free(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
 }
 
 Player.prototype.reposition = function (x, y) {

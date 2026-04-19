@@ -127,6 +127,8 @@ Chest.prototype.destroy = function () {
         Collision.unregister(this.colliderId);
         this.colliderId = null;
     }
+    Assets.free(ASSETS_PATH.OBJECTS + "/ob" + this.type + "Chest.png");
+    Assets.free(ASSETS_PATH.SOUNDS + "/sfx/chests.adp");
 }
 
 export default Chest;

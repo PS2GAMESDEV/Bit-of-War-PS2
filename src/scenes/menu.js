@@ -77,7 +77,7 @@ Menu.prototype._initScreens = function () {
                 self._updateSelection(3);
                 if (self.pad.justPressed(Pads.CROSS)) {
                     if (self.selected === 0) {
-                        self.sceneManager.changeScene((sm) => new Cutscene01(sm, Game));
+                        self.sceneManager.changeScene(Cutscene01, Game);
                     }
                     if (self.selected === 1) self._changeScreen("load");
                     if (self.selected === 2) self._changeScreen("options");
@@ -214,7 +214,9 @@ Menu.prototype.draw = function () {
 
 Menu.prototype.unload = function () {
     this.musicMenu.pause();
-    this.musicMenu.free();
-    this.bgMain.free();
-    this.bgLogo.free();
+    Assets.free(this.musicMenu);
+    Assets.free(this.bgMain);
+    Assets.free(this.bgLogo);
+    Assets.free(this.selectedSFX);
+    Assets.free(this.selectorSFX);
 };

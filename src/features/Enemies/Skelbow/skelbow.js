@@ -48,4 +48,9 @@ SkelbowEnemy.prototype.draw = function (cameraX, cameraY) {
     this.spritesheet.draw(this.position.x - (cameraX || 0), this.position.y - (cameraY || 0));
 }
 
+SkelbowEnemy.prototype.destroy = function () {
+    Assets.free(ASSETS_PATH.ENEMIES + "/enSkelbow.png");
+    this.spritesheet = null;
+}
+
 export default SkelbowEnemy;

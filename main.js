@@ -9,9 +9,7 @@ sceneManager.changeScene(Menu);
 
 let lastFrameTime = Date.now();
 
-
-while (true) {
-    Screen.clear();
+Screen.display(() => {
     Gamepad.update();
 
     const now = Date.now();
@@ -20,6 +18,4 @@ while (true) {
 
     sceneManager.update(deltaTime);
     sceneManager.draw();
-
-    Screen.flip();
-}
+})

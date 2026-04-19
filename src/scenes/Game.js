@@ -5,10 +5,11 @@ import Player from "../features/Player/player.js";
 import Collision from "../shared/lib/collision.js";
 import { ASSETS_PATH, GAME_SCALE, PLAYER_ONE_PORT, DOOR_CONFIG } from "../shared/lib/constants.js";
 import Gamepad from "../shared/lib/gamepad.js";
+import { Cutscene02 } from "./cutscene02.js";
 
 const GAME_ROOMS = Object.freeze({
     world1: {
-        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json", "Summit.json", "BossHall1.json"],
+        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json", "Summit.json", "BossHall1.json", "Boss1.json"],
     }
 });
 
@@ -58,33 +59,40 @@ Game.prototype._cleanupCurrentLevel = function () {
     this.tileMap = null;
 };
 
+const CUTSCENES_MAP = Object.freeze({
+    5: Cutscene02
+});
+
 Game.prototype._loadLevel = function () {
     if (this.levelIndex >= this.levelSequence.length) {
         this.state = GAME_STATE.COMPLETED;
         return;
     }
 
-    const CUTSCENES = { 1: Cutscene02 };
-
-    const CutsceneClass = CUTSCENES[this.levelIndex];
+    const CutsceneClass = CUTSCENES_MAP[this.levelIndex];
     if (CutsceneClass) {
         this._cleanupCurrentLevel();
         this._pausedForCutscene = true;
-        const self = this;
-        function CutsceneCtor(sm) { CutsceneClass.call(this, sm, self); }
-        CutsceneCtor.prototype = CutsceneClass.prototype;
-        this.sceneManager.changeScene(CutsceneCtor);
+        this.sceneManager.changeScene(CutsceneClass, this);
         return;
     }
 
     this._pausedForCutscene = false;
     this._doLoadLevel();
+    if (this.player) this.player.movement.canMove = true;
 };
+
 Game.prototype._doLoadLevel = function () {
     this._cleanupCurrentLevel();
 
     const mapFile = this.levelSequence[this.levelIndex];
-    this.mapData = JSON.parse(std.loadFile(ASSETS_PATH.MAPS + "/" + mapFile));
+    const mapContent = std.loadFile(ASSETS_PATH.MAPS + "/" + mapFile);
+    
+    if (!mapContent) {
+        throw new Error("Could not load map file: " + mapFile);
+    }
+
+    this.mapData = std.parseExtJSON(mapContent);
 
     this.tileMap = new TileMapRenderer(this.mapData, {
         scaleX: GAME_SCALE,
@@ -168,6 +176,7 @@ Game.prototype._updateTransition = function (deltaTime) {
 
 Game.prototype.update = function (deltaTime) {
     if (this.state === GAME_STATE.COMPLETED) return;
+    if (!this.tileMap || !this.player) return;
 
     this.deltaTime = deltaTime;
 
@@ -180,6 +189,8 @@ Game.prototype.update = function (deltaTime) {
     } else {
         this._checkDoorInteraction();
     }
+
+    if (!this.tileMap || !this.player || this._pausedForCutscene) return;
 
     this.camera.update(this.player.movement.position.x, this.player.movement.position.y);
     this.tileMap.updateCamera(this.camera.x, this.camera.y);
@@ -207,6 +218,8 @@ Game.prototype.update = function (deltaTime) {
 };
 
 Game.prototype.draw = function () {
+    if (!this.tileMap || !this.player) return;
+
     this.tileMap.render();
 
     for (const obj of this.tileMap.objects) {

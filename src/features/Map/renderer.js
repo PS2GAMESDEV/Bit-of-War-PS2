@@ -1,4 +1,6 @@
 import { ASSETS_PATH, GAME_SCALE } from "../../shared/lib/constants.js";
+import Assets from "../../shared/lib/assets.js";
+import TileMap from "TileMap";
 import Chest from "../Objects/Chest/chest.js";
 import HarpieEnemy from "../Enemies/Harpie/harpie.js";
 import MinotaurEnemy from "../Enemies/Minotaur/minotaur.js";
@@ -21,6 +23,11 @@ function extractTileType(tileId) {
     return tileId.replace(/^ob/, '').replace(/Chest$/, '');
 }
 
+if (globalThis._tileMapInitialized === undefined) {
+    TileMap.init();
+    globalThis._tileMapInitialized = true;
+}
+
 function TileMapRenderer(mapData, options) {
     options = options || {};
 
@@ -32,8 +39,9 @@ function TileMapRenderer(mapData, options) {
     const texturePath = options.texturePath ?? ASSETS_PATH.TILES + "/texture.json";
     const spritesheetPath = options.spritesheetPath ?? ASSETS_PATH.TILES + "/texture.png";
 
-    this.tileConfig = JSON.parse(std.loadFile(texturePath));
-    this.SPRITE_SHEET = spritesheetPath;
+    this.tileConfig = std.parseExtJSON(std.loadFile(texturePath));
+    this.spritesheetPath = spritesheetPath;
+    this.spritesheet = Assets.image(this.spritesheetPath);
 
     this.mapData = mapData;
     this.sprites = this._processMapData(mapData);
@@ -117,7 +125,7 @@ TileMapRenderer.prototype._createDescriptor = function () {
     const endOffset = Math.max(0, this.sprites.length - 1);
 
     return new TileMap.Descriptor({
-        textures: [this.SPRITE_SHEET],
+        textures: [this.spritesheet],
         materials: [{
             texture_index: 0,
             blend_mode: Screen.alphaEquation(
@@ -131,8 +139,6 @@ TileMapRenderer.prototype._createDescriptor = function () {
 }
 
 TileMapRenderer.prototype._createInstance = function () {
-    TileMap.init();
-
     return new TileMap.Instance({
         descriptor: this._createDescriptor(),
         spriteBuffer: TileMap.SpriteBuffer.fromObjects(this.sprites),
@@ -145,6 +151,7 @@ TileMapRenderer.prototype.rebuild = function (mapData) {
     }
     this.objects = [];
 
+    if (this.instance && this.instance.free) this.instance.free();
     this.instance = null;
 
     this.sprites = this._processMapData(mapData);
@@ -271,9 +278,12 @@ TileMapRenderer.prototype.buildColliders = function (Collision) {
 TileMapRenderer.prototype.destroy = function () {
     for (const obj of this.objects) obj.destroy?.();
     this.objects = [];
+    if (this.instance && this.instance.free) this.instance.free();
     this.instance = null;
     this.tileConfig = null;
     this.sprites = null;
+    Assets.free(this.spritesheetPath);
+    this.spritesheet = null;
 }
 
 export default TileMapRenderer;

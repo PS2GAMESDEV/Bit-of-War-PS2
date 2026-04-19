@@ -48,4 +48,9 @@ HarpieEnemy.prototype.draw = function (cameraX, cameraY) {
     this.spritesheet.draw(this.position.x - (cameraX || 0), this.position.y - (cameraY || 0));
 }
 
+HarpieEnemy.prototype.destroy = function () {
+    Assets.free(ASSETS_PATH.ENEMIES + "/enHarpie.png");
+    this.spritesheet = null;
+}
+
 export default HarpieEnemy;
