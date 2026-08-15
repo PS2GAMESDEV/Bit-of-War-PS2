@@ -2,7 +2,7 @@ import { PLAYER_CONTROLS } from "../../../shared/config/controls.js";
 import { animationSprite, setAnimation } from "../../../shared/lib/animation.js";
 import Assets from "../../../shared/lib/assets.js"
 import Collision from "../../../shared/lib/collision.js";
-import { ASSETS_PATH, CHEST_ANIMATIONS, GAME_SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../../shared/lib/constants.js"
+import { ASSETS_PATH, CHEST_ANIMATIONS, GAME_SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, VFX_SCREEN_COLOR } from "../../../shared/config/constants.js"
 import Gamepad from "../../../shared/lib/gamepad.js";
 
 export const ScreenFlash = {

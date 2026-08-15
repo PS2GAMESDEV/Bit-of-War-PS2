@@ -1,3 +1,6 @@
+export let currentLang = "en";
+export const LANGS = ["en", "br", "sp"]
+
 export const LANG = {
     en: {
         newgame: "NEW GAME",
@@ -5,9 +8,6 @@ export const LANG = {
         options: "OPTIONS",
         extra: "EXTRA",
 
-        LOAD: "LOAD",
-
-        OPTIONS: "OPTIONS",
         music: "MUSIC: ",
         sfx: "SFX: ",
         controller: "CONTROLLER",
@@ -29,9 +29,6 @@ export const LANG = {
         options: "OPÇÕES",
         extra: "EXTRA",
 
-        LOAD: "CARREGAR",
-
-        OPTIONS: "OPÇÕES",
         music: "MÚSICA: ",
         sfx: "EFEITOS: ",
         controller: "CONTROLES",
@@ -53,9 +50,6 @@ export const LANG = {
         options: "OPCIONES",
         extra: "EXTRA",
 
-        LOAD: "CARGAR",
-
-        OPTIONS: "OPCIONES",
         music: "MÚSICA: ",
         sfx: "EFECTOS: ",
         controller: "CONTROLES",
@@ -71,3 +65,20 @@ export const LANG = {
         back: "ATRÁS"
     }
 };
+
+export function t(key) {
+    return LANG[currentLang][key] || key;
+};
+
+export function setLang(lang) {
+    if (LANGS.includes(lang)) {
+        currentLang = lang;
+    }
+}
+
+export function cycleLang(direction) {
+    const idx = LANGS.indexOf(currentLang);
+    const total = LANGS.length;
+    const nextIdx = (idx + direction + total) % total;
+    currentLang = LANGS[nextIdx];
+}

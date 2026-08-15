@@ -1,6 +1,6 @@
 import { animationSprite, setAnimation } from "../../../shared/lib/animation.js";
 import Assets from "../../../shared/lib/assets.js";
-import { ASSETS_PATH, ENEMIES_ANIMATIONS, GAME_SCALE } from "../../../shared/lib/constants.js";
+import { ASSETS_PATH, ENEMIES_ANIMATIONS, GAME_SCALE } from "../../../shared/config/constants.js";
 
 function HarpieEnemy(options) {
     this.scale = GAME_SCALE

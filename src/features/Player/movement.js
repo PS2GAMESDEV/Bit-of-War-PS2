@@ -1,6 +1,6 @@
 import Collision from "../../shared/lib/collision.js";
 import Gamepad from "../../shared/lib/gamepad.js";
-import { ASSETS_PATH, PLAYER_MOVEMENT } from "../../shared/lib/constants.js";
+import { ASSETS_PATH, PLAYER_MOVEMENT } from "../../shared/config/constants.js";
 import Assets from "../../shared/lib/assets.js";
 import { PLAYER_CONTROLS } from "../../shared/config/controls.js";
 

@@ -1,3 +1,5 @@
+import gamepad from "../lib/gamepad.js";
+
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Screen.getMode();
 const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",
@@ -20,6 +22,7 @@ const DOOR_CONFIG = Object.freeze({
 });
 const PLAYER_ONE_PORT = 0;
 const PLAYER_TWO_PORT = 1
+const PLAYER_ONE = gamepad.player(PLAYER_ONE_PORT);
 
 const PLAYER_ANIMATIONS = Object.freeze({
     WALK_L: "walk_l",
@@ -63,6 +66,7 @@ export {
     SCREEN_WIDTH,
     GAME_SCALE,
     PLAYER_ONE_PORT,
+    PLAYER_ONE,
     PLAYER_TWO_PORT,
     ASSETS_PATH,
     PLAYER_ANIMATIONS,

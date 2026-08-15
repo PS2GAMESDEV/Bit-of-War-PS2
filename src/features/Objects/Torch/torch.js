@@ -1,6 +1,6 @@
 import { animationSprite } from "../../../shared/lib/animation.js";
 import Assets from "../../../shared/lib/assets.js";
-import { ASSETS_PATH, GAME_SCALE } from "../../../shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE } from "../../../shared/config/constants.js";
 
 function Torch(options) {
     this.position = { x: options.x, y: options.y }

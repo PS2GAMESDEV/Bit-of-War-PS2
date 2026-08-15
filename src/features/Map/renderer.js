@@ -1,4 +1,4 @@
-import { ASSETS_PATH, GAME_SCALE } from "../../shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE } from "../../shared/config/constants.js";
 import Assets from "../../shared/lib/assets.js";
 import TileMap from "TileMap";
 import Chest from "../Objects/Chest/chest.js";

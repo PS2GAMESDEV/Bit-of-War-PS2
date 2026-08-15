@@ -3,7 +3,7 @@ import { ScreenFlash } from "../features/Objects/Chest/chest.js";
 import TileMapRenderer from "../features/Map/renderer.js";
 import Player from "../features/Player/player.js";
 import Collision from "../shared/lib/collision.js";
-import { ASSETS_PATH, GAME_SCALE, PLAYER_ONE_PORT, DOOR_CONFIG } from "../shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE, PLAYER_ONE_PORT, DOOR_CONFIG } from "../shared/config/constants.js";
 import Gamepad from "../shared/lib/gamepad.js";
 import { Cutscene02 } from "./cutscene02.js";
 

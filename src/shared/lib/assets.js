@@ -10,18 +10,50 @@ export default class Assets {
             return cached.asset;
         }
 
-        const img = new Image(path);
+        const img = options.asyncList
+            ? new Image(path, options.asyncList)
+            : new Image(path);
+
+        if (options.asyncList) {
+            imageCache.set(path, {
+                asset: img,
+                ref: 1,
+                pending: {
+                    scale: options.scale || null,
+                    optimize: !!options.optimize,
+                    lock: !!options.lock,
+                },
+            });
+            if (options.animConfig) Object.assign(img, options.animConfig);
+            return img;
+        }
+
         if (options.scale) {
             img.width *= options.scale;
             img.height *= options.scale;
         }
         if (options.optimize) img.optimize();
         if (options.animConfig) Object.assign(img, options.animConfig);
-
         if (options.lock) img.lock();
-        
+
         imageCache.set(path, { asset: img, ref: 1 });
         return img;
+    }
+
+    static applyPostLoad(path) {
+        const entry = imageCache.get(path);
+        if (!entry || !entry.pending) return;
+
+        const { scale, optimize, lock } = entry.pending;
+
+        if (optimize) entry.asset.optimize();
+        if (scale) {
+            entry.asset.width *= scale;
+            entry.asset.height *= scale;
+        }
+        if (lock) entry.asset.lock();
+
+        entry.pending = null;
     }
 
     static sound(path) {
@@ -54,7 +86,7 @@ export default class Assets {
 
     static free(target) {
         if (!target) return;
-        
+
         const caches = [imageCache, soundCache, fontCache];
         for (let i = 0; i < caches.length; i++) {
             const cache = caches[i];
@@ -76,7 +108,7 @@ export default class Assets {
                         break;
                     }
                 }
-                
+
                 if (foundPath) {
                     const entry = cache.get(foundPath);
                     if (--entry.ref <= 0) {
@@ -99,5 +131,16 @@ export default class Assets {
             }
             toDelete.forEach(path => Assets.free(path));
         });
+    }
+
+    static countMatching(regex) {
+        const caches = [imageCache, soundCache, fontCache];
+        let count = 0;
+        caches.forEach(cache => {
+            for (const [path] of cache.entries()) {
+                if (regex.test(path)) count++;
+            }
+        });
+        return count;
     }
 }

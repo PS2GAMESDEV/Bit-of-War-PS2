@@ -1,4 +1,4 @@
-import { ASSETS_PATH } from "../shared/lib/constants.js";
+import { ASSETS_PATH } from "../shared/config/constants.js";
 import Assets from "../shared/lib/assets.js";
 import Gamepad from "../shared/lib/gamepad.js";
 

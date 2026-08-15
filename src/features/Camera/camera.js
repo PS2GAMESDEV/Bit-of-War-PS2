@@ -1,4 +1,4 @@
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../shared/lib/constants.js";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../shared/config/constants.js";
 
 function Camera() {
     this.x = 0;

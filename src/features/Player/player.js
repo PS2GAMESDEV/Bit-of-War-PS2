@@ -1,7 +1,7 @@
 import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
 import Assets from "../../shared/lib/assets.js";
 import Collision from "../../shared/lib/collision.js";
-import { ASSETS_PATH, GAME_SCALE, PLAYER_ANIMATIONS, PLAYER_ONE_PORT } from "../../shared/lib/constants.js";
+import { ASSETS_PATH, GAME_SCALE, PLAYER_ANIMATIONS, PLAYER_ONE_PORT } from "../../shared/config/constants.js";
 import Movement2D from "./movement.js";
 
 function Player(options) {

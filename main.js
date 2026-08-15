@@ -1,14 +1,21 @@
+import LoadingScreen from "./src/features/Scenes/loading.js";
+import Assets from "./src/shared/lib/assets.js";
+import { ASSETS_PATH } from "./src/shared/config/constants.js";
+import { SceneManager } from "./src/shared/lib/scene_manager.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
-import { SceneManager } from "./src/shared/lib/scenemanager.js";
-import { Menu } from "./src/scenes/menu.js";
+import MenuFlow from "./src/features/Scenes/Menu/flow.js";
 
-Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
+const loadingScreen = new LoadingScreen();
+const manager = new SceneManager({
+    loadingScreen,
+    blockingPerFrame: 1,
+    minLoadingFrames: 6,
+});
 
-const sceneManager = new SceneManager();
-sceneManager.changeScene(Menu);
-
+manager.goto(MenuFlow);
 let lastFrameTime = Date.now();
 
+Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 Screen.display(() => {
     Gamepad.update();
 
@@ -16,6 +23,6 @@ Screen.display(() => {
     const deltaTime = (now - lastFrameTime) / 1000;
     lastFrameTime = now;
 
-    sceneManager.update(deltaTime);
-    sceneManager.draw();
+    manager.update(deltaTime);
+    manager.draw();
 })
