@@ -1,5 +1,6 @@
 import { BOX2D_SCALE, GAME_SCALE } from "../../shared/config/constants.js";
 import { X_SPEED, JUMP_FORCE } from "./constants.js";
+import Physics from "../../shared/lib/physics.js";
 
 export default class PlayerPhysics {
     constructor(world, options = {}) {
@@ -12,12 +13,57 @@ export default class PlayerPhysics {
             fixedRotation: true
         });
 
-        this.body.createBoxShape({
-            halfWidth: (8 * GAME_SCALE) / BOX2D_SCALE,
-            halfHeight: (8 * GAME_SCALE) / BOX2D_SCALE,
-            friction: 0.0
+        this.body.setUserData({ isPlayer: true });
+
+        this.halfWidthPx = 8 * GAME_SCALE;
+        this.halfHeightPx = 8 * GAME_SCALE;
+
+        this.shape = this.body.createBoxShape({
+            halfWidth: this.halfWidthPx / BOX2D_SCALE,
+            halfHeight: this.halfHeightPx / BOX2D_SCALE,
+            friction: 0.0,
+            enableContactEvents: true,
+            enableSensorEvents: true,
         });
-        
+
+        this.groundContacts = 0;
+        this.activeSensors = new Set();
+
+        this._unsubscribeContact = Physics.onContactEvent(
+            ({ dataA, dataB, began }) => this.#handleContact(dataA, dataB, began)
+        );
+        this._unsubscribeSensor = Physics.onSensorEvent(
+            ({ sensorData, visitorData, began }) => this.#handleSensor(sensorData, visitorData, began)
+        );
+    }
+
+    #otherSide(dataA, dataB) {
+        if (dataA?.isPlayer) return dataB;
+        if (dataB?.isPlayer) return dataA;
+        return null;
+    }
+
+    #handleContact(dataA, dataB, began) {
+        const other = this.#otherSide(dataA, dataB);
+        if (!other || other.colliderType !== "ground") return;
+
+        this.groundContacts += began ? 1 : -1;
+        if (this.groundContacts < 0) this.groundContacts = 0;
+    }
+
+    #handleSensor(sensorData, visitorData, began) {
+        if (!visitorData?.isPlayer || !sensorData?.colliderType) return;
+
+        if (began) this.activeSensors.add(sensorData.colliderType);
+        else this.activeSensors.delete(sensorData.colliderType);
+    }
+
+    isGrounded() {
+        return this.groundContacts > 0;
+    }
+
+    isTouching(colliderType) {
+        return this.activeSensors.has(colliderType);
     }
 
     moveHorizontally(dirX) {
@@ -34,7 +80,21 @@ export default class PlayerPhysics {
         return this.body.getLinearVelocity().y;
     }
 
-    getPosition(){
+    getPosition() {
         return this.body.getPosition();
+    }
+
+    getRenderPosition() {
+        const center = this.body.getPosition();
+        return {
+            x: center.x * BOX2D_SCALE - this.halfWidthPx,
+            y: center.y * BOX2D_SCALE - this.halfHeightPx,
+        };
+    }
+
+    destroy() {
+        this._unsubscribeContact?.();
+        this._unsubscribeSensor?.();
+        this.body.destroy();
     }
 }

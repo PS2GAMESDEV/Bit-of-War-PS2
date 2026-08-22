@@ -1,3 +1,7 @@
+import { BOX2D_SCALE, GAME_SCALE } from "../config/constants.js";
+
+const SENSOR_COLLIDER_TYPES = new Set(["chest", "ladder", "door"]);
+
 class Physics {
     static #instance;
 
@@ -5,10 +9,13 @@ class Physics {
         if (Physics.#instance) return Physics.#instance;
         Physics.#instance = this;
 
-        this.world = Box2D.createWorld({ gravity: { x: 0, y: 0 } });
+        this.world = Box2D.createWorld({ gravity: { x: 0, y: 9.8 } });
 
         this.bodies = new Map();
         this.nextId = 1;
+
+        this.sensorListeners = new Set();
+        this.contactListeners = new Set();
 
         this.debugMode = false;
         this.debugColors = {
@@ -20,14 +27,18 @@ class Physics {
 
     step(deltaTime) {
         this.world.step(deltaTime);
+
+        this.#dispatchContactEvents();
+        this.#dispatchSensorEvents();
     }
 
     createBody(config, persistent = false) {
-        const body = this.world.createBody(config);
+        const { userData, ...bodyConfig } = config;
+        const body = this.world.createBody(bodyConfig);
         const id = this.nextId++;
 
         this.bodies.set(id, { body, persistent });
-        body.setUserData({ ...(config.userData || {}), physicsId: id });
+        body.setUserData({ ...(userData || {}), physicsId: id });
 
         return { id, body };
     }
@@ -46,6 +57,56 @@ class Physics {
             if (entry.persistent) continue;
             entry.body.destroy();
             this.bodies.delete(id);
+        }
+    }
+
+    onContactEvent(callback) {
+        this.contactListeners.add(callback);
+        return () => this.contactListeners.delete(callback);
+    }
+
+    onSensorEvent(callback) {
+        this.sensorListeners.add(callback);
+        return () => this.sensorListeners.delete(callback);
+    }
+
+    #dispatchContactEvents() {
+        if (this.contactListeners.size === 0) return;
+
+        const { begin, end } = this.world.getContactEvents();
+
+        for (const { shapeA, shapeB } of begin) this.#notifyContact(shapeA, shapeB, true);
+        for (const { shapeA, shapeB } of end) this.#notifyContact(shapeA, shapeB, false);
+    }
+
+    #notifyContact(shapeA, shapeB, began) {
+        if (!shapeA.isValid() || !shapeB.isValid()) return;
+
+        const dataA = shapeA.getBody().getUserData();
+        const dataB = shapeB.getBody().getUserData();
+
+        for (const listener of this.contactListeners) {
+            listener({ dataA, dataB, began, shapeA, shapeB });
+        }
+    }
+
+    #dispatchSensorEvents() {
+        if (this.sensorListeners.size === 0) return;
+
+        const { begin, end } = this.world.getSensorEvents();
+
+        for (const { sensor, visitor } of begin) this.#notifySensor(sensor, visitor, true);
+        for (const { sensor, visitor } of end) this.#notifySensor(sensor, visitor, false);
+    }
+
+    #notifySensor(sensorShape, visitorShape, began) {
+        if (!sensorShape.isValid() || !visitorShape.isValid()) return;
+
+        const sensorData = sensorShape.getBody().getUserData();
+        const visitorData = visitorShape.getBody().getUserData();
+
+        for (const listener of this.sensorListeners) {
+            listener({ sensorData, visitorData, began, sensorShape, visitorShape });
         }
     }
 
@@ -76,12 +137,41 @@ class Physics {
 
     #drawShape(shape, color, cameraX, cameraY) {
         const aabb = shape.getAABB();
-        const x = aabb.lowerX - cameraX;
-        const y = aabb.lowerY - cameraY;
-        const w = aabb.upperX - aabb.lowerX;
-        const h = aabb.upperY - aabb.lowerY;
+
+        const x = aabb.lowerX * BOX2D_SCALE - cameraX;
+        const y = aabb.lowerY * BOX2D_SCALE - cameraY;
+        const w = (aabb.upperX - aabb.lowerX) * BOX2D_SCALE;
+        const h = (aabb.upperY - aabb.lowerY) * BOX2D_SCALE;
 
         Draw.rect(x, y, w, h, color);
+    }
+
+    loadLevelColliders(level) {
+        this.clearLevel();
+
+        for (const collider of level.colliders) {
+            const isSensor = SENSOR_COLLIDER_TYPES.has(collider.type);
+
+            const halfWidth = (collider.width * GAME_SCALE / 2) / BOX2D_SCALE;
+            const halfHeight = (collider.height * GAME_SCALE / 2) / BOX2D_SCALE;
+
+            const cx = (collider.x * GAME_SCALE / BOX2D_SCALE) + halfWidth;
+            const cy = (collider.y * GAME_SCALE / BOX2D_SCALE) + halfHeight;
+
+            const { body } = this.createBody({
+                type: Box2D.STATIC_BODY,
+                position: { x: cx, y: cy },
+                userData: { colliderType: collider.type },
+            });
+
+            body.createBoxShape({
+                halfWidth,
+                halfHeight,
+                isSensor,
+                enableContactEvents: !isSensor,
+                enableSensorEvents: isSensor,
+            });
+        }
     }
 }
 

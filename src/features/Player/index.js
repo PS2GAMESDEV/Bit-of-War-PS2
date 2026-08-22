@@ -1,7 +1,7 @@
 import PlayerPhysics from "./physics.js";
 import PlayerRenderer from "./renderer.js";
 import PlayerController from "./controller.js";
-import { ASSETS_PATH, BOX2D_SCALE } from "../../shared/config/constants.js";
+import { ASSETS_PATH } from "../../shared/config/constants.js";
 import Assets from "../../shared/lib/assets.js";
 
 export default class Player {
@@ -63,10 +63,14 @@ export default class Player {
         }
     }
 
+    getPostion(){
+        return this.physics.getPosition();
+    }
+
     update() {
         this.controller.update();
 
-        const pos = this.physics.getPosition();
-        this.renderer.draw(pos.x * BOX2D_SCALE, pos.y * BOX2D_SCALE);
+        const renderPos = this.physics.getRenderPosition();
+        this.renderer.draw(renderPos.x, renderPos.y);
     }
 }

@@ -1,21 +1,25 @@
+import Physics from "./src/shared/lib/physics.js";
 import Player from "./src/features/Player/index.js";
 import TileMapRenderer from "./src/features/Tilemap/index.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
-
-const world = Box2D.createWorld({ gravity: { x: 0, y: 9.8 } });
+import { PLAYER_ONE } from "./src/shared/config/constants.js";
 
 const mapRenderer = new TileMapRenderer("./levels/GaiaArm.athenaenv");
 
-const player = new Player(world, { x: 250, y: 250 });
+Physics.loadLevelColliders(mapRenderer.level);
+
+const player = new Player(Physics.world, { x: 250, y: 250 });
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 Screen.display(() => {
     Gamepad.update();
-    world.step(1 / 60);
+    Physics.step(1 / 60);
 
-    mapRenderer.updateCamera(player.x, player.y);
+    if (PLAYER_ONE.justPressed(Pads.L1)) {
+        Physics.toggleDebug();
+    }
+
     mapRenderer.render();
-
     player.update();
-
+    Physics.renderDebug();
 });

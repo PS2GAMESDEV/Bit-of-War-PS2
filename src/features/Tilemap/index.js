@@ -13,8 +13,6 @@ export default class TileMapRenderer {
     constructor(levelSource, options = {}) {
         this.scaleX = GAME_SCALE ?? 1;
         this.scaleY = GAME_SCALE ?? 1;
-        this.cameraX = 0;
-        this.cameraY = 0;
 
         const texturePath = options.texturePath ?? ASSETS_PATH.TILES + "/texture.json";
         const spritesheetPath = options.spritesheetPath ?? ASSETS_PATH.TILES + "/texture.png";
@@ -106,14 +104,8 @@ export default class TileMapRenderer {
         this.instance = this._createInstance();
     }
 
-    updateCamera(cameraX, cameraY) {
-        this.cameraX = cameraX;
-        this.cameraY = cameraY;
-    }
-
     render(offsetX = 0, offsetY = 0) {
         TileMap.begin();
-        TileMap.setCamera(-this.cameraX, -this.cameraY);
         this.instance.render(offsetX, offsetY);
     }
 
