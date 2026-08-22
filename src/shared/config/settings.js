@@ -11,3 +11,10 @@ export function setMusic(value) {
 export function setSfx(value) {
     settings.sfx = value;
 }
+
+export const PLAYER_CONTROLS = {
+    BLOCK: Pads.R1,
+    JUMP: Pads.CROSS,
+    ATK: Pads.SQUARE,
+    OPEN_CHEST: Pads.CIRCLE
+}

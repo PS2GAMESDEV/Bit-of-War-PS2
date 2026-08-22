@@ -6,7 +6,7 @@ export default class Selector {
         this.onConfirm = onConfirm;
         this.selectorSFX = selectorSFX;
         this.confirmSFX = confirmSFX;
-        this.adjustSFX = adjustSFX ?? selectorSFX; // reusa o mesmo som se não passar um específico
+        this.adjustSFX = adjustSFX ?? selectorSFX;
     }
 
     update(pad) {

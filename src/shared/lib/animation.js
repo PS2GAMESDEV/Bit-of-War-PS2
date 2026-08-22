@@ -1,4 +1,4 @@
-export function animationSprite(image, state, options = {}) {
+function animationSprite(image, state, options = {}) {
     const {
         frames
     } = image;
@@ -8,7 +8,7 @@ export function animationSprite(image, state, options = {}) {
         facingLeft = false,
         facingUp = false,
         fps = 12,
-        onAnimationEnd
+        onAnimationEnd = state?.onAnimationEnd || null
     } = options;
 
     if (!frames || frames.length === 0) return null;
@@ -41,7 +41,7 @@ export function animationSprite(image, state, options = {}) {
                 state.currentFrame = state.startFrame + ((state.currentFrame - state.startFrame) % animationLength);
             } else {
                 state.currentFrame = state.endFrame;
-                onAnimationEnd?.();
+                if (onAnimationEnd) onAnimationEnd();
             }
         }
     }
@@ -63,7 +63,6 @@ export function animationSprite(image, state, options = {}) {
     if (facingLeft) {
         render.startx = frame.x + frame.width;
         render.endx = frame.x;
-
     } else {
         render.startx = frame.x;
         render.endx = frame.x + frame.width;
@@ -80,7 +79,7 @@ export function animationSprite(image, state, options = {}) {
     return render;
 }
 
-export function setAnimation(
+function setAnimation(
     state,
     animations,
     name,
@@ -98,3 +97,8 @@ export function setAnimation(
     state.loop = loop;
     state.frameTimer = 0;
 }
+
+export {
+    animationSprite,
+    setAnimation
+};

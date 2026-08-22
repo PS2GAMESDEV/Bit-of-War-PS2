@@ -1,79 +1,15 @@
 import gamepad from "../lib/gamepad.js";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Screen.getMode();
-const ASSETS_PATH = Object.freeze({
+export {SCREEN_WIDTH, SCREEN_HEIGHT}
+
+export const PLAYER_ONE = gamepad.player(0);
+
+export const BOX2D_SCALE = 30;
+export const GAME_SCALE = 2;
+
+export const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",
-    OBJECTS: "./assets/images/objects",
-    IMAGES: "./assets/images",
-    SOUNDS: "./assets/sounds",
-    ENEMIES: "./assets/images/enemies",
     UI: "./assets/images/ui",
-    TILES: "./assets/images/tiles",
-    MAPS: "./src/data"
+    SOUNDS: "./assets/sounds"
 })
-const VFX_SCREEN_COLOR = Object.freeze({
-    LIFE: Color.new(28, 237, 37, 100),
-    MAGIC: Color.new(85, 146, 255, 100)
-})
-const DOOR_CONFIG = Object.freeze({
-    TRANSITION_DELAY: 500,
-    SPAWN_OFFSET_X: 16,
-    SPAWN_OFFSET_Y: 0
-});
-const PLAYER_ONE_PORT = 0;
-const PLAYER_TWO_PORT = 1
-const PLAYER_ONE = gamepad.player(PLAYER_ONE_PORT);
-
-const PLAYER_ANIMATIONS = Object.freeze({
-    WALK_L: "walk_l",
-    WALK_R: "walk_r",
-    JUMP_L: "jump_l",
-    JUMP_R: "jump_r",
-    BLOCK_L: "block_l",
-    BLOCK_R: "BLOCK_r",
-    ATK_R: "atk_r",
-    ATK_L: "atk_l",
-    CLIMB: "climb",
-    IDLE_L: "idle_l",
-    IDLE_R: "idle_r"
-})
-const PLAYER_MOVEMENT = Object.freeze({
-    DEFAULT_GRAVITY: 0.6f,
-    MAX_Y_VELOCITY: 12,
-    DEFAULT_SPEED: 3,
-    DEFAULT_JUMP_STRENGTH: -10,
-    DEFAULT_JUMPS: 1
-})
-
-const ENEMIES_ANIMATIONS = Object.freeze({
-    IDLE: "idle",
-    WALK: "walk"
-})
-
-const GAME_SCALE = 2;
-
-const CHEST_ANIMATIONS = Object.freeze({
-    OPEN: "open",
-    CLOSED: "closed"
-})
-const CHEST_TYPES = Object.freeze({
-    Life: "Life",
-    MAGIC: "Magic"
-})
-
-export {
-    SCREEN_HEIGHT,
-    SCREEN_WIDTH,
-    GAME_SCALE,
-    PLAYER_ONE_PORT,
-    PLAYER_ONE,
-    PLAYER_TWO_PORT,
-    ASSETS_PATH,
-    PLAYER_ANIMATIONS,
-    PLAYER_MOVEMENT,
-    CHEST_ANIMATIONS,
-    CHEST_TYPES,
-    VFX_SCREEN_COLOR,
-    ENEMIES_ANIMATIONS,
-    DOOR_CONFIG
-}

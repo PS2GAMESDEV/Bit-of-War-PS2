@@ -76,6 +76,7 @@ export class SceneManager {
         this._nextInstance = null;
         this._pendingImages = [];
         this._loadedAssets = null;
+        this._pendingAssetPaths = [];
 
         this._totalJobs = 0;
         this._doneJobs = 0;
@@ -127,8 +128,9 @@ export class SceneManager {
         if (this.current) {
             this.current.onExit();
 
-            const root = this.current.constructor.assetRoot;
-            Assets.freePattern(new RegExp('^' + escapeRegExp(root) + '/'));
+            const paths = this._currentAssetPaths || [];
+            for (const path of paths) Assets.free(path);
+            this._currentAssetPaths = null;
             this.current = null;
         }
 
@@ -145,6 +147,7 @@ export class SceneManager {
         this._doneJobs = 0;
         this._pendingImages = [];
         this._loadedAssets = { images: {}, sounds: {}, fonts: {} };
+        this._pendingAssetPaths = [];
 
         const images = manifest.images || [];
         for (const spec of images) {
@@ -158,12 +161,14 @@ export class SceneManager {
             });
             this._pendingImages.push({ path, img });
             this._loadedAssets.images[spec.path] = img;
+            this._pendingAssetPaths.push(path);
         }
         if (images.length) this._imageList.process();
 
         for (const relPath of manifest.sounds || []) {
             const path = withRoot(root, relPath);
             this._totalJobs++;
+            this._pendingAssetPaths.push(path);
             this.blockingQueue.push(() => {
                 this._loadedAssets.sounds[relPath] = Assets.sound(path);
                 this._doneJobs++;
@@ -173,6 +178,7 @@ export class SceneManager {
         for (const relPath of manifest.fonts || []) {
             const path = withRoot(root, relPath);
             this._totalJobs++;
+            this._pendingAssetPaths.push(path);
             this.blockingQueue.push(() => {
                 this._loadedAssets.fonts[relPath] = Assets.font(path);
                 this._doneJobs++;
@@ -214,6 +220,8 @@ export class SceneManager {
         this._nextInstance = null;
         this._nextSceneClass = null;
         this._loadedAssets = null;
+        this._currentAssetPaths = this._pendingAssetPaths;
+        this._pendingAssetPaths = [];
 
         this.current.onEnter(assets);
         this.state = State.RUNNING;
@@ -223,10 +231,6 @@ export class SceneManager {
 function withRoot(root, relPath) {
     if (!root) return relPath;
     return `${root}/${relPath}`.replace(/\/{2,}/g, '/');
-}
-
-function escapeRegExp(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 export function memoryDebugString() {
