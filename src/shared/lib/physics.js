@@ -1,5 +1,3 @@
-import { PLAYER_MOVEMENT } from "../config/constants.js";
-
 class Physics {
     static #instance;
 

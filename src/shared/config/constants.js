@@ -11,5 +11,6 @@ export const GAME_SCALE = 2;
 export const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",
     UI: "./assets/images/ui",
-    SOUNDS: "./assets/sounds"
+    SOUNDS: "./assets/sounds",
+    TILES: "./assets/images/tiles"
 })
