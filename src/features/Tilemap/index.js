@@ -106,7 +106,7 @@ export default class TileMapRenderer {
 
     render(offsetX = 0, offsetY = 0) {
         TileMap.begin();
-        this.instance.render(offsetX, offsetY);
+        this.instance.render(-offsetX, -offsetY);
     }
 
     updateSprite(index, updates) {

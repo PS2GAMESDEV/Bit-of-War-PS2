@@ -67,10 +67,16 @@ export default class Player {
         return this.physics.getPosition();
     }
 
-    update() {
+    getCameraTarget() {
+        return this.physics.getCenterPositionPx();
+    }
+
+    update(camera) {
         this.controller.update();
 
         const renderPos = this.physics.getRenderPosition();
-        this.renderer.draw(renderPos.x, renderPos.y);
+        const screenPos = camera ? camera.worldToScreen(renderPos.x, renderPos.y) : renderPos;
+
+        this.renderer.draw(screenPos.x, screenPos.y);
     }
 }

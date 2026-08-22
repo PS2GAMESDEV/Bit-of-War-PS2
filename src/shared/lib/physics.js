@@ -1,4 +1,4 @@
-import { BOX2D_SCALE, GAME_SCALE } from "../config/constants.js";
+import { BOX2D_SCALE, GAME_GRAVITY, GAME_SCALE } from "../config/constants.js";
 
 const SENSOR_COLLIDER_TYPES = new Set(["chest", "ladder", "door"]);
 
@@ -9,7 +9,7 @@ class Physics {
         if (Physics.#instance) return Physics.#instance;
         Physics.#instance = this;
 
-        this.world = Box2D.createWorld({ gravity: { x: 0, y: 9.8 } });
+        this.world = Box2D.createWorld({ gravity: { x: 0, y: GAME_GRAVITY } });
 
         this.bodies = new Map();
         this.nextId = 1;

@@ -84,6 +84,11 @@ export default class PlayerPhysics {
         return this.body.getPosition();
     }
 
+    getCenterPositionPx() {
+        const center = this.body.getPosition();
+        return { x: center.x * BOX2D_SCALE, y: center.y * BOX2D_SCALE };
+    }
+
     getRenderPosition() {
         const center = this.body.getPosition();
         return {

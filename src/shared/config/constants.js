@@ -7,6 +7,7 @@ export const PLAYER_ONE = gamepad.player(0);
 
 export const BOX2D_SCALE = 30;
 export const GAME_SCALE = 2;
+export const GAME_GRAVITY = 50;
 
 export const ASSETS_PATH = Object.freeze({
     SPRITES: "./assets/images/sprites",

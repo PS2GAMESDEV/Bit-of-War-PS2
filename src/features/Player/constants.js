@@ -12,5 +12,5 @@ export const PLAYER_ANIMATIONS = Object.freeze({
     IDLE_R: "idle_r"
 });
 
-export const X_SPEED = 5.0f;
-export const JUMP_FORCE = 6.0f;
+export const X_SPEED = 5;
+export const JUMP_FORCE = 16;
