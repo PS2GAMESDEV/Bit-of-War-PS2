@@ -1,12 +1,11 @@
-import { ASSETS_PATH, GAME_SCALE } from "../../shared/config/constants.js";
+import { GAME_SCALE } from "../../shared/config/constants.js";
 import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
-import Assets from "../../shared/lib/assets.js";
 import { PLAYER_ANIMATIONS } from "./constants.js";
 import PlayerHUD from "./hud.js";
 
 export default class PlayerRenderer {
-    constructor(options) {
-        this.hud = new PlayerHUD();
+    constructor(options, assets) {
+        this.hud = new PlayerHUD(assets);
         this.facingLeft = options?.facingLeft ?? false;
 
         this.animation = {
@@ -30,33 +29,16 @@ export default class PlayerRenderer {
             onAnimationEnd: null
         };
 
-        this.initAnimations();
-        this.initBladeSprite();
+        this.initAnimations(assets);
+        this.initBladeSprite(assets);
     }
 
-    initAnimations() {
-        this.spritesheet = Assets.image(
-            ASSETS_PATH.SPRITES + "/kratos/spritesheet.png",
-            {
-                animConfig: {
-                    totalFrames: 12,
-                    frames: [
-                        { x: 0, y: 0, width: 16, height: 16 },
-                        { x: 16, y: 0, width: 16, height: 16 },
-                        { x: 32, y: 0, width: 16, height: 16 },
-                        { x: 48, y: 0, width: 16, height: 16 },
-                        { x: 64, y: 0, width: 16, height: 16 },
-                        { x: 80, y: 0, width: 16, height: 16 },
-                        { x: 0, y: 16, width: 16, height: 16 },
-                        { x: 16, y: 16, width: 16, height: 16 },
-                        { x: 32, y: 16, width: 16, height: 16 },
-                        { x: 48, y: 16, width: 16, height: 16 },
-                        { x: 64, y: 16, width: 16, height: 16 },
-                        { x: 80, y: 16, width: 16, height: 16 },
-                    ]
-                }
-            }
-        );
+    initAnimations(assets) {
+        this.spritesheet = assets.images["images/sprites/kratos/spritesheet.png"];
+
+        if (!this.spritesheet) {
+            throw new Error('[PlayerRenderer] spritesheet "images/sprites/kratos/spritesheet.png" não encontrado nos assets carregados');
+        }
 
         this.animations = {
             [PLAYER_ANIMATIONS.CLIMB]: { start: 0, end: 1 },
@@ -75,24 +57,12 @@ export default class PlayerRenderer {
         setAnimation(this.animation, this.animations, !this.facingLeft ? PLAYER_ANIMATIONS.IDLE_R : PLAYER_ANIMATIONS.IDLE_L, true);
     }
 
-    initBladeSprite() {
-        this.bladeSpritesheet = Assets.image(
-            ASSETS_PATH.SPRITES + "/kratos/blade.png",
-            {
-                animConfig: {
-                    totalFrames: 7,
-                    frames: [
-                        { x: 0, y: 0, width: 48, height: 16 },
-                        { x: 48, y: 0, width: 48, height: 16 },
-                        { x: 96, y: 0, width: 48, height: 16 },
-                        { x: 144, y: 0, width: 48, height: 16 },
-                        { x: 192, y: 0, width: 48, height: 16 },
-                        { x: 240, y: 0, width: 48, height: 16 },
-                        { x: 288, y: 0, width: 48, height: 16 },
-                    ]
-                }
-            }
-        );
+    initBladeSprite(assets) {
+        this.bladeSpritesheet = assets.images["images/sprites/kratos/blade.png"];
+
+        if (!this.bladeSpritesheet) {
+            throw new Error('[PlayerRenderer] spritesheet "images/sprites/kratos/blade.png" não encontrado nos assets carregados');
+        }
     }
 
     startAttack(onComplete) {
@@ -122,7 +92,6 @@ export default class PlayerRenderer {
 
     onMoveRight() {
         if (this.bladeAnimation.playing) return;
-
 
         this.facingLeft = false;
         setAnimation(this.animation, this.animations, PLAYER_ANIMATIONS.WALK_R);
@@ -196,7 +165,6 @@ export default class PlayerRenderer {
                 });
             }
         }
-
 
         this.hud.draw();
     }

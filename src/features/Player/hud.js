@@ -1,19 +1,23 @@
-import { ASSETS_PATH, GAME_SCALE } from "../../shared/config/constants.js";
-import Assets from "../../shared/lib/assets.js";
+import { GAME_SCALE } from "../../shared/config/constants.js";
 
 export default class PlayerHUD {
-    constructor() {
-        this.hud = Assets.image(ASSETS_PATH.UI + "/hud.png");
+    constructor(assets) {
+        this.hud = assets.images["images/ui/hud.png"];
+        this.powerupSpace = assets.images["images/ui/powerup.png"];
+
+        if (!this.hud || !this.powerupSpace) {
+            throw new Error('[PlayerHUD] assets de HUD não encontrados nos assets carregados');
+        }
+
         this.hud.width *= GAME_SCALE;
         this.hud.height *= GAME_SCALE;
 
-        this.powerupSpace = Assets.image(ASSETS_PATH.UI + "/powerup.png")
         this.powerupSpace.width *= GAME_SCALE;
         this.powerupSpace.height *= GAME_SCALE;
 
-        this.hud.x = 16 * GAME_SCALE;
+        this.hud.x = 8 * GAME_SCALE;
         this.powerupSpace.x = this.hud.x + 14 * GAME_SCALE;
-        this.powerupSpace.y = this.hud.height / 2 + this.powerupSpace.height / 4
+        this.powerupSpace.y = this.hud.height / 2 + this.powerupSpace.height / 4;
     }
 
     draw() {

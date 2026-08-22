@@ -1,20 +1,18 @@
 import PlayerPhysics from "./physics.js";
 import PlayerRenderer from "./renderer.js";
 import PlayerController from "./controller.js";
-import { ASSETS_PATH } from "../../shared/config/constants.js";
-import Assets from "../../shared/lib/assets.js";
 
 export default class Player {
-    constructor(world, options = {}) {
+    constructor(world, options = {}, assets) {
         this.physics = new PlayerPhysics(world, options);
-        this.renderer = new PlayerRenderer(options);
+        this.renderer = new PlayerRenderer(options, assets);
         this.controller = new PlayerController(this);
 
         this.isAttacking = false;
         this.isBlocking = false;
 
-        this.sfxJump = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/jump.adp");
-        this.sfxBlades = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
+        this.sfxJump = assets.sounds["sounds/sfx/jump.adp"];
+        this.sfxBlades = assets.sounds["sounds/sfx/blades.adp"];
     }
 
     move(dirX) {

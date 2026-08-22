@@ -158,6 +158,7 @@ export class SceneManager {
                 scale: spec.scale,
                 optimize: spec.optimize,
                 lock: spec.lock,
+                animConfig: spec.animConfig
             });
             this._pendingImages.push({ path, img });
             this._loadedAssets.images[spec.path] = img;
@@ -222,6 +223,8 @@ export class SceneManager {
         this._loadedAssets = null;
         this._currentAssetPaths = this._pendingAssetPaths;
         this._pendingAssetPaths = [];
+
+        this.current.manager = this;
 
         this.current.onEnter(assets);
         this.state = State.RUNNING;

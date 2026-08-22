@@ -2,6 +2,7 @@ import { setMusic, setSfx, settings } from "../../../shared/config/settings.js";
 import { cycleLang, t } from "../../../shared/lang/lang.js";
 import { clamp } from "../../../shared/lib/normalizer.js";
 import { MenuFlowScene } from "./scene.js";
+import GameScene from "../Game/scene.js";
 
 export default class MenuFlow extends MenuFlowScene {
     static assetRoot = "assets";
@@ -25,7 +26,7 @@ export default class MenuFlow extends MenuFlowScene {
         return {
             main: {
                 getOptions: (scene) => [
-                    { key: "newgame", action: () => {/* iniciar jogo */ } },
+                    { key: "newgame", action: () => scene.manager.goto(GameScene)  },
                     { key: "load", action: () => { /**Carregar jogo */ } },
                     { key: "options", action: () => scene.goToPanel("options") },
                     { key: "extra", action: () => scene.goToPanel("extras") },

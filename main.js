@@ -1,33 +1,28 @@
-import Physics from "./src/shared/lib/physics.js";
-import Player from "./src/features/Player/index.js";
-import TileMapRenderer from "./src/features/Tilemap/index.js";
+import LoadingScreen from "./src/features/Scenes/loading.js";
+import Assets from "./src/shared/lib/assets.js";
+import { ASSETS_PATH } from "./src/shared/config/constants.js";
+import { SceneManager } from "./src/shared/lib/scene_manager.js";
 import Gamepad from "./src/shared/lib/gamepad.js";
-import Camera from "./src/shared/lib/camera.js";
-import { PLAYER_ONE } from "./src/shared/config/constants.js";
+import MenuFlow from "./src/features/Scenes/Menu/flow.js";
 
-const mapRenderer = new TileMapRenderer("./levels/GaiaArm.athenaenv");
-Physics.loadLevelColliders(mapRenderer.level);
+const loadingScreen = new LoadingScreen();
+const manager = new SceneManager({
+    loadingScreen,
+    blockingPerFrame: 1,
+    minLoadingFrames: 6,
+});
 
-const player = new Player(Physics.world, { x: 250, y: 250 });
-
-const camera = new Camera();
-const mapSize = mapRenderer.getMapSize();
-camera.setBounds(0, mapSize.width, 0, mapSize.height);
-camera.snapTo(player.getCameraTarget().x, player.getCameraTarget().y);
+manager.goto(MenuFlow);
+let lastFrameTime = Date.now();
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 Screen.display(() => {
     Gamepad.update();
-    Physics.step(1 / 60);
 
-    if (PLAYER_ONE.justPressed(Pads.L1)) {
-        Physics.toggleDebug();
-    }
+    const now = Date.now();
+    const deltaTime = (now - lastFrameTime) / 1000;
+    lastFrameTime = now;
 
-    const target = player.getCameraTarget();
-    camera.update(target.x, target.y);
-
-    mapRenderer.render(camera.x, camera.y);
-    player.update(camera);
-    Physics.renderDebug(camera.x, camera.y);
-});
+    manager.update(deltaTime);
+    manager.draw();
+})

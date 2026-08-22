@@ -1,6 +1,5 @@
 import { loadAthenaLevel } from "../../shared/lib/athena_level.js";
 import { ASSETS_PATH, GAME_SCALE } from "../../shared/config/constants.js";
-import Assets from "../../shared/lib/assets.js";
 
 if (globalThis._tileMapInitialized === undefined) {
     if (typeof TileMap !== "undefined" && TileMap.init) {
@@ -10,16 +9,19 @@ if (globalThis._tileMapInitialized === undefined) {
 }
 
 export default class TileMapRenderer {
-    constructor(levelSource, options = {}) {
+    constructor(levelSource, assets, options = {}) {
         this.scaleX = GAME_SCALE ?? 1;
         this.scaleY = GAME_SCALE ?? 1;
 
         const texturePath = options.texturePath ?? ASSETS_PATH.TILES + "/texture.json";
-        const spritesheetPath = options.spritesheetPath ?? ASSETS_PATH.TILES + "/texture.png";
+        this.spritesheetKey = options.spritesheetKey ?? "images/tiles/texture.png";
 
         this.tileConfig = std.parseExtJSON(std.loadFile(texturePath));
-        this.spritesheetPath = spritesheetPath;
-        this.spritesheet = Assets.image(this.spritesheetPath);
+        this.spritesheet = assets.images[this.spritesheetKey];
+
+        if (!this.spritesheet) {
+            throw new Error(`[TileMapRenderer] textura "${this.spritesheetKey}" não encontrada nos assets carregados`);
+        }
 
         this.level = typeof levelSource === "string" ? loadAthenaLevel(levelSource) : levelSource;
 
@@ -146,7 +148,6 @@ export default class TileMapRenderer {
         this.instance = null;
         this.tileConfig = null;
         this.sprites = null;
-        Assets.free(this.spritesheetPath);
         this.spritesheet = null;
     }
 }
