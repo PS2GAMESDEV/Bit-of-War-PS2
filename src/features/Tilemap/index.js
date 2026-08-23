@@ -128,6 +128,8 @@ export default class TileMapRenderer {
     }
 
     updateSprite(index, updates) {
+        this.instance.waitPending();
+        
         const layout = TileMap.layout;
         const view = new DataView(this.instance.getSpriteBuffer());
         const pos = index * layout.stride;
