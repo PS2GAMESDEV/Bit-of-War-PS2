@@ -8,6 +8,9 @@ if (globalThis._tileMapInitialized === undefined) {
     globalThis._tileMapInitialized = true;
 }
 
+const debugFont = new Font("default");
+debugFont.color = Color.new(255, 0, 0, 128);
+
 export default class TileMapRenderer {
     constructor(levelSource, assets, options = {}) {
         this.scaleX = GAME_SCALE ?? 1;
@@ -41,10 +44,15 @@ export default class TileMapRenderer {
 
     _processMapData(level) {
         const sprites = [];
+        this._missingAssets = [];
 
         for (const tile of level.tiles) {
             const config = this._getTileConfig(tile.assetName);
-            if (!config) continue;
+
+            if (!config) {
+                this._missingAssets.push(tile.assetName);
+                continue;
+            }
 
             const { frame, spriteSourceSize, rotated, isRotated } = config;
             const trimX = (spriteSourceSize?.x ?? 0) * this.scaleX;
@@ -66,6 +74,9 @@ export default class TileMapRenderer {
                 r: 128, g: 128, b: 128, a: 128,
             });
         }
+
+        this._totalTiles = level.tiles.length;
+        this._generatedSprites = sprites.length;
 
         return sprites;
     }
@@ -109,6 +120,11 @@ export default class TileMapRenderer {
     render(offsetX = 0, offsetY = 0) {
         TileMap.begin();
         this.instance.render(-offsetX, -offsetY);
+
+        debugFont.print(250, 250, `tiles: ${this._generatedSprites}/${this._totalTiles}`);
+        if (this._missingAssets.length > 0) {
+            debugFont.print(250, 250, `faltando: ${this._missingAssets[0]}${this._missingAssets.length > 1 ? ` (+${this._missingAssets.length - 1})` : ""}`);
+        }
     }
 
     updateSprite(index, updates) {
