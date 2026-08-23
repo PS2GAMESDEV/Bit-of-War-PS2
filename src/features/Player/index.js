@@ -54,8 +54,8 @@ export default class Player {
     }
 
     jump() {
+        if (!this.physics.isGrounded()) return;
         this.physics.jump();
-
         if (this.sfxJump && !this.sfxJump.playing()) {
             this.sfxJump.play();
         }
