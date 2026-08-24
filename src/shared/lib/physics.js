@@ -58,6 +58,9 @@ class Physics {
             entry.body.destroy();
             this.bodies.delete(id);
         }
+        
+        this.sensorListeners.clear();
+        this.contactListeners.clear();
     }
 
     onContactEvent(callback) {

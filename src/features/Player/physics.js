@@ -112,6 +112,7 @@ export default class PlayerPhysics {
     destroy() {
         this._unsubscribeContact?.();
         this._unsubscribeSensor?.();
+
         Physics.destroyBody(this.bodyId);
     }
 }
