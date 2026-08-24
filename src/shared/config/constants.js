@@ -1,7 +1,7 @@
 import gamepad from "../lib/gamepad.js";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Screen.getMode();
-export {SCREEN_WIDTH, SCREEN_HEIGHT}
+export { SCREEN_WIDTH, SCREEN_HEIGHT }
 
 export const PLAYER_ONE = gamepad.player(0);
 
@@ -15,3 +15,11 @@ export const ASSETS_PATH = Object.freeze({
     SOUNDS: "./assets/sounds",
     TILES: "./assets/images/tiles"
 })
+
+export const LEVEL_SEQUENCE = [
+    "./levels/GaiaArm.athenaenv",
+    "./levels/OlympusMntI01.athenaenv",
+    "./levels/OlympusMntClimb.athenaenv",
+    "./levels/Summit.athenaenv",
+    "./levels/BossHall1.athenaenv"
+]

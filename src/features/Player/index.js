@@ -3,8 +3,8 @@ import PlayerRenderer from "./renderer.js";
 import PlayerController from "./controller.js";
 
 export default class Player {
-    constructor(world, options = {}, assets) {
-        this.physics = new PlayerPhysics(world, options);
+    constructor(options = {}, assets) {
+        this.physics = new PlayerPhysics(options);
         this.renderer = new PlayerRenderer(options, assets);
         this.controller = new PlayerController(this);
 
@@ -53,6 +53,10 @@ export default class Player {
         this.renderer.idle();
     }
 
+    isTouching(colliderType) {
+        return this.physics.isTouching(colliderType);
+    }
+
     jump() {
         if (!this.physics.isGrounded()) return;
         this.physics.jump();
@@ -61,7 +65,7 @@ export default class Player {
         }
     }
 
-    getPostion(){
+    getPostion() {
         return this.physics.getPosition();
     }
 
@@ -76,5 +80,17 @@ export default class Player {
         const screenPos = camera ? camera.worldToScreen(renderPos.x, renderPos.y) : renderPos;
 
         this.renderer.draw(screenPos.x, screenPos.y);
+    }
+
+    resetSensors() {
+        this.physics.resetSensors();
+    }
+
+    setPosition(x, y) {
+        this.physics.setPosition(x, y);
+    }
+
+    destroy() {
+        this.physics.destroy();
     }
 }

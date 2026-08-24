@@ -3,7 +3,7 @@ import Physics from "../../../shared/lib/physics.js";
 import Player from "../../Player/index.js";
 import TileMapRenderer from "../../Tilemap/index.js";
 import Camera from "../../../shared/lib/camera.js";
-import { PLAYER_ONE, ASSETS_PATH } from "../../../shared/config/constants.js";
+import { PLAYER_ONE, ASSETS_PATH, LEVEL_SEQUENCE } from "../../../shared/config/constants.js";
 import { bladeKratosConfig, spritesheetKratosConfig } from "../../Player/constants.js";
 
 export default class GameScene extends Scene {
@@ -36,33 +36,20 @@ export default class GameScene extends Scene {
         this.assets = assets;
         this.camera = new Camera();
         this.pendingLevelPath = null;
-        this.currentLevelPath = null;
+        this.currentLevelIndex = 0;
 
-        this.unsubscribeSensor = Physics.onSensorEvent((event) => this.#handleSensorEvent(event));
-
-        this.loadLevel("./levels/GaiaArm.athenaenv");
+        this.loadLevel(LEVEL_SEQUENCE[this.currentLevelIndex]);
     }
 
-    #handleSensorEvent({ sensorData, visitorData, began }) {
-        if (!began) return;
+    #tryAdvanceLevel() {
+        if (!this.player.isTouching("door")) return;
+        if (!PLAYER_ONE.justPressed(Pads.UP)) return;
 
-        const doorData = (sensorData?.colliderType === "door" ? sensorData : null) ||
-            (visitorData?.colliderType === "door" ? visitorData : null);
+        const nextIndex = this.currentLevelIndex + 1;
+        if (nextIndex >= LEVEL_SEQUENCE.length) return;
 
-        if (doorData) {
-            const nextLevel = doorData.targetLevel || this.#getNextLevelPath(this.currentLevelPath);
-
-            if (nextLevel && !this.pendingLevelPath) {
-                this.pendingLevelPath = nextLevel;
-            }
-        }
-    }
-
-    #getNextLevelPath(currentPath) {
-        if (currentPath === "./levels/GaiaArm.athenaenv") {
-            return "./levels/GaiaArm.athenaenv";
-        }
-        return "./levels/GaiaArm.athenaenv";
+        this.currentLevelIndex = nextIndex;
+        this.pendingLevelPath = LEVEL_SEQUENCE[nextIndex];
     }
 
     loadLevel(levelPath) {
@@ -76,19 +63,16 @@ export default class GameScene extends Scene {
 
         Physics.loadLevelColliders(this.mapRenderer.level);
 
+        if (this.player) {
+            this.player.resetSensors();
+        }
+
         const spawn = this.#resolveSpawnPosition(this.mapRenderer.level);
 
         if (!this.player) {
-            this.player = new Player(Physics.world, spawn, this.assets);
+            this.player = new Player(spawn, this.assets);
         } else {
-            if (typeof this.player.setPosition === "function") {
-                this.player.setPosition(spawn.x, spawn.y);
-            } else if (this.player.body && typeof this.player.body.setTransform === "function") {
-                this.player.body.setTransform(spawn.x, spawn.y, 0);
-            } else {
-                if (typeof this.player.destroy === "function") this.player.destroy();
-                this.player = new Player(Physics.world, spawn, this.assets);
-            }
+            this.player.setPosition(spawn.x, spawn.y);
         }
 
         const mapSize = this.mapRenderer.getMapSize();
@@ -126,6 +110,8 @@ export default class GameScene extends Scene {
             Physics.toggleDebug();
         }
 
+        this.#tryAdvanceLevel();
+
         const target = this.player.getCameraTarget();
         this.camera.update(target.x, target.y);
     }
@@ -141,21 +127,11 @@ export default class GameScene extends Scene {
     }
 
     onExit() {
-        if (this.unsubscribeSensor) {
-            this.unsubscribeSensor();
-            this.unsubscribeSensor = null;
-        }
-
-        Physics.clearLevel();
-
         if (this.player) {
-            if (typeof this.player.destroy === "function") {
-                this.player.destroy();
-            } else if (this.player.id) {
-                Physics.destroyBody(this.player.id);
-            }
+            this.player.destroy();
             this.player = null;
         }
+        Physics.clearLevel();
 
         if (this.mapRenderer) {
             this.mapRenderer.destroy();

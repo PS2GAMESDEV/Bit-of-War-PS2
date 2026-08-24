@@ -170,6 +170,7 @@ class Physics {
                 isSensor,
                 enableContactEvents: !isSensor,
                 enableSensorEvents: isSensor,
+                radius: 0.1,
             });
         }
     }

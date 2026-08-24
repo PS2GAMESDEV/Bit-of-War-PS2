@@ -3,17 +3,19 @@ import { X_SPEED, JUMP_FORCE } from "./constants.js";
 import Physics from "../../shared/lib/physics.js";
 
 export default class PlayerPhysics {
-    constructor(world, options = {}) {
-        this.body = world.createBody({
+    constructor(options = {}) {
+        const { id, body } = Physics.createBody({
             type: Box2D.DYNAMIC_BODY,
             position: {
                 x: options.x / BOX2D_SCALE,
                 y: options.y / BOX2D_SCALE
             },
-            fixedRotation: true
-        });
+            fixedRotation: true,
+            userData: { isPlayer: true }
+        }, true);
 
-        this.body.setUserData({ isPlayer: true });
+        this.bodyId = id;
+        this.body = body;
 
         this.halfWidthPx = 8 * GAME_SCALE;
         this.halfHeightPx = 8 * GAME_SCALE;
@@ -66,6 +68,16 @@ export default class PlayerPhysics {
         return this.activeSensors.has(colliderType);
     }
 
+    resetSensors() {
+        this.activeSensors.clear();
+        this.groundContacts = 0;
+    }
+
+    setPosition(x, y) {
+        this.body.setTransform(x / BOX2D_SCALE, y / BOX2D_SCALE, 0);
+        this.body.setLinearVelocity(0, 0);
+    }
+
     moveHorizontally(dirX) {
         const currentVel = this.body.getLinearVelocity();
         this.body.setLinearVelocity(dirX * X_SPEED, currentVel.y);
@@ -100,6 +112,6 @@ export default class PlayerPhysics {
     destroy() {
         this._unsubscribeContact?.();
         this._unsubscribeSensor?.();
-        this.body.destroy();
+        Physics.destroyBody(this.bodyId);
     }
 }
