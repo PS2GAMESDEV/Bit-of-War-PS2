@@ -24,33 +24,14 @@ export default class PlayerPhysics {
             halfWidth: this.halfWidthPx / BOX2D_SCALE,
             halfHeight: this.halfHeightPx / BOX2D_SCALE,
             friction: 0.0,
-            enableContactEvents: true,
             enableSensorEvents: true,
         });
 
-        this.groundContacts = 0;
         this.activeSensors = new Set();
 
-        this._unsubscribeContact = Physics.onContactEvent(
-            ({ dataA, dataB, began }) => this.#handleContact(dataA, dataB, began)
-        );
         this._unsubscribeSensor = Physics.onSensorEvent(
             ({ sensorData, visitorData, began }) => this.#handleSensor(sensorData, visitorData, began)
         );
-    }
-
-    #otherSide(dataA, dataB) {
-        if (dataA?.isPlayer) return dataB;
-        if (dataB?.isPlayer) return dataA;
-        return null;
-    }
-
-    #handleContact(dataA, dataB, began) {
-        const other = this.#otherSide(dataA, dataB);
-        if (!other || other.colliderType !== "ground") return;
-
-        this.groundContacts += began ? 1 : -1;
-        if (this.groundContacts < 0) this.groundContacts = 0;
     }
 
     #handleSensor(sensorData, visitorData, began) {
@@ -61,7 +42,52 @@ export default class PlayerPhysics {
     }
 
     isGrounded() {
-        return this.groundContacts > 0;
+        const pos = this.body.getPosition();
+        const halfW = this.halfWidthPx / BOX2D_SCALE;
+        const halfH = this.halfHeightPx / BOX2D_SCALE;
+
+        const inset = 4 / BOX2D_SCALE;
+        const lowerX = pos.x - halfW + inset;
+        const upperX = pos.x + halfW - inset;
+        const lowerY = pos.y + halfH - (2 / BOX2D_SCALE);
+        const upperY = pos.y + halfH + (4 / BOX2D_SCALE);
+
+        const shapes = Physics.world.queryAABB(lowerX, lowerY, upperX, upperY);
+        if (shapes && shapes.length > 0) {
+            for (let i = 0; i < shapes.length; i++) {
+                const shape = shapes[i];
+                if (!shape || !shape.isValid()) continue;
+                const body = shape.getBody();
+                if (!body || !body.isValid()) continue;
+                const data = body.getUserData();
+                if (data?.colliderType === "ground") {
+                    return true;
+                }
+            }
+        }
+
+        const rayLen = 5 / BOX2D_SCALE;
+        const startY = pos.y + halfH - (2 / BOX2D_SCALE);
+        const leftX = pos.x - halfW + inset;
+        const rightX = pos.x + halfW - inset;
+
+        const hitLeft = Physics.world.castRay(leftX, startY, 0, rayLen);
+        if (hitLeft?.shape?.isValid()) {
+            const body = hitLeft.shape.getBody();
+            if (body?.isValid() && body.getUserData()?.colliderType === "ground") {
+                return true;
+            }
+        }
+
+        const hitRight = Physics.world.castRay(rightX, startY, 0, rayLen);
+        if (hitRight?.shape?.isValid()) {
+            const body = hitRight.shape.getBody();
+            if (body?.isValid() && body.getUserData()?.colliderType === "ground") {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     isTouching(colliderType) {
@@ -70,7 +96,6 @@ export default class PlayerPhysics {
 
     resetSensors() {
         this.activeSensors.clear();
-        this.groundContacts = 0;
     }
 
     setPosition(x, y) {
@@ -110,7 +135,6 @@ export default class PlayerPhysics {
     }
 
     destroy() {
-        this._unsubscribeContact?.();
         this._unsubscribeSensor?.();
 
         Physics.destroyBody(this.bodyId);
