@@ -18,6 +18,8 @@ export default class TileMapRenderer {
         }
 
         this._defaultColor = Color.new(128, 128, 128, 128);
+        this._frameConfigCache = new Map();
+        this._colorCache = new Map();
 
         this.cullingEnabled = options.enableCulling ?? true;
         this.cullPadding = options.cullPadding ?? 0;
@@ -33,8 +35,13 @@ export default class TileMapRenderer {
     }
 
     _getTileConfig(assetName) {
+        let config = this._frameConfigCache.get(assetName);
+        if (config !== undefined) return config;
+
         const key = this._resolveFrameKey(assetName);
-        return this.tileConfig.frames?.[key] ?? null;
+        config = this.tileConfig.frames?.[key] ?? null;
+        this._frameConfigCache.set(assetName, config);
+        return config;
     }
 
     _processMapData(level) {
@@ -52,6 +59,7 @@ export default class TileMapRenderer {
         const v2 = new Uint16Array(total);
 
         let count = 0;
+        let maxTileHeight = 0;
         const missing = [];
 
         for (let i = 0; i < total; i++) {
@@ -71,14 +79,18 @@ export default class TileMapRenderer {
             const frameW = isFrameRotated ? frame.h : frame.w;
             const frameH = isFrameRotated ? frame.w : frame.h;
 
+            const tileH = frame.h * this.scaleY;
+
             x[count] = tile.x * this.scaleX + trimX;
             y[count] = tile.y * this.scaleY + trimY;
             w[count] = frame.w * this.scaleX;
-            h[count] = frame.h * this.scaleY;
+            h[count] = tileH;
             u1[count] = frame.x;
             v1[count] = frame.y;
             u2[count] = frame.x + frameW;
             v2[count] = frame.y + frameH;
+
+            if (tileH > maxTileHeight) maxTileHeight = tileH;
 
             count++;
         }
@@ -96,12 +108,57 @@ export default class TileMapRenderer {
         this.u2 = u2.subarray(0, count);
         this.v2 = v2.subarray(0, count);
         this.count = count;
+        this._maxTileHeight = maxTileHeight;
 
         this.colorR = null;
         this.colorG = null;
         this.colorB = null;
         this.colorA = null;
         this._hasColorOverrides = false;
+
+        const order = new Uint32Array(count);
+        for (let i = 0; i < count; i++) order[i] = i;
+        this._yOrder = order;
+        this._sortDirty = true;
+
+        this._mapWidth = null;
+        this._mapHeight = null;
+    }
+
+    _resortByY() {
+        const y = this.y;
+        this._yOrder.sort((a, b) => y[a] - y[b]);
+        this._sortDirty = false;
+    }
+
+    static _lowerBound(order, y, target) {
+        let lo = 0, hi = order.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >>> 1;
+            if (y[order[mid]] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
+    static _upperBound(order, y, target) {
+        let lo = 0, hi = order.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >>> 1;
+            if (y[order[mid]] <= target) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
+    _getCachedColor(r, g, b, a) {
+        const key = ((r << 24) | (g << 16) | (b << 8) | a) >>> 0;
+        let color = this._colorCache.get(key);
+        if (color === undefined) {
+            color = Color.new(r, g, b, a);
+            this._colorCache.set(key, color);
+        }
+        return color;
     }
 
     _ensureColorOverrides() {
@@ -145,10 +202,20 @@ export default class TileMapRenderer {
         let lastW = -1, lastH = -1;
         let lastR = -1, lastG = -1, lastB = -1, lastA = -1;
 
-        for (let i = 0; i < n; i++) {
+        let start = 0, end = n - 1;
+        let order = null;
+        if (culling) {
+            if (this._sortDirty) this._resortByY();
+            order = this._yOrder;
+            start = TileMapRenderer._lowerBound(order, ys, cullTop - this._maxTileHeight);
+            end = TileMapRenderer._upperBound(order, ys, cullBottom) - 1;
+        }
+
+        for (let k = start; k <= end; k++) {
+            const i = culling ? order[k] : k;
             const sx = xs[i], sy = ys[i], sw = ws[i], sh = hs[i];
 
-            if (culling && (sx + sw < cullLeft || sx > cullRight || sy + sh < cullTop || sy > cullBottom)) {
+            if (culling && (sx + sw < cullLeft || sx > cullRight || sy + sh < cullTop)) {
                 continue;
             }
 
@@ -177,7 +244,7 @@ export default class TileMapRenderer {
             if (overrides) {
                 const r = cr[i], g = cg[i], b = cb[i], a = ca[i];
                 if (r !== lastR || g !== lastG || b !== lastB || a !== lastA) {
-                    img.color = Color.new(r, g, b, a);
+                    img.color = this._getCachedColor(r, g, b, a);
                     lastR = r;
                     lastG = g;
                     lastB = b;
@@ -192,8 +259,8 @@ export default class TileMapRenderer {
     updateSprite(index, updates) {
         if (index < 0 || index >= this.count) return;
 
-        if (updates.x !== undefined) this.x[index] = updates.x;
-        if (updates.y !== undefined) this.y[index] = updates.y;
+        if (updates.x !== undefined) this.setPosition(index, updates.x, this.y[index]);
+        if (updates.y !== undefined) this.setPosition(index, this.x[index], updates.y);
 
         const hasColorUpdate =
             updates.r !== undefined || updates.g !== undefined ||
@@ -201,25 +268,52 @@ export default class TileMapRenderer {
 
         if (hasColorUpdate) {
             this._ensureColorOverrides();
-            if (updates.r !== undefined) this.colorR[index] = updates.r;
-            if (updates.g !== undefined) this.colorG[index] = updates.g;
-            if (updates.b !== undefined) this.colorB[index] = updates.b;
-            if (updates.a !== undefined) this.colorA[index] = updates.a;
+            this.setColor(
+                index,
+                updates.r !== undefined ? updates.r : this.colorR[index],
+                updates.g !== undefined ? updates.g : this.colorG[index],
+                updates.b !== undefined ? updates.b : this.colorB[index],
+                updates.a !== undefined ? updates.a : this.colorA[index]
+            );
         }
     }
 
-    getMapSize() {
-        let maxX = 0;
-        let maxY = 0;
+    setPosition(index, x, y) {
+        if (index < 0 || index >= this.count) return;
+        this.x[index] = x;
+        this.y[index] = y;
+        this._sortDirty = true;
+        this._mapWidth = null;
+        this._mapHeight = null;
+    }
 
-        const xs = this.x, ys = this.y, ws = this.w, hs = this.h;
-        for (let i = 0; i < this.count; i++) {
-            const right = xs[i] + ws[i];
-            const bottom = ys[i] + hs[i];
-            if (right > maxX) maxX = right;
-            if (bottom > maxY) maxY = bottom;
+    setColor(index, r, g, b, a) {
+        if (index < 0 || index >= this.count) return;
+        this._ensureColorOverrides();
+        this.colorR[index] = r;
+        this.colorG[index] = g;
+        this.colorB[index] = b;
+        this.colorA[index] = a;
+    }
+
+    getMapSize() {
+        if (this._mapWidth === null) {
+            let maxX = 0;
+            let maxY = 0;
+
+            const xs = this.x, ys = this.y, ws = this.w, hs = this.h;
+            for (let i = 0; i < this.count; i++) {
+                const right = xs[i] + ws[i];
+                const bottom = ys[i] + hs[i];
+                if (right > maxX) maxX = right;
+                if (bottom > maxY) maxY = bottom;
+            }
+
+            this._mapWidth = maxX;
+            this._mapHeight = maxY;
         }
-        return { width: maxX, height: maxY };
+
+        return { width: this._mapWidth, height: this._mapHeight };
     }
 
     setScale(scaleX, scaleY) {
@@ -235,6 +329,9 @@ export default class TileMapRenderer {
         this.x = this.y = this.w = this.h = null;
         this.u1 = this.v1 = this.u2 = this.v2 = null;
         this.colorR = this.colorG = this.colorB = this.colorA = null;
+        this._yOrder = null;
+        this._frameConfigCache = null;
+        this._colorCache = null;
         this.count = 0;
     }
 }
