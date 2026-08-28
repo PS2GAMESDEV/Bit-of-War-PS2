@@ -3,7 +3,7 @@ import Physics from "../../../shared/lib/physics.js";
 import Player from "../../Player/index.js";
 import TileMapRenderer from "../../Tilemap/index.js";
 import Camera from "../../../shared/lib/camera.js";
-import { PLAYER_ONE, ASSETS_PATH, LEVEL_SEQUENCE } from "../../../shared/config/constants.js";
+import { PLAYER_ONE, ASSETS_PATH, LEVEL_SEQUENCE, GAME_SCALE } from "../../../shared/config/constants.js";
 import { bladeKratosConfig, spritesheetKratosConfig } from "../../Player/constants.js";
 
 export default class GameScene extends Scene {
@@ -88,7 +88,7 @@ export default class GameScene extends Scene {
         if (spawnRef && Number.isFinite(spawnRef.entityIndex)) {
             const entity = level.entities?.[spawnRef.entityIndex];
             if (entity && Number.isFinite(entity.x) && Number.isFinite(entity.y)) {
-                return { x: entity.x, y: entity.y };
+                return { x: entity.x * GAME_SCALE, y: entity.y * GAME_SCALE };
             }
             console.log("[GameScene] spawn referencia entidade inválida:", JSON.stringify(spawnRef));
         }

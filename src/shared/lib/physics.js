@@ -47,7 +47,10 @@ class Physics {
         const entry = this.bodies.get(id);
         if (!entry) return false;
 
-        entry.body.destroy();
+        if (entry.body && entry.body.isValid()) {
+            entry.body.setUserData(null);
+            entry.body.destroy();
+        }
         this.bodies.delete(id);
         return true;
     }
@@ -55,12 +58,27 @@ class Physics {
     clearLevel() {
         for (const [id, entry] of [...this.bodies]) {
             if (entry.persistent) continue;
-            entry.body.destroy();
+            if (entry.body && entry.body.isValid()) {
+                entry.body.setUserData(null);
+                entry.body.destroy();
+            }
             this.bodies.delete(id);
         }
-        
+
+        std.gc();
+    }
+
+    destroyAll() {
+        for (const [id, entry] of [...this.bodies]) {
+            if (entry.body && entry.body.isValid()) {
+                entry.body.setUserData(null);
+                entry.body.destroy();
+            }
+            this.bodies.delete(id);
+        }
         this.sensorListeners.clear();
         this.contactListeners.clear();
+        std.gc();
     }
 
     onContactEvent(callback) {
@@ -83,10 +101,14 @@ class Physics {
     }
 
     #notifyContact(shapeA, shapeB, began) {
-        if (!shapeA.isValid() || !shapeB.isValid()) return;
+        if (!shapeA || !shapeB || !shapeA.isValid() || !shapeB.isValid()) return;
 
-        const dataA = shapeA.getBody().getUserData();
-        const dataB = shapeB.getBody().getUserData();
+        const bodyA = shapeA.getBody();
+        const bodyB = shapeB.getBody();
+        if (!bodyA || !bodyB || !bodyA.isValid() || !bodyB.isValid()) return;
+
+        const dataA = bodyA.getUserData();
+        const dataB = bodyB.getUserData();
 
         for (const listener of this.contactListeners) {
             listener({ dataA, dataB, began, shapeA, shapeB });
@@ -103,10 +125,14 @@ class Physics {
     }
 
     #notifySensor(sensorShape, visitorShape, began) {
-        if (!sensorShape.isValid() || !visitorShape.isValid()) return;
+        if (!sensorShape || !visitorShape || !sensorShape.isValid() || !visitorShape.isValid()) return;
 
-        const sensorData = sensorShape.getBody().getUserData();
-        const visitorData = visitorShape.getBody().getUserData();
+        const sensorBody = sensorShape.getBody();
+        const visitorBody = visitorShape.getBody();
+        if (!sensorBody || !visitorBody || !sensorBody.isValid() || !visitorBody.isValid()) return;
+
+        const sensorData = sensorBody.getUserData();
+        const visitorData = visitorBody.getUserData();
 
         for (const listener of this.sensorListeners) {
             listener({ sensorData, visitorData, began, sensorShape, visitorShape });
@@ -126,9 +152,11 @@ class Physics {
         if (!this.debugMode) return;
 
         for (const { body } of this.bodies.values()) {
+            if (!body || !body.isValid()) continue;
             const isStatic = body.getType() === Box2D.STATIC_BODY;
 
             for (const shape of body.getShapes()) {
+                if (!shape || !shape.isValid()) continue;
                 const color = shape.isSensor()
                     ? this.debugColors.sensor
                     : (isStatic ? this.debugColors.static : this.debugColors.dynamic);
