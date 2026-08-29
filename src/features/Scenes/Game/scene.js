@@ -12,7 +12,7 @@ export default class GameScene extends Scene {
     manifest() {
         return {
             images: [
-                { path: "images/tiles/texture.png" },
+                { path: "images/tiles/texture.png", lock: true },
                 {
                     path: "images/sprites/kratos/spritesheet.png",
                     animConfig: spritesheetKratosConfig
@@ -56,7 +56,11 @@ export default class GameScene extends Scene {
         this.currentLevelPath = levelPath;
 
         if (!this.mapRenderer) {
-            this.mapRenderer = new TileMapRenderer(levelPath, this.assets);
+            this.mapRenderer = new TileMapRenderer(levelPath, this.assets,
+                {
+                    spritesheetKey: "images/tiles/texture.png",
+                    texturePath: "./assets/images/tiles/texture.json"
+                });
         } else {
             this.mapRenderer.rebuild(levelPath);
         }
@@ -118,6 +122,13 @@ export default class GameScene extends Scene {
 
     onDraw() {
         if (!this.mapRenderer || !this.player) return;
+
+        if (this._tileMapWasReady === undefined) this._tileMapWasReady = false;
+        const ready = this.mapRenderer.stats !== null;
+        if (ready && !this._tileMapWasReady) {
+            console.log("[GameScene] tilemap ficou pronto para renderizar");
+            this._tileMapWasReady = true;
+        }
 
         this.mapRenderer.render(this.camera.x, this.camera.y);
 

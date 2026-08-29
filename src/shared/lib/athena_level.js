@@ -173,8 +173,7 @@ function parseHeader(view, actualFileSize, path) {
         string: view.getUint32(44, true),
     };
 
-    const width = view.getInt32(48, true);
-    const height = view.getInt32(52, true);
+    const backgroundColor = view.getUint32(48, true);
 
     const sections = {};
     for (let i = 0; i < SECTION_NAMES.length; i++) {
@@ -186,7 +185,7 @@ function parseHeader(view, actualFileSize, path) {
         };
     }
 
-    return { headerSize, fileSize: declaredFileSize, counts, width, height, sections };
+    return { headerSize, fileSize: declaredFileSize, counts, backgroundColor, sections };
 }
 
 function validateSections(sections, counts, fileSize, path) {
@@ -381,7 +380,10 @@ export function loadAthenaLevel(path) {
     const strings = parseStringPool(view, header.sections.string, path);
     const assets = parseAssets(view, header.sections.asset, header.counts.asset, assetStride, strings, path);
 
-    const level = { width: header.width, height: header.height, assets };
+    const level = {
+        backgroundColor: `#${header.backgroundColor.toString(16).padStart(6, "0").toUpperCase()}`,
+        assets
+    };
 
     let tilesCache = null;
     let entitiesCache = null;
