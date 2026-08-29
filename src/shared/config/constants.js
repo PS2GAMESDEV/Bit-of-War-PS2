@@ -17,9 +17,9 @@ export const ASSETS_PATH = Object.freeze({
 })
 
 export const LEVEL_SEQUENCE = [
+    "./levels/BossHall1.athenaenv",
     "./levels/GaiaArm.athenaenv",
     "./levels/OlympusMntI01.athenaenv",
     "./levels/OlympusMntClimb.athenaenv",
     "./levels/Summit.athenaenv",
-    "./levels/BossHall1.athenaenv"
 ]

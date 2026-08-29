@@ -1,354 +1,217 @@
-import { GAME_SCALE } from "../../shared/config/constants.js";
+import NativeTileMap from "TileMap";
 import { loadAthenaLevel } from "../../shared/lib/athena_level.js";
-
-const DEFAULT_COLOR = 0x80808080;
+import { ASSETS_PATH, GAME_SCALE, SCREEN_WIDTH, SCREEN_HEIGHT } from "../../shared/config/constants.js";
 
 export default class TileMapRenderer {
     constructor(levelSource, assets, options = {}) {
-        this.options = options;
-        this.assets = assets;
-        this.scaleX = options.scaleX ?? options.scale ?? GAME_SCALE;
-        this.scaleY = options.scaleY ?? options.scale ?? GAME_SCALE;
+        this._scale = GAME_SCALE ?? 1;
 
-        const texturePath = options.texturePath;
-        this.spritesheetKey = options.spritesheetKey;
+        const texturePath = options.texturePath ?? ASSETS_PATH.TILES + "/texture.json";
+        this.spritesheetKey = options.spritesheetKey ?? "images/tiles/texture.png";
 
-        if (options.tileConfig) {
-            this.tileConfig = options.tileConfig;
-        } else if (typeof std !== "undefined" && std.loadFile) {
-            try {
-                const content = std.loadFile(texturePath);
-                this.tileConfig = std.parseExtJSON ? std.parseExtJSON(content) : JSON.parse(content);
-            } catch (e) {
-                this.tileConfig = { frames: {} };
-            }
-        } else {
-            this.tileConfig = { frames: {} };
-        }
+        this._tileConfig = std.parseExtJSON(std.loadFile(texturePath));
 
-        if (!this.tileConfig) this.tileConfig = { frames: {} };
-        if (!this.tileConfig.frames) this.tileConfig.frames = {};
-
-        this._buildFramesMap();
-
-        this.spritesheet = (assets && assets.images && assets.images[this.spritesheetKey]) ?
-            assets.images[this.spritesheetKey] :
-            (assets && assets[this.spritesheetKey] ? assets[this.spritesheetKey] : null);
-
-        if (!this.spritesheet && options.texture) {
-            this.spritesheet = options.texture;
-        }
-
+        this.spritesheet = assets.images[this.spritesheetKey];
         if (!this.spritesheet) {
             throw new Error(`[TileMapRenderer] textura "${this.spritesheetKey}" não encontrada nos assets carregados`);
         }
 
-        this._defaultColor = options.color ?? DEFAULT_COLOR;
-        this._frameConfigCache = new Map();
+        this._defaultColor = Color.new(128, 128, 128, 128);
+        this._colorCache = new Map();
+        this._cullPadding = options.cullPadding ?? 0;
 
-        this.cullingEnabled = options.enableCulling ?? true;
-        this.cullPadding = options.cullPadding ?? 0;
+        this.native = null;
+        this._buf = null;
+        this.level = null;
+
+        this._buildNative(levelSource);
+    }
+
+    _buildNative(levelSource) {
+        if (this.native) {
+            this.native.destroy();
+            this.native = null;
+            this._buf = null;
+        }
+        this._colorCache.clear();
 
         this.level = typeof levelSource === "string" ? loadAthenaLevel(levelSource) : levelSource;
 
-        this.nativeTileMap = null;
-        this._processMapData(this.level);
-    }
+        const { frames, tiles, mapWidth, mapHeight, tileWidth, tileHeight, missing } =
+            this._prepareLevelData(this.level, this._tileConfig);
 
-    _buildFramesMap() {
-        this._framesMap = new Map();
-        if (Array.isArray(this.tileConfig.frames)) {
-            for (const f of this.tileConfig.frames) {
-                if (f.filename) {
-                    this._framesMap.set(f.filename, f);
-                    const bare = f.filename.endsWith(".png") ? f.filename.slice(0, -4) : f.filename;
-                    this._framesMap.set(bare, f);
-                }
-            }
-        } else if (this.tileConfig.frames && typeof this.tileConfig.frames === "object") {
-            for (const [key, f] of Object.entries(this.tileConfig.frames)) {
-                this._framesMap.set(key, f);
-                const bare = key.endsWith(".png") ? key.slice(0, -4) : key;
-                this._framesMap.set(bare, f);
-            }
-        }
-    }
-
-    _resolveFrameKey(assetName) {
-        if (!assetName) return "";
-        const cleanName = String(assetName).trim();
-        return cleanName.endsWith(".png") ? cleanName : cleanName + ".png";
-    }
-
-    _getTileConfig(assetName) {
-        if (!assetName) return null;
-        let config = this._frameConfigCache.get(assetName);
-        if (config !== undefined) return config;
-
-        const key = this._resolveFrameKey(assetName);
-        const bareKey = key.endsWith(".png") ? key.slice(0, -4) : key;
-
-        config = this._framesMap.get(key) ||
-            this._framesMap.get(bareKey) ||
-            this._framesMap.get(assetName) ||
-            (this.tileConfig.frames ? this.tileConfig.frames[key] || this.tileConfig.frames[bareKey] || this.tileConfig.frames[assetName] : null) ||
-            null;
-
-        this._frameConfigCache.set(assetName, config);
-        return config;
-    }
-
-    _processMapData(level) {
-        if (this.nativeTileMap) {
-            this.nativeTileMap.destroy();
-            this.nativeTileMap = null;
+        if (missing.length > 0) {
+            console.log(`[TileMapRenderer] ${missing.length} asset(s) sem frame no atlas (primeiros: ${missing.slice(0, 5).join(", ")})`);
         }
 
-        const tiles = (level && level.tiles) ? level.tiles : [];
-        const total = tiles.length;
-
-        let tileWidth = this.options.tileWidth ?? this.options.tileSize ?? 0;
-        let tileHeight = this.options.tileHeight ?? this.options.tileSize ?? 0;
-
-        if (tileWidth <= 0 || tileHeight <= 0) {
-            for (const f of this._framesMap.values()) {
-                const w = f.sourceSize?.w ?? f.frame?.w ?? f.w;
-                const h = f.sourceSize?.h ?? f.frame?.h ?? f.h;
-                if (w > 0 && h > 0) {
-                    if (tileWidth <= 0) tileWidth = w;
-                    if (tileHeight <= 0) tileHeight = h;
-                    break;
-                }
-            }
-        }
-
-        if (tileWidth <= 0) tileWidth = 32;
-        if (tileHeight <= 0) tileHeight = tileWidth;
-
-        let maxTileX = 0;
-        let maxTileY = 0;
-        let isPixelCoords = false;
-
-        for (let i = 0; i < total; i++) {
-            const t = tiles[i];
-            if (t.x > maxTileX) maxTileX = t.x;
-            if (t.y > maxTileY) maxTileY = t.y;
-            if (tileWidth > 1 && (t.x % tileWidth === 0 || t.y % tileHeight === 0) && (t.x >= tileWidth || t.y >= tileHeight)) {
-                isPixelCoords = true;
-            }
-        }
-
-        const maxCol = isPixelCoords ? Math.floor(maxTileX / tileWidth) : Math.floor(maxTileX);
-        const maxRow = isPixelCoords ? Math.floor(maxTileY / tileHeight) : Math.floor(maxTileY);
-
-        let mapWidth = this.options.mapWidth ?? this.options.width ?? (level ? level.width : 0) ?? 0;
-        let mapHeight = this.options.mapHeight ?? this.options.height ?? (level ? level.height : 0) ?? 0;
-
-        if (mapWidth > (maxCol + 1) * 2 && mapWidth % tileWidth === 0 && isPixelCoords) {
-            mapWidth = Math.floor(mapWidth / tileWidth);
-        }
-        if (mapHeight > (maxRow + 1) * 2 && mapHeight % tileHeight === 0 && isPixelCoords) {
-            mapHeight = Math.floor(mapHeight / tileHeight);
-        }
-
-        mapWidth = Math.max(mapWidth, maxCol + 1, 1);
-        mapHeight = Math.max(mapHeight, maxRow + 1, 1);
-
-        const frameByConfig = new Map();
-        const framesList = [];
-
-        const getFrameId = (config) => {
-            let id = frameByConfig.get(config);
-            if (id !== undefined) return id;
-
-            id = framesList.length;
-            framesList.push(config);
-            frameByConfig.set(config, id);
-            return id;
-        };
-
-        const totalCells = mapWidth * mapHeight;
-        const initialTiles = new Uint16Array(totalCells);
-        initialTiles.fill(0xFFFF);
-
-        const missing = [];
-        let count = 0;
-
-        for (let i = 0; i < total; i++) {
-            const tile = tiles[i];
-            const config = this._getTileConfig(tile.assetName);
-
-            if (!config) {
-                missing.push(tile.assetName);
-                continue;
-            }
-
-            const frameId = getFrameId(config);
-            const col = isPixelCoords ? Math.round(tile.x / tileWidth) : Math.round(tile.x);
-            const row = isPixelCoords ? Math.round(tile.y / tileHeight) : Math.round(tile.y);
-
-            if (col >= 0 && col < mapWidth && row >= 0 && row < mapHeight) {
-                initialTiles[row * mapWidth + col] = frameId;
-                count++;
-            }
-        }
-
-        this._missingAssets = missing;
-        this._totalTiles = total;
-        this._generatedSprites = count;
-        this.count = count;
-        this._mapWidth = mapWidth;
-        this._mapHeight = mapHeight;
-        this._tileWidth = tileWidth;
-        this._tileHeight = tileHeight;
-
-        console.log("spritesheet typeof:", typeof this.spritesheet,
-            "é instância de Image?:", this.spritesheet instanceof Image,
-            "keys:", Object.keys(this.spritesheet || {}));
-
-        console.log("amostra de frames:", framesList.slice(0, 3).map(f => JSON.stringify(f)));
-
-        this.nativeTileMap = new TileMap({
-            mapWidth: mapWidth,
-            mapHeight: mapHeight,
-            tileWidth: tileWidth,
-            tileHeight: tileHeight,
-            scaleX: this.scaleX,
-            scaleY: this.scaleY,
-            image: this.spritesheet,
-            frames: [],
-            tiles: initialTiles,
-            cullPadding: this.cullPadding,
-            color: this._defaultColor
+        this.native = new NativeTileMap({
+            mapWidth,
+            mapHeight,
+            tileWidth,
+            tileHeight,
+            scale: this._scale,
+            frames,
+            tiles,
+            cullPadding: this._cullPadding,
         });
+
+        this._buf = this.native.getBuffers();
     }
 
     rebuild(levelSource) {
-        if (levelSource) {
-            this.level = typeof levelSource === "string" ? loadAthenaLevel(levelSource) : levelSource;
+        this._buildNative(levelSource !== undefined ? levelSource : this.level);
+    }
+
+    _prepareLevelData(level, tileConfig) {
+        if (!level.tiles || level.tiles.length === 0) {
+            throw new Error("[TileMapRenderer] level.tiles está vazio -- nada para montar o grid");
         }
-        this._frameConfigCache.clear();
-        this._processMapData(this.level);
+
+        const tileWidth = level.tileWidth ?? level.tilewidth ?? 16;
+        const tileHeight = level.tileHeight ?? level.tileheight ?? tileWidth;
+
+        let maxCol = 0;
+        let maxRow = 0;
+        for (const tile of level.tiles) {
+            const col = Math.round(tile.x / tileWidth);
+            const row = Math.round(tile.y / tileHeight);
+            if (col > maxCol) maxCol = col;
+            if (row > maxRow) maxRow = row;
+        }
+
+        const mapWidth = level.mapWidth ?? (maxCol + 1);
+        const mapHeight = level.mapHeight ?? (maxRow + 1);
+
+        if (mapWidth <= 0 || mapHeight <= 0 || tileWidth <= 0 || tileHeight <= 0) {
+            throw new Error(
+                `[TileMapRenderer] dimensões inválidas derivadas do level: ` +
+                `mapWidth=${mapWidth} mapHeight=${mapHeight} tileWidth=${tileWidth} tileHeight=${tileHeight}`
+            );
+        }
+
+        const frameIndexByName = new Map();
+        const frames = [];
+        const missing = [];
+
+        const resolveFrameId = (assetName) => {
+            const clean = (assetName || "").trim();
+            const key = clean.endsWith(".png") ? clean : clean + ".png";
+
+            let id = frameIndexByName.get(key);
+            if (id !== undefined) return id;
+
+            const config = tileConfig.frames?.[key];
+            if (!config) {
+                missing.push(assetName);
+                frameIndexByName.set(key, undefined);
+                return undefined;
+            }
+
+            id = frames.length;
+            frames.push(config);
+            frameIndexByName.set(key, id);
+            return id;
+        };
+
+        const tiles = new Uint16Array(mapWidth * mapHeight).fill(0xFFFF);
+
+        for (const tile of level.tiles) {
+            const col = Math.round(tile.x / tileWidth);
+            const row = Math.round(tile.y / tileHeight);
+            if (col < 0 || col >= mapWidth || row < 0 || row >= mapHeight) continue;
+
+            const frameId = resolveFrameId(tile.assetName);
+            if (frameId === undefined) continue;
+
+            tiles[row * mapWidth + col] = frameId;
+        }
+
+        return { frames, tiles, mapWidth, mapHeight, tileWidth, tileHeight, missing };
     }
 
-    render(offsetX = 0, offsetY = 0, zIndex = 0) {
-        if (!this.nativeTileMap) return;
-        this.nativeTileMap.render(offsetX, offsetY, zIndex);
+    _getCachedColor(packedColor) {
+        let color = this._colorCache.get(packedColor);
+        if (color === undefined) {
+            const r = packedColor & 0xFF;
+            const g = (packedColor >> 8) & 0xFF;
+            const b = (packedColor >> 16) & 0xFF;
+            const a = (packedColor >> 24) & 0xFF;
+            color = Color.new(r, g, b, a);
+            this._colorCache.set(packedColor, color);
+        }
+        return color;
     }
 
-    setTile(colOrIndex, rowOrFrameId, frameId) {
-        if (!this.nativeTileMap) return;
-        if (frameId !== undefined) {
-            return this.nativeTileMap.setTile(colOrIndex, rowOrFrameId, frameId);
-        } else {
-            return this.nativeTileMap.setTile(colOrIndex, rowOrFrameId);
+    render(offsetX = 0, offsetY = 0) {
+        const n = this.native.cull(offsetX, offsetY, SCREEN_WIDTH, SCREEN_HEIGHT);
+        if (n === 0) return;
+
+        const img = this.spritesheet;
+        const { x, y, w, h, u1, v1, u2, v2, color } = this._buf;
+
+        img.color = this._defaultColor;
+
+        let lastU1 = -1, lastV1 = -1, lastU2 = -1, lastV2 = -1;
+        let lastW = -1, lastH = -1, lastColor = -1;
+
+        for (let i = 0; i < n; i++) {
+            if (u1[i] !== lastU1 || v1[i] !== lastV1) {
+                img.startx = u1[i];
+                img.starty = v1[i];
+                lastU1 = u1[i];
+                lastV1 = v1[i];
+            }
+            if (u2[i] !== lastU2 || v2[i] !== lastV2) {
+                img.endx = u2[i];
+                img.endy = v2[i];
+                lastU2 = u2[i];
+                lastV2 = v2[i];
+            }
+            if (w[i] !== lastW) {
+                img.width = w[i];
+                lastW = w[i];
+            }
+            if (h[i] !== lastH) {
+                img.height = h[i];
+                lastH = h[i];
+            }
+            if (color[i] !== lastColor) {
+                img.color = this._getCachedColor(color[i]);
+                lastColor = color[i];
+            }
+
+            img.draw(x[i], y[i]);
         }
     }
 
-    getTile(colOrIndex, row) {
-        if (!this.nativeTileMap) return 0xFFFF;
-        if (row !== undefined) {
-            return this.nativeTileMap.getTile(colOrIndex, row);
-        } else {
-            return this.nativeTileMap.getTile(colOrIndex);
-        }
+    setTile(col, row, frameId) {
+        this.native.setTile(col, row, frameId);
     }
 
-    setTiles(dstCol, dstRow, width, height, data) {
-        if (!this.nativeTileMap) return;
-        return this.nativeTileMap.setTiles(dstCol, dstRow, width, height, data);
+    setTileByAssetName(col, row, assetName) {
+        throw new Error("[TileMapRenderer] setTileByAssetName ainda não implementado -- use setTile(col, row, frameId)");
     }
 
-    setColor(r, g, b, a) {
-        if (!this.nativeTileMap) return;
-        if (g !== undefined && b !== undefined) {
-            this.nativeTileMap.setColor(r, g, b, a);
-        } else {
-            this.nativeTileMap.setColor(r);
-        }
-    }
-
-    setTileColor(col, row, color) {
-        if (!this.nativeTileMap) return;
-        return this.nativeTileMap.setTileColor(col, row, color);
+    setTileColor(col, row, r, g, b, a = 255) {
+        const packed = (r & 0xFF) | ((g & 0xFF) << 8) | ((b & 0xFF) << 16) | ((a & 0xFF) << 24);
+        this.native.setTileColor(col, row, packed);
     }
 
     getMapSize() {
-        if (this.nativeTileMap) {
-            const native = this.nativeTileMap.getMapSize();
-            return {
-                ...native,
-                width: native.pixelWidth,
-                height: native.pixelHeight,
-                mapWidth: native.width,
-                mapHeight: native.height,
-            };
-        }
-        return {
-            width: this._mapWidth * this._tileWidth * this.scaleX,
-            height: this._mapHeight * this._tileHeight * this.scaleY,
-            mapWidth: this._mapWidth,
-            mapHeight: this._mapHeight,
-            tileWidth: this._tileWidth,
-            tileHeight: this._tileHeight,
-            pixelWidth: this._mapWidth * this._tileWidth * this.scaleX,
-            pixelHeight: this._mapHeight * this._tileHeight * this.scaleY
-        };
-    }
-
-    setScale(scaleX, scaleY) {
-        this.scaleX = scaleX;
-        this.scaleY = scaleY !== undefined ? scaleY : scaleX;
-        this.rebuild();
-    }
-
-    get width() {
-        return this.nativeTileMap ? this.nativeTileMap.width : this._mapWidth;
-    }
-
-    get height() {
-        return this.nativeTileMap ? this.nativeTileMap.height : this._mapHeight;
-    }
-
-    get tileWidth() {
-        return this.nativeTileMap ? this.nativeTileMap.tileWidth : this._tileWidth;
-    }
-
-    get tileHeight() {
-        return this.nativeTileMap ? this.nativeTileMap.tileHeight : this._tileHeight;
-    }
-
-    get pixelWidth() {
-        return this.nativeTileMap ? this.nativeTileMap.pixelWidth : (this._mapWidth * this._tileWidth * this.scaleX);
-    }
-
-    get pixelHeight() {
-        return this.nativeTileMap ? this.nativeTileMap.pixelHeight : (this._mapHeight * this._tileHeight * this.scaleY);
+        return this.native.getMapSize();
     }
 
     get stats() {
-        return this.nativeTileMap ? this.nativeTileMap.stats : null;
-    }
-
-    get native() {
-        return this.nativeTileMap;
-    }
-
-    get tileMap() {
-        return this.nativeTileMap;
+        return this.native.stats;
     }
 
     destroy() {
-        if (this.nativeTileMap) {
-            this.nativeTileMap.destroy();
-            this.nativeTileMap = null;
+        if (this.native) {
+            this.native.destroy();
+            this.native = null;
         }
-        this.tileConfig = null;
+        this._buf = null;
         this.spritesheet = null;
-        this._framesMap = null;
-        this._frameConfigCache = null;
-        this.count = 0;
+        this._colorCache = null;
     }
 }
-
-export { TileMapRenderer };

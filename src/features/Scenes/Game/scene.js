@@ -80,7 +80,7 @@ export default class GameScene extends Scene {
         }
 
         const mapSize = this.mapRenderer.getMapSize();
-        this.camera.setBounds(0, mapSize.width, 0, mapSize.height);
+        this.camera.setBounds(0, mapSize.pixelWidth, 0, mapSize.pixelHeight);
 
         const target = this.player.getCameraTarget();
         this.camera.snapTo(target.x, target.y);
