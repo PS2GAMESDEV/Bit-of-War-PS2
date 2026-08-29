@@ -63,24 +63,39 @@ export default class TileMapRenderer {
     }
 
     _prepareLevelData(level, tileConfig) {
-        if (!level.tiles || level.tiles.length === 0) {
+        const levelTiles = level.tiles;
+        if (!levelTiles || levelTiles.length === 0) {
             throw new Error("[TileMapRenderer] level.tiles está vazio -- nada para montar o grid");
         }
 
         const tileWidth = level.tileWidth ?? level.tilewidth ?? 16;
         const tileHeight = level.tileHeight ?? level.tileheight ?? tileWidth;
+        const tileCount = levelTiles.length;
 
-        let maxCol = 0;
-        let maxRow = 0;
-        for (const tile of level.tiles) {
-            const col = Math.round(tile.x / tileWidth);
-            const row = Math.round(tile.y / tileHeight);
-            if (col > maxCol) maxCol = col;
-            if (row > maxRow) maxRow = row;
+        let mapWidth = level.mapWidth;
+        let mapHeight = level.mapHeight;
+
+        let cachedCols = null;
+        let cachedRows = null;
+        if (mapWidth === undefined || mapHeight === undefined) {
+            cachedCols = new Int32Array(tileCount);
+            cachedRows = new Int32Array(tileCount);
+
+            let maxCol = 0;
+            let maxRow = 0;
+            for (let i = 0; i < tileCount; i++) {
+                const tile = levelTiles[i];
+                const col = Math.round(tile.x / tileWidth);
+                const row = Math.round(tile.y / tileHeight);
+                cachedCols[i] = col;
+                cachedRows[i] = row;
+                if (col > maxCol) maxCol = col;
+                if (row > maxRow) maxRow = row;
+            }
+
+            if (mapWidth === undefined) mapWidth = maxCol + 1;
+            if (mapHeight === undefined) mapHeight = maxRow + 1;
         }
-
-        const mapWidth = level.mapWidth ?? (maxCol + 1);
-        const mapHeight = level.mapHeight ?? (maxRow + 1);
 
         if (mapWidth <= 0 || mapHeight <= 0 || tileWidth <= 0 || tileHeight <= 0) {
             throw new Error(
@@ -90,6 +105,7 @@ export default class TileMapRenderer {
         }
 
         const frameIndexByName = new Map();
+        const missingKeys = new Set();
         const frames = [];
         const missing = [];
 
@@ -97,17 +113,19 @@ export default class TileMapRenderer {
             const clean = (assetName || "").trim();
             const key = clean.endsWith(".png") ? clean : clean + ".png";
 
-            let id = frameIndexByName.get(key);
-            if (id !== undefined) return id;
+            if (missingKeys.has(key)) return undefined;
+
+            const cachedId = frameIndexByName.get(key);
+            if (cachedId !== undefined) return cachedId;
 
             const config = tileConfig.frames?.[key];
             if (!config) {
+                missingKeys.add(key);
                 missing.push(assetName);
-                frameIndexByName.set(key, undefined);
                 return undefined;
             }
 
-            id = frames.length;
+            const id = frames.length;
             frames.push(config);
             frameIndexByName.set(key, id);
             return id;
@@ -115,9 +133,10 @@ export default class TileMapRenderer {
 
         const tiles = new Uint16Array(mapWidth * mapHeight).fill(0xFFFF);
 
-        for (const tile of level.tiles) {
-            const col = Math.round(tile.x / tileWidth);
-            const row = Math.round(tile.y / tileHeight);
+        for (let i = 0; i < tileCount; i++) {
+            const tile = levelTiles[i];
+            const col = cachedCols ? cachedCols[i] : Math.round(tile.x / tileWidth);
+            const row = cachedRows ? cachedRows[i] : Math.round(tile.y / tileHeight);
             if (col < 0 || col >= mapWidth || row < 0 || row >= mapHeight) continue;
 
             const frameId = resolveFrameId(tile.assetName);
