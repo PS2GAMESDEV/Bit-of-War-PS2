@@ -1,9 +1,9 @@
-const PLAYER_CONTROLS = {
-    JUMP: Pads.CROSS,
-    ATK: Pads.SQUARE,
-    BLOCK: Pads.R1,
-    OPEN_CHEST: Pads.CIRCLE
-}
+const PLAYER_CONTROLS = Object.freeze({
+    JUMP: Gamepad.CROSS,
+    ATK: Gamepad.SQUARE,
+    BLOCK: Gamepad.R1,
+    INTERACT: Gamepad.CIRCLE
+});
 
 export {
     PLAYER_CONTROLS

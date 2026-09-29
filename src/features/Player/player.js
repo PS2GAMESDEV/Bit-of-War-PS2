@@ -1,336 +1,236 @@
-import { animationSprite, setAnimation } from "../../shared/lib/animation.js";
-import Assets from "../../shared/lib/assets.js";
-import Collision from "../../shared/lib/collision.js";
-import { ASSETS_PATH, GAME_SCALE, PLAYER_ANIMATIONS, PLAYER_ONE_PORT } from "../../shared/lib/constants.js";
-import Movement2D from "./movement.js";
+import { GAME_SCALE, LAYER, PLAYER_ANIMATIONS as ANIM, PLAYER_MOVEMENT as MOVE } from "../../shared/lib/constants.js";
+import { PLAYER_CONTROLS as KEY } from "../../shared/config/controls.js";
 
-function Player(options) {
-    options = options || {};
+const SIZE = 16 * GAME_SCALE;
+const HALF = SIZE / 2;
+const BLADE_WIDTH = 48 * GAME_SCALE;
+const PIXEL = 2 * GAME_SCALE;
 
-    this.PLAYER_PORT = options.PLAYER_PORT || PLAYER_ONE_PORT;
-    this._bounds = { left: 0, top: 0, right: 0, bottom: 0 };
-    this.scale = GAME_SCALE || 1;
-    this.HITBOX_WIDTH = 16 * this.scale;
-    this.movement = new Movement2D({
-        initialX: options.initialX || 0,
-        initialY: options.initialY || 0,
-        playerPort: this.PLAYER_PORT
-    });
+// The ladder probe and the door test are the body inset by this.
+const INSET = 4;
 
-    this.colliderId = null;
-    this.isAttacking = false;
-    this.isOpeningChest = false;
+/**
+ * Kratos. Position, gravity, floors and walls are handled by a dynamic body of
+ * Collision.World; this class only turns the pad into velocities.
+ * `pos` is the horizontal center / top of the body (what the camera follows).
+ */
+export class Player {
+    constructor({ sheets, sfx }) {
+        this.sprite = new Sprite.Instance(sheets.kratos, { clip: ANIM.IDLE_R, scale: GAME_SCALE, origin: [0.5, 0] });
+        this.blade = new Sprite.Instance(sheets.blade, { scale: GAME_SCALE });
+        this.blade.on("end", () => { this.attacking = false; });
 
-    this.spritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/spritesheet.png", { lock: true })
-    this.bladeSpritesheet = Assets.image(ASSETS_PATH.SPRITES + "/kratos/blade.png", { lock: true })
+        this.sfxJump = sfx.jump;
+        this.sfxBlades = sfx.blades;
 
-    this.hud = Assets.image(ASSETS_PATH.SPRITES + "/kratos/hud.png");
-    this.hud.width *= this.scale;
-    this.hud.height *= this.scale;
-    this.powerupSpace = Assets.image(ASSETS_PATH.SPRITES + "/kratos/powerup.png")
-    this.powerupSpace.width *= this.scale;
-    this.powerupSpace.height *= this.scale;
+        this.pos = { x: 0, y: 0 };
+        this.body = null;
+        this.probe = null;
+        this.world = null;
+        this.ladders = new Set();
 
-    this.sfxBlades = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/blades.adp");
+        this.facingLeft = false;
+        this.canMove = true;
+        this.attacking = false;
+        this.openingChest = false;
+        this.climbing = false;
+        this.climbDir = 0;
+        this.jumps = MOVE.JUMPS;
+    }
 
-    this.debugColor = Color.new(255, 0, 0, 100);
+    // Puts the player in `world` (a new level clears it).
+    attach(world, x, y) {
+        this.world = world;
+        this.body = world.add({
+            type: "dynamic",
+            x, y,
+            w: SIZE, h: SIZE,
+            layer: LAYER.PLAYER,
+            mask: LAYER.SOLID,
+            maxSpeedY: MOVE.MAX_FALL_SPEED
+        });
 
-    this._initAnimations();
-    this._initBladeAnimation();
-    this._initCollider();
-}
-Player.prototype.shouldRemove = () => false;
+        // A sensor that follows the body: the world tells which ladders it
+        // overlaps, so nothing is queried (or allocated) per frame.
+        this.probe = world.add({
+            x, y,
+            w: SIZE - 2 * INSET, h: SIZE - 2 * INSET,
+            sensor: true,
+            layer: LAYER.PROBE,
+            mask: LAYER.LADDER
+        });
+        this.ladders.clear();
+        world.onEnter = (a, b) => {
+            const ladder = a.layer === LAYER.LADDER ? a : b;
+            if (ladder.layer === LAYER.LADDER) this.ladders.add(ladder);
+        };
+        world.onExit = (a, b) => {
+            this.ladders.delete(a.layer === LAYER.LADDER ? a : b);
+        };
 
-Player.prototype._initCollider = function () {
-    this.colliderId = Collision.register({
-        type: 'rect',
-        x: this.movement.position.x,
-        y: this.movement.position.y,
-        w: this.spritesheet.frameWidth * this.scale,
-        h: this.spritesheet.frameHeight * this.scale,
-        layer: 'player',
-        mask: ['enemy', 'ground', 'wall', 'platform', 'chest', 'ladder', 'door'],
-        tags: ['player', 'damageable'],
-        data: { entity: this }
-    });
-}
-Player.prototype._initAnimations = function () {
-    this.spritesheet.startx = 0;
-    this.spritesheet.endx = 16;
-    this.spritesheet.starty = 0;
-    this.spritesheet.endy = 16;
+        this.canMove = true;
+        this.climbing = false;
+        this.climbDir = 0;
+        this.jumps = MOVE.JUMPS;
+        this.attacking = false;
+        this.blade.stop();
+        this._syncPos();
+    }
 
-    this.spritesheet.framesPerRow = 6;
-    this.spritesheet.totalFrames = 12;
-    this.spritesheet.frameWidth = 16;
-    this.spritesheet.frameHeight = 16;
+    update(dt, pad) {
+        const body = this.body;
 
-    this.spritesheet.fps = 6;
-    this.spritesheet.scale = this.scale
-    this.spritesheet.animations = {
-        [PLAYER_ANIMATIONS.CLIMB]: {
-            start: 0,
-            end: 1
-        },
-        [PLAYER_ANIMATIONS.ATK_L]: {
-            start: 2,
-            end: 2
-        },
-        [PLAYER_ANIMATIONS.ATK_R]: {
-            start: 3,
-            end: 3
-        },
-        [PLAYER_ANIMATIONS.BLOCK_L]: {
-            start: 4,
-            end: 4
-        },
-        [PLAYER_ANIMATIONS.BLOCK_R]: {
-            start: 5,
-            end: 5
-        },
-        [PLAYER_ANIMATIONS.JUMP_L]: {
-            start: 6,
-            end: 6
-        },
-        [PLAYER_ANIMATIONS.JUMP_R]: {
-            start: 7,
-            end: 7
-        },
-        [PLAYER_ANIMATIONS.WALK_L]: {
-            start: 8,
-            end: 9
-        },
-        [PLAYER_ANIMATIONS.WALK_R]: {
-            start: 10,
-            end: 11
-        },
-        [PLAYER_ANIMATIONS.IDLE_L]: {
-            start: 8,
-            end: 8
-        },
-        [PLAYER_ANIMATIONS.IDLE_R]: {
-            start: 10,
-            end: 10
+        if (this.canMove) this._input(pad, body);
+        else body.vx = 0;
+
+        this.world.step(dt);
+        if (body.onGround) this.jumps = MOVE.JUMPS;
+
+        if (this.canMove) {
+            this._checkLadder(pad, body);
+            if (pad.justPressed(KEY.ATK) && !this.attacking) this._attack();
         }
+
+        if (this.openingChest && (this.attacking || body.vx !== 0 || !body.onGround || pad.pressed(KEY.BLOCK))) {
+            this.openingChest = false;
+        }
+
+        this._syncPos();
+        this._animate(pad, body);
     }
 
-    setAnimation(this.spritesheet, PLAYER_ANIMATIONS.IDLE_R, false);
-}
-Player.prototype._initBladeAnimation = function () {
-    var self = this;
+    _input(pad, body) {
+        if (this.climbing) {
+            this.climbDir = pad.anyPressed(Gamepad.UP | Gamepad.TRIANGLE) ? -1
+                : pad.anyPressed(Gamepad.DOWN | Gamepad.CROSS) ? 1 : 0;
+            body.vy = this.climbDir * MOVE.CLIMB_SPEED;
 
-    this.bladeSpritesheet.totalFrames = 7;
-    this.bladeSpritesheet.frameWidth = 48;
-    this.bladeSpritesheet.frameHeight = 16;
-    this.bladeSpritesheet.framesPerRow = 7;
-    this.bladeSpritesheet.fps = 16;
-    this.bladeSpritesheet.loop = false;
-    this.bladeSpritesheet.startFrame = 0;
-    this.bladeSpritesheet.endFrame = 6;
-    this.bladeSpritesheet.currentFrame = 0;
-    this.bladeSpritesheet.playing = false;
-    this.bladeSpritesheet.scale = this.scale;
-
-    this.bladeSpritesheet.onAnimationEnd = function () {
-        self.bladeSpritesheet.playing = false;
-        self.isAttacking = false;
-    };
-};
-Player.prototype.startAttack = function () {
-    if (this.isAttacking) return;
-
-    this.isAttacking = true;
-    this.bladeSpritesheet.playing = true;
-    this.bladeSpritesheet.currentFrame = 0;
-    this.bladeSpritesheet.frameTimer = 0;
-
-    if (!this.sfxBlades.playing()) this.sfxBlades.play();
-};
-Player.prototype.getBounds = function () {
-    const scaledWidth = this.spritesheet.frameWidth * this.scale;
-    const scaledHeight = this.spritesheet.frameHeight * this.scale;
-    const halfWidth = scaledWidth / 2;
-
-    this._bounds.left = this.movement.position.x - halfWidth;
-    this._bounds.top = this.movement.position.y;
-    this._bounds.right = this.movement.position.x + halfWidth;
-    this._bounds.bottom = this.movement.position.y + scaledHeight;
-
-    return this._bounds;
-}
-Player.prototype.updateAnimation = function (deltaTime) {
-    this.spritesheet.deltaTime = deltaTime;
-    animationSprite(this.spritesheet);
-
-    if (this.bladeSpritesheet.playing) {
-        this.bladeSpritesheet.deltaTime = deltaTime;
-        animationSprite(this.bladeSpritesheet);
-    }
-}
-Player.prototype.handleAnimation = function () {
-    if (this.isOpeningChest) {
-        setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, false);
-        this.spritesheet.currentFrame = this.spritesheet.startFrame;
-        this.spritesheet.frameTimer = 0;
-        return;
-    }
-
-    if (this.movement.isClimbingState()) {
-        const isMovingOnLadder = this.movement.velocity.y !== 0;
-        const isClimbAnim = this.spritesheet.currentAnimation === PLAYER_ANIMATIONS.CLIMB;
-
-        if (isMovingOnLadder) {
-            if (!isClimbAnim) {
-                setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, true);
-            } else {
-                this.spritesheet.loop = true; 
+            const jump = pad.justPressed(KEY.JUMP);
+            if (jump || pad.anyPressed(Gamepad.LEFT | Gamepad.RIGHT)) {
+                this._stopClimbing();
+                if (jump) {
+                    this.jumps = MOVE.JUMPS;
+                    this._jump(body);
+                }
             }
-        } else {
-            if (!isClimbAnim) {
-                setAnimation(this.spritesheet, PLAYER_ANIMATIONS.CLIMB, false);
+            return;
+        }
+
+        const defending = pad.pressed(KEY.BLOCK) && body.onGround;
+
+        if (pad.pressed(Gamepad.RIGHT)) this.facingLeft = false;
+        else if (pad.pressed(Gamepad.LEFT)) this.facingLeft = true;
+
+        body.vx = defending ? 0
+            : pad.pressed(Gamepad.RIGHT) ? MOVE.SPEED
+            : pad.pressed(Gamepad.LEFT) ? -MOVE.SPEED : 0;
+
+        if (pad.justPressed(KEY.JUMP) && !defending) this._jump(body);
+    }
+
+    _jump(body) {
+        if (this.jumps === 0) return;
+
+        this.sfxJump.play();
+        body.vy = -MOVE.JUMP_SPEED;
+        this.jumps--;
+    }
+
+    _attack() {
+        this.attacking = true;
+        this.blade.play("swing", { restart: true });
+        this.sfxBlades.play();
+    }
+
+    _checkLadder(pad, body) {
+        const ladder = this.ladders.values().next().value;
+
+        if (this.climbing) {
+            const landed = this.climbDir > 0 && body.onGround;
+            if (!ladder || landed) this._stopClimbing();
+            return;
+        }
+        if (!ladder) return;
+
+        const up = pad.pressed(Gamepad.UP);
+        const down = pad.pressed(Gamepad.DOWN);
+        const grounded = body.onGround;
+
+        if ((up && grounded && ladder.y < body.y) ||
+            (down && !grounded && body.y < ladder.y + ladder.h) ||
+            (!grounded && (up || down))) {
+            this._startClimbing(ladder.x + ladder.w / 2);
+        }
+    }
+
+    _startClimbing(ladderX) {
+        const body = this.body;
+
+        this.climbing = true;
+        this.climbDir = 0;
+        body.gravityScale = 0;
+        body.vx = 0;
+        body.vy = 0;
+        body.setPosition(ladderX - HALF, body.y);
+    }
+
+    _stopClimbing() {
+        this.climbing = false;
+        this.climbDir = 0;
+        this.body.gravityScale = 1;
+        this.body.vy = 0;
+    }
+
+    _syncPos() {
+        this.pos.x = this.body.x + HALF;
+        this.pos.y = this.body.y;
+        this.probe.setPosition(this.body.x + INSET, this.body.y + INSET);
+    }
+
+    _animate(pad, body) {
+        const sprite = this.sprite;
+        const left = this.facingLeft;
+
+        if (this.openingChest) {
+            sprite.frame = 0;
+            return;
+        }
+
+        if (this.climbing) {
+            if (sprite.clip !== ANIM.CLIMB) sprite.play(ANIM.CLIMB);
+
+            if (this.climbDir !== 0) {
+                if (sprite.paused) sprite.resume();
             } else {
-                this.spritesheet.loop = false;
+                sprite.pause();
             }
-        }
-        return;
-    }
-
-    if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_L);
-    else if ((this.movement.isJumping() || this.movement.isDoubleJumping()) && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.JUMP_R);
-    else if (this.movement.isDefending() && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.BLOCK_L);
-    else if (this.movement.isDefending() && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.BLOCK_R);
-    else if (this.movement.isMoving() && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.WALK_L);
-    else if (this.movement.isMoving() && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.WALK_R);
-    else if (this.movement.isIdle() && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.IDLE_L);
-    else if (this.movement.isIdle() && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.IDLE_R);
-
-    if (this.isAttacking && this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.ATK_L);
-    else if (this.isAttacking && !this.movement.facingLeft) setAnimation(this.spritesheet, PLAYER_ANIMATIONS.ATK_R);
-}
-Player.prototype.updateCollider = function (bounds) {
-    if (!this.colliderId) return;
-
-    Collision.update(this.colliderId, {
-        x: bounds.left,
-        y: bounds.top,
-        w: bounds.right - bounds.left,
-        h: bounds.bottom - bounds.top
-    });
-}
-Player.prototype.drawCollisionBox = function (cameraX = 0, cameraY = 0) {
-    const bounds = this.getBounds();
-
-    Draw.quad(
-        bounds.left - cameraX, bounds.top - cameraY,
-        bounds.right - cameraX, bounds.top - cameraY,
-        bounds.right - cameraX, bounds.bottom - cameraY,
-        bounds.left - cameraX, bounds.bottom - cameraY,
-        this.debugColor
-    );
-}
-
-Player.prototype.draw = function (cameraX = 0, cameraY = 0) {
-    if (this.shouldRemove()) return;
-
-    const scaledPlayerWidth = this.spritesheet.frameWidth * this.scale;
-    const scaledPlayerHeight = this.spritesheet.frameHeight * this.scale;
-    const scaledBladeWidth = this.bladeSpritesheet.frameWidth * this.scale;
-    const pixelOffset = 2 * this.scale;
-
-    const screenX = this.movement.position.x - cameraX;
-    const screenY = this.movement.position.y - cameraY;
-
-    if (this.bladeSpritesheet.playing) {
-        let bladeX, bladeY;
-        bladeY = screenY + (scaledPlayerHeight / 2) - pixelOffset;
-
-        if (this.movement.facingLeft) {
-            bladeX = screenX - (scaledPlayerWidth / 2) - scaledBladeWidth + pixelOffset;
-            this.bladeSpritesheet.facingLeft = false;
-        } else {
-            bladeX = screenX + (scaledPlayerWidth / 2) - pixelOffset;
-            this.bladeSpritesheet.facingLeft = true;
+            return;
         }
 
-        this.bladeSpritesheet.draw(bladeX, bladeY);
-    }
+        let clip = null;
 
-    this.spritesheet.draw(
-        screenX - (scaledPlayerWidth / 2),
-        screenY
-    );
-
-    const hudX = 16 * this.scale;
-    this.hud.draw(hudX, 0);
-    this.powerupSpace.draw(hudX + 14 * this.scale, this.hud.height / 2 + this.powerupSpace.height / 4);
-}
-Player.prototype.update = function (deltaTime) {
-    this.movement.update(deltaTime);
-
-    if (this.movement.canMove) {
-        if (!this.movement.isClimbingState()) {
-            this.movement.checkGroundCollision(this.colliderId, this.getBounds());
-            this.movement.checkWallCollision(this.colliderId, this.getBounds());
+        if (body.vy < 0) clip = left ? ANIM.JUMP_L : ANIM.JUMP_R;
+        else if (body.onGround) {
+            if (pad.pressed(KEY.BLOCK)) clip = left ? ANIM.BLOCK_L : ANIM.BLOCK_R;
+            else if (body.vx !== 0) clip = left ? ANIM.WALK_L : ANIM.WALK_R;
+            else clip = left ? ANIM.IDLE_L : ANIM.IDLE_R;
         }
-        this.movement.checkLadderCollision(this.colliderId, this.getBounds());
+
+        if (this.attacking) clip = left ? ANIM.ATK_L : ANIM.ATK_R;
+        if (clip) sprite.play(clip);
     }
 
-    const bounds = this.getBounds();
+    draw() {
+        const { x, y } = this.pos;
 
-    if (this.movement.isAttacking() && !this.isAttacking) {
-        this.startAttack();
+        if (this.attacking) {
+            this.blade.flipX = !this.facingLeft;
+            this.blade.draw(
+                this.facingLeft ? x - HALF - BLADE_WIDTH + PIXEL : x + HALF - PIXEL,
+                y + HALF - PIXEL
+            );
+        }
+
+        this.sprite.draw(x, y);
     }
-
-    if (this.isOpeningChest && (!this.movement.isIdle() || this.isAttacking)) {
-        this.isOpeningChest = false;
-    }
-
-    this.updateAnimation(deltaTime);
-    this.updateCollider(bounds);
-    this.handleAnimation();
-};
-Player.prototype.destroy = function () {
-    if (this.colliderId !== null) {
-        Collision.unregister(this.colliderId);
-        this.colliderId = null;
-    }
-
-    Assets.free(this.spritesheet);
-    Assets.free(this.bladeSpritesheet);
-    Assets.free(this.hud);
-    Assets.free(this.powerupSpace);
-    Assets.free(this.sfxBlades);
-
-    this.spritesheet = null;
-    this.bladeSpritesheet = null;
-    this.hud = null;
-    this.powerupSpace = null;
-    this.sfxBlades = null;
-
-    this.movement.destroy();
-    this.movement = null;
-    this.debugColor = null;
 }
-
-Player.prototype.reposition = function (x, y) {
-    this.movement.position.x = x;
-    this.movement.position.y = y;
-    this.movement.velocity.x = 0;
-    this.movement.velocity.y = 0;
-    this.movement.onGround = false;
-    this.movement.isClimbing = false;
-    this.movement.canClimb = false;
-    
-    this.isAttacking = false;
-    this.bladeSpritesheet.playing = false;
-};
-
-Player.prototype.getFeetPosition = function () {
-    const bounds = this.getBounds();
-    return {
-        x: this.movement.position.x,
-        y: bounds.bottom
-    };
-};
-
-export default Player;

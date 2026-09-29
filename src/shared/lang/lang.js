@@ -71,3 +71,6 @@ export const LANG = {
         back: "ATRÁS"
     }
 };
+
+// Every glyph the menus can print, rasterized while the scene loads.
+export const GLYPHS = Font.ASCII + [...new Set(Object.values(LANG).flatMap(strings => Object.values(strings).join("")))].join("");

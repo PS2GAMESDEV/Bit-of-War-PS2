@@ -1,222 +1,208 @@
-import { ASSETS_PATH } from "../shared/lib/constants.js";
-import { LANG } from "src/shared/lang/lang.js";
-import Assets from "../shared/lib/assets.js";
-import Gamepad from "src/shared/lib/gamepad.js";
-
+import { LANG, GLYPHS } from "../shared/lang/lang.js";
+import { centeredX, scaled } from "../shared/lib/ui.js";
 import { Cutscene01 } from "./cutscene01.js";
-import Game from "./Game.js";
 
-let font = Assets.font("assets/font/font.ttf");
+const GRAY = Color.new(72, 72, 72);
+const RED = Color.new(255, 0, 0);
+const WHITE = Color.new(255, 255, 255);
 
-export function Menu(sceneManager) {
-    this.sceneManager = sceneManager;
+const LANGS = ["en", "br", "sp"];
+const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
-    this.pad = Gamepad.player(0);
+export class Menu extends Scene {
+    static root = "assets";
 
-    this.gray = Color.new(72, 72, 72);
-    this.red = Color.new(255, 0, 0);
-    this.white = Color.new(255, 255, 255);
-
-    this.musicMenu = Assets.sound(ASSETS_PATH.SOUNDS + "/music/menu.wav");
-    this.selectedSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selected.adp");
-    this.selectorSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selector.adp");
-
-    this.musicMenu.loop = true;
-
-    this.bgMain = Assets.image(ASSETS_PATH.IMAGES + "/ui/main.png", { scale: 2 });
-    this.bgLogo = Assets.image(ASSETS_PATH.IMAGES + "/ui/logo.png", { scale: 2 });
-
-    this.selected = 0;
-    this.currentScreen = null;
-
-    this.music = 10;
-    this.sfx = 10;
-    this.vibration = true;
-
-    this.currentLang = "en";
-    this.langs = ["en", "br", "sp"];
-    this.langIndex = this.langs.indexOf(this.currentLang);
-
-    this._initScreens();
-    this._changeScreen("main");
-    this.musicMenu.play();
-}
-
-Menu.prototype.t = function (key) {
-    return LANG[this.currentLang][key] || key;
-};
-
-Menu.prototype._drawText = function (x, y, text, color, scale = 0.7) {
-    font.color = color;
-    font.scale = scale;
-    const textX = x === 0 ? 320 - font.getTextSize(text).width / 2 : x;
-    font.print(textX, y, text);
-};
-
-Menu.prototype._changeScreen = function (name, newSelected = 0) {
-    this.currentScreen = this.screens[name];
-    this.selected = newSelected;
-};
-
-Menu.prototype._updateSelection = function (max) {
-    const old = this.selected;
-    if (this.pad.justPressed(Pads.UP)) this.selected--;
-    if (this.pad.justPressed(Pads.DOWN)) this.selected++;
-    this.selected = Math.min(Math.max(this.selected, 0), max);
-    if (old !== this.selected) {
-        this.selectorSFX.play();
-    }
-};
-
-Menu.prototype._initScreens = function () {
-    const self = this;
-
-    this.screens = {
-        main: {
-            update() {
-                self._updateSelection(3);
-                if (self.pad.justPressed(Pads.CROSS)) {
-                    if (self.selected === 0) {
-                        self.sceneManager.changeScene(Cutscene01, Game);
-                    }
-                    if (self.selected === 1) self._changeScreen("load");
-                    if (self.selected === 2) self._changeScreen("options");
-                    if (self.selected === 3) self._changeScreen("extras");
-                }
-            },
-            draw() {
-                self.bgMain.draw(48, 16);
-                self._drawText(0, 244, self.t("newgame"), self.selected === 0 ? self.red : self.white);
-                self._drawText(0, 264, self.t("load"), self.selected === 1 ? self.red : self.white);
-                self._drawText(0, 284, self.t("options"), self.selected === 2 ? self.red : self.white);
-                self._drawText(0, 304, self.t("extra"), self.selected === 3 ? self.red : self.white);
-            }
+    static assets = {
+        images: {
+            main: "images/ui/main.png",
+            logo: "images/ui/logo.png"
         },
-
-        load: {
-            update() {
-                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("main", 1);
-            },
-            draw() {
-                self.bgLogo.draw(0, 0);
-                self._drawText(0, 205, self.t("LOAD"), self.gray, 0.8);
-            }
+        fonts: {
+            text: { path: "font/font.ttf", size: 18, preload: GLYPHS },
+            header: { path: "font/font.ttf", size: 21, preload: GLYPHS }
         },
-
-        options: {
-            update() {
-                self._updateSelection(4);
-                let dir = 0;
-                if (self.pad.justPressed(Pads.LEFT)) dir = -1;
-                if (self.pad.justPressed(Pads.RIGHT)) dir = 1;
-
-                if (dir !== 0) {
-                    if (self.selected === 0) {
-                        self.music = Math.min(Math.max(self.music + dir, 0), 10);
-                        Sound.setVolume(self.music * 10);
-                    }
-                    if (self.selected === 1) {
-                        self.sfx = Math.min(Math.max(self.sfx + dir, 0), 10);
-                        self.selectorSFX.volume = self.sfx * 10;
-                        self.selectedSFX.volume = self.sfx * 10;
-                    }
-                    if (self.selected === 3) {
-                        self.langIndex = (self.langIndex + dir + self.langs.length) % self.langs.length;
-                        self.currentLang = self.langs[self.langIndex];
-                        self.selectedSFX.play();
-                    }
-                }
-
-                if (self.pad.justPressed(Pads.CROSS)) {
-                    if (self.selected === 2) self._changeScreen("controls");
-                    if (self.selected === 4) self._changeScreen("main", 2);
-                }
-            },
-            draw() {
-                self.bgLogo.draw(0, 0);
-                self._drawText(0, 205, self.t("OPTIONS"), self.gray, 0.8);
-                self._drawText(0, 245, self.t("music") + self.music, self.selected === 0 ? self.red : self.white);
-                self._drawText(0, 265, self.t("sfx") + self.sfx, self.selected === 1 ? self.red : self.white);
-                self._drawText(0, 285, self.t("controller"), self.selected === 2 ? self.red : self.white);
-                self._drawText(0, 305, self.t("language"), self.selected === 3 ? self.red : self.white);
-                self._drawText(0, 345, self.t("back"), self.selected === 4 ? self.red : self.white);
-            }
-        },
-
-        controls: {
-            update() {
-                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("options", 2);
-            },
-            draw() {
-                self.bgLogo.draw(0, 0);
-                self._drawText(0, 205, self.t("controller"), self.gray, 0.8);
-                self._drawText(0, 245, "ATTACK: SQUARE", self.white);
-                self._drawText(0, 265, "JUMP: CROSS", self.white);
-                self._drawText(0, 285, "MOVE: < >", self.white);
-                self._drawText(0, 305, "MAGIC: L2", self.white);
-                self._drawText(0, 325, "BLOCK: L1", self.white);
-            }
-        },
-
-        extras: {
-            update() {
-                self._updateSelection(3);
-                if (self.pad.justPressed(Pads.CROSS)) {
-                    if (self.selected === 1) self._changeScreen("challenges");
-                    if (self.selected === 2) self._changeScreen("credits");
-                    if (self.selected === 3) self._changeScreen("main", 3);
-                }
-            },
-            draw() {
-                self.bgLogo.draw(0, 0);
-                self._drawText(0, 205, "EXTRAS", self.gray, 0.8);
-                self._drawText(0, 245, self.t("gauntlet"), self.selected === 0 ? self.red : self.white);
-                self._drawText(0, 265, self.t("challenges"), self.selected === 1 ? self.red : self.white);
-                self._drawText(0, 285, self.t("credits"), self.selected === 2 ? self.red : self.white);
-                self._drawText(0, 325, self.t("back"), self.selected === 3 ? self.red : self.white);
-            }
-        },
-
-        challenges: {
-            update() {
-                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("extras", 1);
-            },
-            draw() {
-                self._drawText(0, 205, self.t("EXTRAS"), self.gray, 0.8);
-            }
-        },
-
-        credits: {
-            update() {
-                if (self.pad.justPressed(Pads.CROSS)) self._changeScreen("extras", 2);
-            },
-            draw() {
-                self.bgLogo.draw(0, 0);
-                self._drawText(0, 200, "PROGRAMMING", self.red, 0.8);
-                self._drawText(0, 225, "GIBRAN KHALIL", self.white);
-                self._drawText(0, 245, "EDUARDO SOUSA", self.white);
-                self._drawText(0, 265, "DEV NOOB", self.white);
-                self._drawText(0, 305, "ORIGINALLY CREATED BY", self.red, 0.7);
-                self._drawText(0, 330, "HOLMODE GAMES", self.white);
-            }
+        music: { menu: { path: "sounds/music/menu.wav", loop: true } },
+        sfx: {
+            selected: "sounds/sfx/selected.adp",
+            selector: "sounds/sfx/selector.adp"
         }
     };
-};
 
-Menu.prototype.update = function (dt) {
-    this.pad = Gamepad.player(0);
-    this.currentScreen.update();
-};
+    enter({ images, fonts, music }) {
+        this.pad = Gamepad.player(0);
+        this.text = fonts.text;
+        this.header = fonts.header;
+        this.mainSize = scaled(images.main, 2);
+        this.logoSize = scaled(images.logo, 2);
 
-Menu.prototype.draw = function () {
-    this.currentScreen.draw();
-};
+        this.selected = 0;
+        this.music = 10;
+        this.sfx = 10;
+        this.langIndex = 0;
+        this.lang = LANGS[0];
 
-Menu.prototype.unload = function () {
-    this.musicMenu.pause();
-    Assets.free(this.musicMenu);
-    Assets.free(this.bgMain);
-    Assets.free(this.bgLogo);
-    Assets.free(this.selectedSFX);
-    Assets.free(this.selectorSFX);
-};
+        this.screens = this._screens();
+        this._go("main");
+        music.menu.play();
+    }
+
+    exit() {
+        this.assets.music.menu.stop();
+    }
+
+    update() {
+        if (!Scene.busy) this.screen.update();
+    }
+
+    draw() {
+        this.screen.draw();
+    }
+
+    _t(key) {
+        return LANG[this.lang][key] || key;
+    }
+
+    _logo(title) {
+        this.assets.images.logo.draw(0, 0, this.logoSize);
+        this._print(205, title, GRAY, this.header);
+    }
+
+    _go(name, selected = 0) {
+        this.screen = this.screens[name];
+        this.selected = selected;
+    }
+
+    _print(y, text, color, font = this.text) {
+        font.color = color;
+        font.print(centeredX(font, text), y, text);
+    }
+
+    // Prints `labels` one per row, highlighting the selected one.
+    _list(y, step, labels) {
+        for (let i = 0; i < labels.length; i++) {
+            this._print(y + i * step, labels[i], i === this.selected ? RED : WHITE);
+        }
+    }
+
+    _move(last) {
+        const previous = this.selected;
+        if (this.pad.justPressed(Gamepad.UP)) this.selected--;
+        if (this.pad.justPressed(Gamepad.DOWN)) this.selected++;
+        this.selected = clamp(this.selected, 0, last);
+        if (previous !== this.selected) this.assets.sfx.selector.play();
+    }
+
+    _screens() {
+        const menu = this;
+        const { images, sfx } = this.assets;
+        const confirm = () => this.pad.justPressed(Gamepad.CROSS);
+        return {
+            main: {
+                update() {
+                    menu._move(3);
+                    if (!confirm()) return;
+                    if (menu.selected === 0) Scene.go(Cutscene01);
+                    else menu._go(["", "load", "options", "extras"][menu.selected]);
+                },
+                draw() {
+                    images.main.draw(48, 16, menu.mainSize);
+                    menu._list(244, 20, [menu._t("newgame"), menu._t("load"), menu._t("options"), menu._t("extra")]);
+                }
+            },
+
+            load: {
+                update() {
+                    if (confirm()) menu._go("main", 1);
+                },
+                draw() {
+                    menu._logo(menu._t("LOAD"));
+                }
+            },
+
+            options: {
+                update() {
+                    menu._move(4);
+
+                    const dir = (menu.pad.justPressed(Gamepad.RIGHT) ? 1 : 0) - (menu.pad.justPressed(Gamepad.LEFT) ? 1 : 0);
+                    if (dir !== 0) {
+                        if (menu.selected === 0) {
+                            menu.music = clamp(menu.music + dir, 0, 10);
+                            Sound.setVolume(menu.music * 10);
+                        } else if (menu.selected === 1) {
+                            menu.sfx = clamp(menu.sfx + dir, 0, 10);
+                            Sound.setSfxVolume(menu.sfx * 10);
+                        } else if (menu.selected === 3) {
+                            menu.langIndex = (menu.langIndex + dir + LANGS.length) % LANGS.length;
+                            menu.lang = LANGS[menu.langIndex];
+                            sfx.selected.play();
+                        }
+                    }
+
+                    if (!confirm()) return;
+                    if (menu.selected === 2) menu._go("controls");
+                    if (menu.selected === 4) menu._go("main", 2);
+                },
+                draw() {
+                    menu._logo(menu._t("OPTIONS"));
+                    menu._list(245, 20, [
+                        menu._t("music") + menu.music,
+                        menu._t("sfx") + menu.sfx,
+                        menu._t("controller"),
+                        menu._t("language")
+                    ]);
+                    menu._print(345, menu._t("back"), menu.selected === 4 ? RED : WHITE);
+                }
+            },
+
+            controls: {
+                update() {
+                    if (confirm()) menu._go("options", 2);
+                },
+                draw() {
+                    menu._logo(menu._t("controller"));
+                    ["ATTACK: SQUARE", "JUMP: CROSS", "MOVE: < >", "MAGIC: L2", "BLOCK: L1"]
+                        .forEach((line, i) => menu._print(245 + i * 20, line, WHITE));
+                }
+            },
+
+            extras: {
+                update() {
+                    menu._move(3);
+                    if (!confirm()) return;
+                    if (menu.selected === 1) menu._go("challenges");
+                    if (menu.selected === 2) menu._go("credits");
+                    if (menu.selected === 3) menu._go("main", 3);
+                },
+                draw() {
+                    menu._logo("EXTRAS");
+                    menu._list(245, 20, [menu._t("gauntlet"), menu._t("challenges"), menu._t("credits")]);
+                    menu._print(325, menu._t("back"), menu.selected === 3 ? RED : WHITE);
+                }
+            },
+
+            challenges: {
+                update() {
+                    if (confirm()) menu._go("extras", 1);
+                },
+                draw() {
+                    menu._print(205, menu._t("EXTRAS"), GRAY, menu.header);
+                }
+            },
+
+            credits: {
+                update() {
+                    if (confirm()) menu._go("extras", 2);
+                },
+                draw() {
+                    images.logo.draw(0, 0, menu.logoSize);
+                    menu._print(200, "PROGRAMMING", RED, menu.header);
+                    menu._print(225, "GIBRAN KHALIL", WHITE);
+                    menu._print(245, "EDUARDO SOUSA", WHITE);
+                    menu._print(265, "DEV NOOB", WHITE);
+                    menu._print(305, "ORIGINALLY CREATED BY", RED);
+                    menu._print(330, "HOLMODE GAMES", WHITE);
+                }
+            }
+        };
+    }
+}

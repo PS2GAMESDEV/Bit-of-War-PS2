@@ -1,100 +1,122 @@
-import Assets from "../shared/lib/assets.js";
-import Gamepad from "../shared/lib/gamepad.js";
-import { ASSETS_PATH } from "../shared/lib/constants.js";
-
+import { scaled } from "../shared/lib/ui.js";
 import Game from "./Game.js";
 
-export function Cutscene01(sceneManager, next) {
-    this.sceneManager = sceneManager;
-    this.next = next;
+const FRAME_COUNT = 51;
+const CHUNK = 6;
+const FRAME_TIME = 30;
+const FRAME_RATE = 60;
+const FAST_FRAME_RATE = 360;
+const SCROLL_SPEED = 30;
+const FAST_SCROLL_SPEED = 120;
+const SCROLL_END = -672;
+const END_WAIT = 3;
 
-    this.music = Assets.sound(ASSETS_PATH.SOUNDS + "/music/level1.ogg");
+export class Cutscene01 extends Scene {
+    static root = "assets";
 
-    this.textScroll = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/c01/text01.png", { scale: 2 });
-    this.textEnd = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/c01/text02.png", { scale: 2 });
-    this.textMask = Assets.image(ASSETS_PATH.IMAGES + "/cutscenes/black.png", { scale: 2 });
-    this.arrow = Assets.image(ASSETS_PATH.IMAGES + "/ui/arrow.png", { scale: 1.5 });
+    static assets = {
+        images: {
+            scroll: "images/cutscenes/c01/text01.png",
+            end: "images/cutscenes/c01/text02.png",
+            mask: "images/cutscenes/black.png",
+            arrow: "images/ui/arrow.png"
+        },
+        music: { level1: "sounds/music/level1.ogg" }
+    };
 
-    this.frames = [];
-    for (let i = 0; i < 51; i++) {
-        this.frames.push(
-            Assets.image(`${ASSETS_PATH.IMAGES}/cutscenes/c01/${i}.png`, { optimize: true, scale: 2 })
-        );
-    }
+    // The 51 frames are streamed in chunks: the one on screen and the next
+    // are resident, the ones already shown are released.
+    async enter({ images, music }) {
+        this.images = images;
+        this.scrollSize = scaled(images.scroll, 2);
+        this.endSize = scaled(images.end, 2);
+        this.maskSize = scaled(images.mask, 2);
+        this.arrowSize = scaled(images.arrow, 1.5);
 
-    this.frameSpeed = 30;
-    this.frameIndex = 0;
-    this.frameTimer = 0;
-
-    this.textScrollY = 448;
-
-    this.scrollSpeed = 30;
-    this.fastScrollSpeed = 120;
-
-    this.normalFrameSpeed = 60;
-    this.fastFrameSpeed = 360;
-
-    this.waitTimer = 0;
-    this.startWait = false;
-    this.waitTime = 3;
-
-    this.fast = false;
-
-    this.music.play();
-}
-
-Cutscene01.prototype.update = function (dt) {
-    this.fast = Gamepad.player(0).pressed(Pads.CROSS);
-
-    this.textScrollY -= (this.fast ? this.fastScrollSpeed : this.scrollSpeed) * dt;
-
-    this.frameTimer += (this.fast ? this.fastFrameSpeed : this.normalFrameSpeed) * dt;
-
-    if (this.frameTimer >= this.frameSpeed) {
+        this.chunks = [];
+        this.sizes = [];
+        this.frameIndex = 0;
         this.frameTimer = 0;
-        if (this.frameIndex < this.frames.length - 1) {
-            this.frameIndex++;
-        }
-    }
-
-    if (this.textScrollY <= -672 && !this.startWait) {
-        this.startWait = true;
+        this.scrollY = 448;
         this.waitTimer = 0;
+        this.fast = false;
+        this.ending = false;
+
+        this._load(0);
+        this._load(1);
+        Scene.preload(Game);
+        await this.chunks[0].ready;
+
+        music.level1.play();
     }
 
-    if (this.startWait) {
-        this.waitTimer += dt;
-        if (this.waitTimer >= this.waitTime) {
-            this.sceneManager.resumeScene(this.next);
+    exit() {
+        this.assets.music.level1.stop();
+    }
+
+    update(dt) {
+        this.fast = Gamepad.player(0).pressed(Gamepad.CROSS);
+
+        this.scrollY -= (this.fast ? FAST_SCROLL_SPEED : SCROLL_SPEED) * dt;
+        this.frameTimer += (this.fast ? FAST_FRAME_RATE : FRAME_RATE) * dt;
+
+        // Waits (keeping the timer) while the next frame is still loading.
+        if (this.frameTimer >= FRAME_TIME && this.frameIndex < FRAME_COUNT - 1 && this._frame(this.frameIndex + 1)) {
+            this.frameTimer = 0;
+            this._advance();
+        }
+
+        if (this.scrollY <= SCROLL_END) this.ending = true;
+
+        if (this.ending) {
+            this.waitTimer += dt;
+            if (this.waitTimer >= END_WAIT && !Scene.busy) Scene.go(Game);
         }
     }
-};
 
-Cutscene01.prototype.draw = function () {
-    this.textScroll.draw(48, this.textScrollY);
-    this.textMask.draw(48, 0);
+    draw() {
+        const { images } = this;
 
-    if (this.startWait) {
-        this.textEnd.draw(48, 16);
-    } else {
-        this.frames[this.frameIndex].draw(48, 16);
+        images.scroll.draw(48, this.scrollY, this.scrollSize);
+        images.mask.draw(48, 0, this.maskSize);
+
+        if (this.ending) {
+            images.end.draw(48, 16, this.endSize);
+        } else {
+            const frame = this._frame(this.frameIndex);
+            if (frame) frame.draw(48, 16, this.sizes[this.frameIndex]);
+        }
+
+        if (this.fast) images.arrow.draw(640 - 48, 448 - 32, this.arrowSize);
     }
 
-    if (this.fast) {
-        this.arrow.draw(640 - 48, 448 - 32);
-    }
-};
+    _load(chunk) {
+        if (chunk * CHUNK >= FRAME_COUNT || this.chunks[chunk] !== undefined) return;
 
-Cutscene01.prototype.unload = function () {
-    this.music.pause();
-    Assets.free(this.music);
-    Assets.free(this.textScroll);
-    Assets.free(this.textEnd);
-    Assets.free(this.textMask);
-    Assets.free(this.arrow);
+        const frames = {};
+        const end = Math.min((chunk + 1) * CHUNK, FRAME_COUNT);
+        for (let i = chunk * CHUNK; i < end; i++) frames[`f${i}`] = `images/cutscenes/c01/${i}.png`;
 
-    for (let i = 0; i < this.frames.length; i++) {
-        Assets.free(this.frames[i]);
+        this.chunks[chunk] = this.acquire({ images: frames });
     }
-    this.frames = [];
-};
+
+    // The frame's Image once its chunk has loaded, else null.
+    _frame(index) {
+        const group = this.chunks[(index / CHUNK) | 0];
+        if (!group || !group.done) return null;
+
+        const image = group.assets.images[`f${index}`];
+        this.sizes[index] ??= scaled(image, 2);
+        return image;
+    }
+
+    _advance() {
+        this.frameIndex++;
+        if (this.frameIndex % CHUNK !== 0) return;
+
+        const chunk = this.frameIndex / CHUNK;
+        this.chunks[chunk - 1].release();
+        this.chunks[chunk - 1] = null;
+        this._load(chunk + 1);
+    }
+}

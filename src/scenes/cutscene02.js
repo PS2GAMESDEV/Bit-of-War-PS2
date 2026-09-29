@@ -1,72 +1,65 @@
-import { ASSETS_PATH } from "../shared/lib/constants.js";
-import Assets from "../shared/lib/assets.js";
-import Gamepad from "../shared/lib/gamepad.js";
+import { scaled } from "../shared/lib/ui.js";
 
+const FRAME_COUNT = 12;
+const LAST = FRAME_COUNT - 1;
+const FRAME_TIME = 12 / 60;
+const ARROW_BLINK = 20 / 60;
 
-export function Cutscene02(sceneManager, next) {
-    this.sceneManager = sceneManager;
-    this.next = next;
+const frameImages = {};
+for (let i = 0; i < FRAME_COUNT; i++) frameImages[`f${i}`] = `images/cutscenes/c02/${i}.png`;
 
-    this.selectorSFX = Assets.sound(ASSETS_PATH.SOUNDS + "/sfx/selector.adp");
-    this.arrow = Assets.image(ASSETS_PATH.IMAGES + "/ui/arrow.png", { scale: 1.5 });
+// Frames 4-7 wait for CROSS; the others advance by themselves.
+const waitsForInput = frame => frame >= 4 && frame <= 7;
 
-    this.frames = [];
-    for (let i = 0; i < 12; i++) {
-        this.frames.push(
-            Assets.image(`${ASSETS_PATH.IMAGES}/cutscenes/c02/${i}.png`, { optimize: true, scale: 2 })
-        );
-    }
+export class Cutscene02 extends Scene {
+    static root = "assets";
 
-    this.currentFrame = 0;
-    this.timer = 0;
-    this.frameDuration = 12;
-    this.lastFrame = this.frames.length - 1;
-    this.arrowTimer = 0;
-    this.showArrow = true;
-    this.arrowSpeed = 20;
-}
+    static assets = {
+        images: { arrow: "images/ui/arrow.png", ...frameImages },
+        sfx: { selector: "sounds/sfx/selector.adp" }
+    };
 
-Cutscene02.prototype.update = function (dt) {
-    this.timer++;
+    enter({ images }) {
+        this.frames = Array.from({ length: FRAME_COUNT }, (_, i) => images[`f${i}`]);
+        this.frameSizes = this.frames.map(frame => scaled(frame, 2));
+        this.arrowSize = scaled(images.arrow, 1.5);
 
-    if (this.timer >= this.frameDuration) {
+        this.current = 0;
         this.timer = 0;
-        if (this.currentFrame < 4) {
-            this.currentFrame++;
-        } else if (this.currentFrame > 7 && this.currentFrame < this.lastFrame) {
-            this.currentFrame++;
-        }
-    }
-
-    if (Gamepad.player(0).justPressed(Pads.CROSS) && this.currentFrame >= 4 && this.currentFrame <= 7) {
-        if (this.currentFrame < this.lastFrame) {
-            if (this.currentFrame < 7) this.selectorSFX.play();
-            this.currentFrame++;
-        }
-    }
-
-    this.arrowTimer++;
-    if (this.arrowTimer >= this.arrowSpeed) {
         this.arrowTimer = 0;
-        this.showArrow = !this.showArrow;
+        this.showArrow = true;
+        this.done = false;
     }
 
-    if (this.currentFrame === this.lastFrame) {
-        this.sceneManager.resumeScene(this.next);
+    update(dt) {
+        if (this.done) return;
+
+        this.timer += dt;
+        if (this.timer >= FRAME_TIME) {
+            this.timer = 0;
+            if (this.current < 4 || (this.current > 7 && this.current < LAST)) this.current++;
+        }
+
+        if (waitsForInput(this.current) && Gamepad.player(0).justPressed(Gamepad.CROSS)) {
+            if (this.current < 7) this.assets.sfx.selector.play();
+            this.current++;
+        }
+
+        this.arrowTimer += dt;
+        if (this.arrowTimer >= ARROW_BLINK) {
+            this.arrowTimer = 0;
+            this.showArrow = !this.showArrow;
+        }
+
+        if (this.current === LAST) {
+            this.done = true;
+            Scene.pop();
+        }
     }
-};
 
-Cutscene02.prototype.draw = function () {
-    this.frames[this.currentFrame].draw(48, 16);
+    draw() {
+        this.frames[this.current].draw(48, 16, this.frameSizes[this.current]);
 
-    if (this.currentFrame >= 4 && this.currentFrame <= 7 && this.showArrow) {
-        this.arrow.draw(562, 419);
+        if (this.showArrow && waitsForInput(this.current)) this.assets.images.arrow.draw(562, 419, this.arrowSize);
     }
-};
-
-Cutscene02.prototype.unload = function () {
-    Assets.free(this.selectorSFX);
-    Assets.free(this.arrow);
-    this.frames.forEach(f => Assets.free(f));
-    this.frames = [];
-};
+}

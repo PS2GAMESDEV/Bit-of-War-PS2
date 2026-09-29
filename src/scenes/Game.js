@@ -1,250 +1,237 @@
-import Camera from "../features/Camera/camera.js";
-import { ScreenFlash } from "../features/Objects/Chest/chest.js";
-import TileMapRenderer from "../features/Map/renderer.js";
-import Player from "../features/Player/player.js";
-import Collision from "../shared/lib/collision.js";
-import { ASSETS_PATH, GAME_SCALE, PLAYER_ONE_PORT, DOOR_CONFIG } from "../shared/lib/constants.js";
-import Gamepad from "../shared/lib/gamepad.js";
+import { Level } from "../features/Map/level.js";
+import { Player } from "../features/Player/player.js";
+import { PLAYER_CONTROLS as KEY } from "../shared/config/controls.js";
+import {
+    ASSETS_PATH, DOOR_CONFIG, GAME_SCALE, LAYER,
+    PLAYER_ANIMATIONS as ANIM, PLAYER_MOVEMENT as MOVE
+} from "../shared/lib/constants.js";
+import { scaled } from "../shared/lib/ui.js";
 import { Cutscene02 } from "./cutscene02.js";
 
-const GAME_ROOMS = Object.freeze({
-    world1: {
-        sequence: ["GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json", "Summit.json", "BossHall1.json", "Boss1.json"],
-    }
-});
+const LEVELS = Object.freeze([
+    "GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json",
+    "Summit.json", "BossHall1.json", "Boss1.json"
+]);
 
-const GAME_STATE = Object.freeze({
-    PLAYING: 0,
-    TRANSITIONING: 1,
-    COMPLETED: 2
-});
-
-export default function Game(sceneManager) {
-    this.sceneManager = sceneManager;
-
-    this.currentWorld = 'world1';
-    this.state = GAME_STATE.PLAYING;
-    this.transitionTimer = 0;
-    this.fadeAlpha = 0;
-    this.deltaTime = 0;
-
-    this.tileMap = null;
-    this.player = null;
-    this.camera = null;
-    this.mapData = null;
-
-    this.levelSequence = GAME_ROOMS[this.currentWorld].sequence;
-    this.levelIndex = 0;
-
-    this._doLoadLevel();
-}
-
-Game.prototype._cleanupCurrentLevel = function () {
-    if (!this.tileMap) return;
-
-    for (const obj of this.tileMap.objects) {
-        obj.destroy?.();
-    }
-
-    this.tileMap.destroy();
-
-    const statics = [...Collision.staticColliders.values()];
-    for (const c of statics) Collision.unregister(c.id);
-
-    const dynamics = [...Collision.colliders.values()];
-    for (const c of dynamics) {
-        if (!c.tags.includes('player')) Collision.unregister(c.id);
-    }
-
-    this.tileMap = null;
-};
-
-const CUTSCENES_MAP = Object.freeze({
+// Level index -> cutscene shown before that level.
+const CUTSCENES = Object.freeze({
     5: Cutscene02
 });
 
-Game.prototype._loadLevel = function () {
-    if (this.levelIndex >= this.levelSequence.length) {
-        this.state = GAME_STATE.COMPLETED;
-        return;
+const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2 });
+
+const FADE_OUT = Color.new(0, 0, 0, 128);
+const FADE_CLEAR = Color.new(0, 0, 0, 0);
+const FLASH_TIME = 0.1;
+const CAMERA_LERP = 6;
+const INSET = 4;
+
+const grid = { frameWidth: 16, frameHeight: 16 };
+
+const enemy = name => ({
+    path: `images/enemies/${name}.png`,
+    ...grid,
+    clips: { idle: "0", walk: { frames: "0-1", fps: 6 } }
+});
+
+const chest = name => ({ path: `images/objects/${name}.png`, ...grid });
+
+const readMap = async index =>
+    JSON.parse(await Thread.readFileAsync(`${ASSETS_PATH.MAPS}/${LEVELS[index]}`, { text: true }));
+
+export default class Game extends Scene {
+    static root = "assets";
+
+    static assets = {
+        images: {
+            hud: "images/sprites/kratos/hud.png",
+            powerup: "images/sprites/kratos/powerup.png"
+        },
+        sheets: {
+            atlas: "images/tiles/texture.json",
+            kratos: {
+                path: "images/sprites/kratos/spritesheet.png",
+                ...grid,
+                clips: {
+                    [ANIM.CLIMB]: { frames: "0-1", fps: 6 },
+                    [ANIM.ATK_L]: "2",
+                    [ANIM.ATK_R]: "3",
+                    [ANIM.BLOCK_L]: "4",
+                    [ANIM.BLOCK_R]: "5",
+                    [ANIM.JUMP_L]: "6",
+                    [ANIM.JUMP_R]: "7",
+                    [ANIM.WALK_L]: { frames: "8-9", fps: 6 },
+                    [ANIM.WALK_R]: { frames: "10-11", fps: 6 },
+                    [ANIM.IDLE_L]: "8",
+                    [ANIM.IDLE_R]: "10"
+                }
+            },
+            blade: {
+                path: "images/sprites/kratos/blade.png",
+                frameWidth: 48,
+                frameHeight: 16,
+                clips: { swing: { frames: "0-6", fps: 16, mode: "once" } }
+            },
+            torch: {
+                path: "images/objects/spriteTorch.png",
+                ...grid,
+                clips: { burn: { frames: "0-5", fps: 12 } }
+            },
+            lifeChest: chest("obLifeChest"),
+            magicChest: chest("obMagicChest"),
+            harpie: enemy("enHarpie"),
+            minotaur: enemy("enMinotaur"),
+            skelbow: enemy("enSkelbow"),
+            undead: enemy("enUndead")
+        },
+        sfx: {
+            blades: "sounds/sfx/blades.adp",
+            chests: "sounds/sfx/chests.adp",
+            jump: "sounds/sfx/jump.adp"
+        }
+    };
+
+    async enter(assets) {
+        const { images, sheets } = assets;
+
+        // Textures used every frame stay resident in VRAM.
+        sheets.atlas.image.lock();
+        sheets.kratos.image.lock();
+        sheets.blade.image.lock();
+
+        this.hud = images.hud;
+        this.powerup = images.powerup;
+        this.hudSize = scaled(images.hud, GAME_SCALE);
+        this.powerupSize = scaled(images.powerup, GAME_SCALE);
+        this.drawHud = () => this._drawHud();
+
+        this.world = new Collision.World({ gravity: { x: 0, y: MOVE.GRAVITY }, autoStep: false });
+        this.camera = new Camera2D.Camera({ current: true });
+        this.player = new Player(assets);
+
+        this.level = null;
+        this.levelIndex = 0;
+        this.debug = false;
+        this.state = STATE.PLAYING;
+
+        this._build(await readMap(0));
     }
 
-    const CutsceneClass = CUTSCENES_MAP[this.levelIndex];
-    if (CutsceneClass) {
-        this._cleanupCurrentLevel();
-        this._pausedForCutscene = true;
-        this.sceneManager.changeScene(CutsceneClass, this);
-        return;
+    update(dt) {
+        if (this.state === STATE.COMPLETED || !this.level) return;
+
+        const pad = Gamepad.player(0);
+
+        if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
+        if (pad.justPressed(KEY.INTERACT)) this._interact();
+
+        this.player.update(dt, pad);
     }
 
-    this._pausedForCutscene = false;
-    this._doLoadLevel();
-    if (this.player) this.player.movement.canMove = true;
-};
+    draw() {
+        if (!this.level) return;
 
-Game.prototype._doLoadLevel = function () {
-    this._cleanupCurrentLevel();
+        this.level.render(this.camera);
+        this.player.draw();
 
-    const mapFile = this.levelSequence[this.levelIndex];
-    const mapContent = std.loadFile(ASSETS_PATH.MAPS + "/" + mapFile);
-    
-    if (!mapContent) {
-        throw new Error("Could not load map file: " + mapFile);
+        if (this.debug) this.world.drawDebug();
+
+        Camera2D.screenSpace(this.drawHud);
     }
 
-    this.mapData = std.parseExtJSON(mapContent);
-
-    this.tileMap = new TileMapRenderer(this.mapData, {
-        scaleX: GAME_SCALE,
-        scaleY: GAME_SCALE,
-    });
-
-    this.tileMap.buildColliders(Collision);
-
-    const spawnPoint = this._findSpawnPoint();
-
-    if (!this.player) {
-        this.player = new Player({
-            initialX: spawnPoint.x,
-            initialY: spawnPoint.y,
-            scale: GAME_SCALE
-        });
-    } else {
-        this.player.reposition(spawnPoint.x, spawnPoint.y);
+    // A cutscene was pushed over the game: free the level, hand the screen back.
+    pause() {
+        this._unload();
+        Camera2D.main.makeCurrent();
     }
 
-    if (!this.camera) {
-        this.camera = new Camera();
-    }
-    this.camera.setBounds(0, this.tileMap.getMapSize().width, 0, this.tileMap.getMapSize().height);
-
-    this.state = GAME_STATE.PLAYING;
-    this.transitionTimer = 0;
-    this.fadeAlpha = 0;
-};
-
-Game.prototype._findSpawnPoint = function () {
-    if (this.mapData.tiles.spriteKratos && this.mapData.tiles.spriteKratos.length > 0) {
-        return {
-            x: (this.mapData.tiles.spriteKratos[0].x * GAME_SCALE) + 16,
-            y: this.mapData.tiles.spriteKratos[0].y * GAME_SCALE
-        };
-    }
-    return { x: 100, y: 100 };
-};
-
-Game.prototype._checkDoorInteraction = function () {
-    if (this.state !== GAME_STATE.PLAYING) return;
-
-    const gamepad = Gamepad.player(PLAYER_ONE_PORT);
-    if (!gamepad.justPressed(Pads.CIRCLE)) return;
-
-    const bounds = this.player.getBounds();
-    const doorCheck = Collision.checkArea({
-        type: 'rect',
-        x: bounds.left + 4,
-        y: bounds.top + 4,
-        w: (bounds.right - bounds.left) - 8,
-        h: (bounds.bottom - bounds.top) - 8,
-        mask: ['door'],
-        excludeId: this.player.colliderId
-    });
-
-    if (doorCheck.length > 0) {
-        this._startTransition();
-    }
-};
-
-Game.prototype._startTransition = function () {
-    this.state = GAME_STATE.TRANSITIONING;
-    this.transitionTimer = Date.now();
-    this.player.movement.canMove = false;
-};
-
-Game.prototype._updateTransition = function (deltaTime) {
-    const elapsed = Date.now() - this.transitionTimer;
-    const progress = Math.min(elapsed / DOOR_CONFIG.TRANSITION_DELAY, 1);
-
-    this.fadeAlpha = Math.floor(progress * 128);
-
-    if (progress >= 1) {
-        this.levelIndex++;
-        this._loadLevel();
-    }
-};
-
-
-Game.prototype.update = function (deltaTime) {
-    if (this.state === GAME_STATE.COMPLETED) return;
-    if (!this.tileMap || !this.player) return;
-
-    this.deltaTime = deltaTime;
-
-    if (Gamepad.player(PLAYER_ONE_PORT).pressed(Pads.L1)) {
-        Collision.toggleDebug();
+    // The cutscene ended: the level it interrupted is loaded now.
+    async resume() {
+        this.camera.makeCurrent();
+        this._build(await readMap(this.levelIndex));
+        this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
     }
 
-    if (this.state === GAME_STATE.TRANSITIONING) {
-        this._updateTransition(deltaTime);
-    } else {
-        this._checkDoorInteraction();
+    exit() {
+        this._unload();
+        Camera2D.main.makeCurrent();
     }
 
-    if (!this.tileMap || !this.player || this._pausedForCutscene) return;
+    _build(map) {
+        this.world.clear();
+        this.level = new Level(map, this.assets.sheets, this.world);
+        this.player.attach(this.world, this.level.spawn.x, this.level.spawn.y);
 
-    this.camera.update(this.player.movement.position.x, this.player.movement.position.y);
-    this.tileMap.updateCamera(this.camera.x, this.camera.y);
+        this.camera
+            .setBounds(0, 0, this.level.width, this.level.height)
+            .follow(this.player.pos, { lerp: CAMERA_LERP });
 
-    this.player.update(deltaTime);
+        this.state = STATE.PLAYING;
+        std.gc();
+    }
 
-    for (const obj of this.tileMap.objects) {
-        if (typeof obj.logic === 'function') {
-            obj.logic(this.camera.x, this.camera.y, {
-                player: this.player,
-                deltaTime: deltaTime,
-            });
+    _unload() {
+        this.level = null;
+        this.world.clear();
+        this.camera.unfollow();
+        std.gc();
+    }
+
+    _interact() {
+        const { body } = this.player;
+
+        for (const chest of this.level.chests) {
+            if (!chest.opened && Collision.overlaps(body, chest)) this._openChest(chest);
+        }
+
+        if (this.state === STATE.PLAYING &&
+            this.world.query(body.x + INSET, body.y + INSET, body.w - 2 * INSET, body.h - 2 * INSET, LAYER.DOOR).length > 0) {
+            this._nextLevel();
+        }
+    }
+
+    _openChest(chest) {
+        chest.opened = true;
+        chest.sprite.frame = 1;
+        this.assets.sfx.chests.play();
+        this.camera.flash(chest.flash, FLASH_TIME);
+        this.player.openingChest = true;
+    }
+
+    async _nextLevel() {
+        this.state = STATE.TRANSITIONING;
+        this.player.canMove = false;
+
+        const next = this.levelIndex + 1;
+        const cutscene = CUTSCENES[next];
+        const finished = next >= LEVELS.length;
+
+        // The next map is read on a worker while the screen fades out.
+        const [, map] = await Promise.all([
+            this.camera.fade(FADE_OUT, DOOR_CONFIG.TRANSITION_DELAY),
+            cutscene || finished ? null : readMap(next)
+        ]);
+
+        this.levelIndex = next;
+
+        if (finished) {
+            this.state = STATE.COMPLETED;
+        } else if (cutscene) {
+            Scene.push(cutscene, { drawBelow: false });
         } else {
-            if (typeof obj.handleInteraction === 'function') {
-                obj.handleInteraction(this.player);
-            }
-            if (typeof obj.handleAnimation === 'function') {
-                obj.handleAnimation();
-            }
+            this._build(map);
+            this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
         }
     }
 
-    ScreenFlash.update(deltaTime);
-    Collision.check();
-};
+    _drawHud() {
+        const x = 16 * GAME_SCALE;
 
-Game.prototype.draw = function () {
-    if (!this.tileMap || !this.player) return;
-
-    this.tileMap.render();
-
-    for (const obj of this.tileMap.objects) {
-        if (typeof obj.draw === 'function') {
-            obj.draw(this.camera.x, this.camera.y, this.deltaTime);
-        }
+        this.hud.draw(x, 0, this.hudSize);
+        this.powerup.draw(
+            x + 14 * GAME_SCALE,
+            this.hudSize.height / 2 + this.powerupSize.height / 4,
+            this.powerupSize
+        );
     }
-
-    this.player.draw(this.camera.x, this.camera.y);
-
-    ScreenFlash.draw();
-    Collision.renderDebug(this.camera.x, this.camera.y);
-
-    if (this.state === GAME_STATE.TRANSITIONING) {
-        const fadeColor = Color.new(0, 0, 0, this.fadeAlpha);
-        Draw.rect(0, 0, Screen.getMode().width, Screen.getMode().height, fadeColor);
-    }
-};
-
-Game.prototype.unload = function () {
-    if (this._pausedForCutscene) return;
-
-    this._cleanupCurrentLevel();
-    if (this.player) {
-        this.player.destroy?.();
-        this.player = null;
-    }
-};
+}
