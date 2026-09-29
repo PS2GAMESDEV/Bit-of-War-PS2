@@ -3,8 +3,14 @@ import { centeredX, scaled } from "../shared/lib/ui.js";
 import { Cutscene01 } from "./cutscene01.js";
 import { log } from "../shared/lib/boot_log.js";
 
-// Diagnostic: true skips music.play() to tell a music freeze from a draw freeze.
-const DIAG_NO_MUSIC = false;
+// Diagnostic: true skips music.play(); the music is already ruled out (same freeze without it).
+const DIAG_NO_MUSIC = true;
+
+// Diagnostic: which draws the menu skips, to find the one that hangs the frame.
+//   ""       nothing skipped (the freeze)
+//   "text"   no font.print at all: only the images are drawn
+//   "images" no image draw on the main screen: only the text is drawn
+const DIAG_SKIP = "text";
 
 const GRAY =Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
@@ -86,6 +92,7 @@ export class Menu extends Scene {
     }
 
     _print(y, text, color, font = this.text) {
+        if (DIAG_SKIP === "text") return;
         font.color = color;
         font.print(centeredX(font, text), y, text);
     }
@@ -118,7 +125,7 @@ export class Menu extends Scene {
                     else menu._go(["", "load", "options", "extras"][menu.selected]);
                 },
                 draw() {
-                    images.main.draw(48, 16, menu.mainSize);
+                    if (DIAG_SKIP !== "images") images.main.draw(48, 16, menu.mainSize);
                     menu._list(244, 20, [menu._t("newgame"), menu._t("load"), menu._t("options"), menu._t("extra")]);
                 }
             },
