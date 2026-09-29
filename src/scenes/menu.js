@@ -3,7 +3,10 @@ import { centeredX, scaled } from "../shared/lib/ui.js";
 import { Cutscene01 } from "./cutscene01.js";
 import { log } from "../shared/lib/boot_log.js";
 
-const GRAY = Color.new(72, 72, 72);
+// Diagnostic: true skips music.play() to tell a music freeze from a draw freeze.
+const DIAG_NO_MUSIC = false;
+
+const GRAY =Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
 const WHITE = Color.new(255, 255, 255);
 
@@ -46,7 +49,7 @@ export class Menu extends Scene {
         this.screens = this._screens();
         this._go("main");
         log("Menu.enter: before music.play");
-        music.menu.play();
+        if (!DIAG_NO_MUSIC) music.menu.play();
         log("Menu.enter: done");
     }
 
@@ -55,11 +58,17 @@ export class Menu extends Scene {
     }
 
     update() {
+        // Diagnostic: first frames, then a heartbeat every ~2 s.
+        this.dbgU = (this.dbgU || 0) + 1;
+        if (this.dbgU <= 3 || this.dbgU % 120 === 0) log(`Menu.update #${this.dbgU} busy=${Scene.busy}`);
         if (!Scene.busy) this.screen.update();
     }
 
     draw() {
+        this.dbgD = (this.dbgD || 0) + 1;
+        if (this.dbgD <= 3 || this.dbgD % 120 === 0) log(`Menu.draw #${this.dbgD} begin`);
         this.screen.draw();
+        if (this.dbgD <= 3) log(`Menu.draw #${this.dbgD} end`);
     }
 
     _t(key) {
