@@ -89,7 +89,7 @@ export default class Game extends Scene {
             },
             lifeChest: chest("obLifeChest"),
             magicChest: chest("obMagicChest"),
-            harpie: enemy("enHarpie"),
+            harpie: enemy("enHarpie", { idle: "2", fly: { frames: "0-1", fps: 8 } }),
             minotaur: enemy("enMinotaur", { run: { frames: "2-3", fps: 12 } }),
             skelbow: enemy("enSkelbow", { shoot: { frames: "0-1", fps: 4, mode: "once" } }),
             arrow: {

@@ -1,4 +1,5 @@
 import { GAME_SCALE, LAYER, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js";
+import { Harpie } from "../Enemies/harpie.js";
 import { Minotaur } from "../Enemies/minotaur.js";
 import { Skelbow } from "../Enemies/skelbow.js";
 import { Undead } from "../Enemies/undead.js";
@@ -6,7 +7,7 @@ import { Undead } from "../Enemies/undead.js";
 // Sheet name -> enemy class, made from the map placements. A class has a
 // static `clip` (the sprite's first animation) and the methods update(target,
 // dt, view), sync() and, optionally, draw().
-const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow });
+const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie });
 
 const TILE = 16 * GAME_SCALE;
 
