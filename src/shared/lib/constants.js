@@ -12,7 +12,8 @@ const LAYER = Object.freeze({
     PLAYER: 2,
     LADDER: 4,
     DOOR: 8,
-    PROBE: 16
+    PROBE: 16,
+    ENEMY: 32
 });
 
 const VFX_SCREEN_COLOR = Object.freeze({
@@ -49,7 +50,11 @@ const PLAYER_MOVEMENT = Object.freeze({
     JUMPS: 1
 });
 
+// Units per second.
+const UNDEAD_SPEED = 60;
+
 export {
+    UNDEAD_SPEED,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
     GAME_SCALE,

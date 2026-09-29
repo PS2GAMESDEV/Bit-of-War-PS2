@@ -7705,6 +7705,14 @@
       {
         "x": 32,
         "y": 128,
+        "creationCode": null,
+        "locked": false
+      }
+    ],
+    "enMinotaur": [
+      {
+        "x": 576,
+        "y": 288,
         "locked": false
       }
     ]

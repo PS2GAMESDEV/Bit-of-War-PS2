@@ -1,4 +1,5 @@
 import { GAME_SCALE, LAYER, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js";
+import { Undead } from "../Enemies/undead.js";
 
 const TILE = 16 * GAME_SCALE;
 
@@ -68,6 +69,7 @@ export class Level {
 
         this.background = parseColor(map.backgroundColor);
         this.props = [];
+        this.enemies = [];
         this.chests = [];
         this.spawn = { x: 100, y: 100 };
         this.width = 0;
@@ -82,7 +84,7 @@ export class Level {
 
             const sheetName = PROP_SHEET[id];
             if (sheetName) {
-                this._addProps(sheets[sheetName], sheetName, placements);
+                this._addProps(sheets[sheetName], sheetName, placements, world);
                 continue;
             }
 
@@ -143,7 +145,7 @@ export class Level {
         }
     }
 
-    _addProps(sheet, sheetName, placements) {
+    _addProps(sheet, sheetName, placements, world) {
         const flash = CHEST_FLASH[sheetName];
 
         for (let i = 0; i < placements.length; i += 2) {
@@ -151,17 +153,27 @@ export class Level {
             const y = placements[i + 1] * GAME_SCALE;
             const options = { scale: GAME_SCALE, x, y };
             if (sheetName === "torch") options.clip = "burn";
+            if (sheetName === "undead") options.clip = "walk";
 
             const sprite = new Sprite.Instance(sheet, options);
             this.props.push(sprite);
+
+            if (sheetName === "undead") this.enemies.push(new Undead(sprite, world, x, y));
 
             // The chest rect doubles as a Collision shape for Collision.overlaps().
             if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, flash, opened: false });
         }
     }
 
+    // Enemy AI; call before the world is stepped.
+    update() {
+        for (const enemy of this.enemies) enemy.update();
+    }
+
     // Draws only the slice of every tile group that the camera can see.
     render(camera) {
+        for (const enemy of this.enemies) enemy.sync();
+
         const view = camera.visibleRect();
         const right = view.x + view.w;
         const range = this._range;

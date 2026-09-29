@@ -167,7 +167,8 @@ export default class Game extends Scene {
         if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
 
-        this.player.update(dt, pad);
+        this.level.update();
+        this.player.update(dt, pad); // steps the world, enemies included
     }
 
     draw() {
