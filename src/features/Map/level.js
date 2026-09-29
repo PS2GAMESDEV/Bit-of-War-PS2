@@ -1,5 +1,9 @@
 import { GAME_SCALE, LAYER, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js";
+import { Minotaur } from "../Enemies/minotaur.js";
 import { Undead } from "../Enemies/undead.js";
+
+// Sheet name -> enemy class (walking enemies, made from the map placements).
+const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur });
 
 const TILE = 16 * GAME_SCALE;
 
@@ -153,21 +157,22 @@ export class Level {
             const y = placements[i + 1] * GAME_SCALE;
             const options = { scale: GAME_SCALE, x, y };
             if (sheetName === "torch") options.clip = "burn";
-            if (sheetName === "undead") options.clip = "walk";
+            const Enemy = ENEMY_CLASS[sheetName];
+            if (Enemy) options.clip = "walk";
 
             const sprite = new Sprite.Instance(sheet, options);
             this.props.push(sprite);
 
-            if (sheetName === "undead") this.enemies.push(new Undead(sprite, world, x, y));
+            if (Enemy) this.enemies.push(new Enemy(sprite, world, x, y));
 
             // The chest rect doubles as a Collision shape for Collision.overlaps().
             if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, flash, opened: false });
         }
     }
 
-    // Enemy AI; call before the world is stepped.
-    update() {
-        for (const enemy of this.enemies) enemy.update();
+    // Enemy AI; call before the world is stepped. `target` is the player's body.
+    update(target) {
+        for (const enemy of this.enemies) enemy.update(target);
     }
 
     // Draws only the slice of every tile group that the camera can see.

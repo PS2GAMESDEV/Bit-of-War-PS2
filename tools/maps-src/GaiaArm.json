@@ -7715,6 +7715,13 @@
         "y": 288,
         "locked": false
       }
+    ],
+    "enSkelbow": [
+      {
+        "x": 976,
+        "y": 176,
+        "locked": false
+      }
     ]
   },
   "colliders": [

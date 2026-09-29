@@ -35,10 +35,10 @@ const INSET = 4;
 
 const grid = { frameWidth: 16, frameHeight: 16 };
 
-const enemy = name => ({
+const enemy = (name, clips = {}) => ({
     path: `images/enemies/${name}.png`,
     ...grid,
-    clips: { idle: "0", walk: { frames: "0-1", fps: 6 } }
+    clips: { idle: "0", walk: { frames: "0-1", fps: 6 }, ...clips }
 });
 
 const chest = name => ({ path: `images/objects/${name}.png`, ...grid });
@@ -90,7 +90,7 @@ export default class Game extends Scene {
             lifeChest: chest("obLifeChest"),
             magicChest: chest("obMagicChest"),
             harpie: enemy("enHarpie"),
-            minotaur: enemy("enMinotaur"),
+            minotaur: enemy("enMinotaur", { run: { frames: "2-3", fps: 12 } }),
             skelbow: enemy("enSkelbow"),
             undead: enemy("enUndead")
         },
@@ -167,7 +167,7 @@ export default class Game extends Scene {
         if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
 
-        this.level.update();
+        this.level.update(this.player.body);
         this.player.update(dt, pad); // steps the world, enemies included
     }
 

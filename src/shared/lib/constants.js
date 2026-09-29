@@ -52,9 +52,13 @@ const PLAYER_MOVEMENT = Object.freeze({
 
 // Units per second.
 const UNDEAD_SPEED = 60;
+const MINOTAUR_WALK_SPEED = 60;
+const MINOTAUR_RUN_SPEED = 150;
 
 export {
     UNDEAD_SPEED,
+    MINOTAUR_WALK_SPEED,
+    MINOTAUR_RUN_SPEED,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
     GAME_SCALE,
