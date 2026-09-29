@@ -1,6 +1,6 @@
 import { Menu } from "./src/scenes/menu.js";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
-import { log, status, bootPath } from "./src/shared/lib/boot_log.js";
+import { log } from "./src/shared/lib/boot_log.js";
 
 log("---- main.js start");
 
@@ -26,22 +26,27 @@ const spinner = new Sprite.Instance(
 );
 const background = Color.new(8, 8, 8);
 
-// Diagnostic text (embedded font): where the log goes and whether it worked.
-const diagFont = new Font();
-diagFont.color = Color.new(200, 200, 200);
-
 let lastLoaded = -1;
+let loadingFrames = 0;
 Scene.loadingScreen = (progress, { loaded, total }) => {
+    loadingFrames++;
     if (loaded !== lastLoaded) {
         lastLoaded = loaded;
-        log(`loading ${loaded}/${total}`);
+        log(`loading ${loaded}/${total} (frame ${loadingFrames})`);
+    } else if (loadingFrames % 60 === 0) {
+        // Heartbeat: still alive, still waiting. It stops if the main thread hangs.
+        log(`  loading ${loaded}/${total} still waiting (frame ${loadingFrames})`);
     }
+    log_step("draw begin", loadingFrames);
     Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, background);
     spinner.draw();
-    diagFont.print(10, 10, `boot: ${bootPath}   loaded ${loaded}/${total}`);
-    status.forEach((s, i) => diagFont.print(10, 30 + i * 20,
-        `${s.path}: ${s.ok === null ? "-" : s.ok ? "OK" : "FAIL " + s.error}`));
+    log_step("draw end", loadingFrames);
 };
+
+// First frames only: tells a hang inside the draw from one outside it.
+function log_step(what, frame) {
+    if (frame <= 3) log(`  loadingScreen #${frame} ${what}`);
+}
 
 // Fixed 60 Hz step, one per frame at most: like the original, a slow frame
 // slows the game down instead of running several updates (which would repeat
