@@ -17,6 +17,8 @@ const SIZE = 16 * GAME_SCALE;
  *   sight       units; 0: blind
  */
 export class Walker {
+    static clip = "walk";
+
     constructor(sprite, world, x, y, { facesRight, walkSpeed, runSpeed = 0, sight = 0 }) {
         this.sprite = sprite;
         this.world = world;

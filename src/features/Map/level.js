@@ -1,9 +1,12 @@
 import { GAME_SCALE, LAYER, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js";
 import { Minotaur } from "../Enemies/minotaur.js";
+import { Skelbow } from "../Enemies/skelbow.js";
 import { Undead } from "../Enemies/undead.js";
 
-// Sheet name -> enemy class (walking enemies, made from the map placements).
-const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur });
+// Sheet name -> enemy class, made from the map placements. A class has a
+// static `clip` (the sprite's first animation) and the methods update(target,
+// dt, view), sync() and, optionally, draw().
+const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow });
 
 const TILE = 16 * GAME_SCALE;
 
@@ -88,7 +91,7 @@ export class Level {
 
             const sheetName = PROP_SHEET[id];
             if (sheetName) {
-                this._addProps(sheets[sheetName], sheetName, placements, world);
+                this._addProps(sheets[sheetName], sheetName, placements, world, sheets);
                 continue;
             }
 
@@ -149,7 +152,7 @@ export class Level {
         }
     }
 
-    _addProps(sheet, sheetName, placements, world) {
+    _addProps(sheet, sheetName, placements, world, sheets) {
         const flash = CHEST_FLASH[sheetName];
 
         for (let i = 0; i < placements.length; i += 2) {
@@ -158,21 +161,22 @@ export class Level {
             const options = { scale: GAME_SCALE, x, y };
             if (sheetName === "torch") options.clip = "burn";
             const Enemy = ENEMY_CLASS[sheetName];
-            if (Enemy) options.clip = "walk";
+            if (Enemy) options.clip = Enemy.clip;
 
             const sprite = new Sprite.Instance(sheet, options);
             this.props.push(sprite);
 
-            if (Enemy) this.enemies.push(new Enemy(sprite, world, x, y));
+            if (Enemy) this.enemies.push(new Enemy(sprite, world, x, y, sheets));
 
             // The chest rect doubles as a Collision shape for Collision.overlaps().
             if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, flash, opened: false });
         }
     }
 
-    // Enemy AI; call before the world is stepped. `target` is the player's body.
-    update(target) {
-        for (const enemy of this.enemies) enemy.update(target);
+    // Enemy AI; call before the world is stepped. `target` is the player's
+    // body and `view` the camera's visible rectangle.
+    update(target, dt, view) {
+        for (const enemy of this.enemies) enemy.update(target, dt, view);
     }
 
     // Draws only the slice of every tile group that the camera can see.
@@ -194,5 +198,6 @@ export class Level {
         }
 
         Sprite.drawAll(this.props);
+        for (const enemy of this.enemies) enemy.draw?.();
     }
 }

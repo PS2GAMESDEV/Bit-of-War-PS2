@@ -91,7 +91,13 @@ export default class Game extends Scene {
             magicChest: chest("obMagicChest"),
             harpie: enemy("enHarpie"),
             minotaur: enemy("enMinotaur", { run: { frames: "2-3", fps: 12 } }),
-            skelbow: enemy("enSkelbow"),
+            skelbow: enemy("enSkelbow", { shoot: { frames: "0-1", fps: 4, mode: "once" } }),
+            arrow: {
+                path: "images/objects/arrow.png",
+                frameWidth: 10,
+                frameHeight: 3,
+                clips: { fly: "0" }
+            },
             undead: enemy("enUndead")
         },
         sfx: {
@@ -167,7 +173,7 @@ export default class Game extends Scene {
         if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
 
-        this.level.update(this.player.body);
+        this.level.update(this.player.body, dt, this.camera.visibleRect());
         this.player.update(dt, pad); // steps the world, enemies included
     }
 
