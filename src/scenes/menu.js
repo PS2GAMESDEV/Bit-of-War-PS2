@@ -1,6 +1,7 @@
 import { LANG, GLYPHS } from "../shared/lang/lang.js";
 import { centeredX, scaled } from "../shared/lib/ui.js";
 import { Cutscene01 } from "./cutscene01.js";
+import { log } from "../shared/lib/boot_log.js";
 
 const GRAY = Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
@@ -29,6 +30,7 @@ export class Menu extends Scene {
     };
 
     enter({ images, fonts, music }) {
+        log("Menu.enter");
         this.pad = Gamepad.player(0);
         this.text = fonts.text;
         this.header = fonts.header;
@@ -43,7 +45,9 @@ export class Menu extends Scene {
 
         this.screens = this._screens();
         this._go("main");
+        log("Menu.enter: before music.play");
         music.menu.play();
+        log("Menu.enter: done");
     }
 
     exit() {

@@ -1,5 +1,8 @@
 import { Menu } from "./src/scenes/menu.js";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
+import { log } from "./src/shared/lib/boot_log.js";
+
+log("---- main.js start");
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 
@@ -23,7 +26,12 @@ const spinner = new Sprite.Instance(
 );
 const background = Color.new(8, 8, 8);
 
-Scene.loadingScreen = () => {
+let lastLoaded = -1;
+Scene.loadingScreen = (progress, { loaded, total }) => {
+    if (loaded !== lastLoaded) {
+        lastLoaded = loaded;
+        log(`loading ${loaded}/${total}`);
+    }
     Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, background);
     spinner.draw();
 };
@@ -31,4 +39,6 @@ Scene.loadingScreen = () => {
 // Fixed 60 Hz step, one per frame at most: like the original, a slow frame
 // slows the game down instead of running several updates (which would repeat
 // the pad's justPressed edges).
+log("before Scene.run");
 Scene.run(Menu, {}, { fixedStep: 1 / 60, maxSteps: 1 });
+log("after Scene.run");
