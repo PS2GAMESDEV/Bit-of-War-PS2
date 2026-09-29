@@ -549,13 +549,6 @@
   "colliders": [
     {
       "x": 16,
-      "y": 192,
-      "width": 240,
-      "height": 16,
-      "type": "ground"
-    },
-    {
-      "x": 16,
       "y": 80,
       "width": 32,
       "height": 16,
@@ -565,6 +558,27 @@
       "x": 224,
       "y": 80,
       "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 16,
+      "height": 208,
+      "type": "ground"
+    },
+    {
+      "x": 256,
+      "y": 0,
+      "width": 16,
+      "height": 208,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 192,
+      "width": 240,
       "height": 16,
       "type": "ground"
     },
@@ -601,20 +615,6 @@
       "y": 128,
       "width": 16,
       "height": 16,
-      "type": "ground"
-    },
-    {
-      "x": 0,
-      "y": 0,
-      "width": 16,
-      "height": 208,
-      "type": "ground"
-    },
-    {
-      "x": 256,
-      "y": 0,
-      "width": 16,
-      "height": 208,
       "type": "ground"
     }
   ]
