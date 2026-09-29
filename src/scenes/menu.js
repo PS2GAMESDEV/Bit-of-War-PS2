@@ -4,13 +4,13 @@ import { Cutscene01 } from "./cutscene01.js";
 import { log } from "../shared/lib/boot_log.js";
 
 // Diagnostic: true skips music.play(); the music is already ruled out (same freeze without it).
-const DIAG_NO_MUSIC = true;
+const DIAG_NO_MUSIC = false;
 
 // Diagnostic: which draws the menu skips, to find the one that hangs the frame.
 //   ""       nothing skipped (the freeze)
 //   "text"   no font.print at all: only the images are drawn
 //   "images" no image draw on the main screen: only the text is drawn
-const DIAG_SKIP = "text";
+const DIAG_SKIP = "";
 
 const GRAY =Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
