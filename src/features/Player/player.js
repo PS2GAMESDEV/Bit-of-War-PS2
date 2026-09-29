@@ -9,6 +9,11 @@ const PIXEL = 2 * GAME_SCALE;
 // The ladder probe and the door test are the body inset by this.
 const INSET = 4;
 
+// The maps end a ladder one tile under the platform it leads to. Climbing goes
+// on past the ladder until the feet are LEDGE_CLEARANCE above that platform.
+const LEDGE = 16 * GAME_SCALE;
+const LEDGE_CLEARANCE = 3;
+
 /**
  * Kratos. Position, gravity, floors and walls are handled by a dynamic body of
  * Collision.World; this class only turns the pad into velocities.
@@ -28,6 +33,7 @@ export class Player {
         this.probe = null;
         this.world = null;
         this.ladders = new Set();
+        this.lastLadder = null;
 
         this.facingLeft = false;
         this.canMove = true;
@@ -51,8 +57,11 @@ export class Player {
         });
 
         // A sensor that follows the body: the world tells which ladders it
-        // overlaps, so nothing is queried (or allocated) per frame.
+        // overlaps, so nothing is queried (or allocated) per frame. It must not
+        // be static: two static bodies (the ladders are) are never a pair, so
+        // onEnter would never fire.
         this.probe = world.add({
+            type: "kinematic",
             x, y,
             w: SIZE - 2 * INSET, h: SIZE - 2 * INSET,
             sensor: true,
@@ -71,6 +80,7 @@ export class Player {
         this.canMove = true;
         this.climbing = false;
         this.climbDir = 0;
+        this.lastLadder = null;
         this.jumps = MOVE.JUMPS;
         this.attacking = false;
         this.blade.stop();
@@ -104,6 +114,7 @@ export class Player {
             this.climbDir = pad.anyPressed(Gamepad.UP | Gamepad.TRIANGLE) ? -1
                 : pad.anyPressed(Gamepad.DOWN | Gamepad.CROSS) ? 1 : 0;
             body.vy = this.climbDir * MOVE.CLIMB_SPEED;
+            if (this.climbDir < 0 && this._atLedge(body)) body.vy = 0;
 
             const jump = pad.justPressed(KEY.JUMP);
             if (jump || pad.anyPressed(Gamepad.LEFT | Gamepad.RIGHT)) {
@@ -147,7 +158,11 @@ export class Player {
 
         if (this.climbing) {
             const landed = this.climbDir > 0 && body.onGround;
-            if (!ladder || landed) this._stopClimbing();
+            if (landed) this._stopClimbing();
+            else if (ladder) this.lastLadder = ladder;
+            // Without a ladder the player stays on the rope: at the top of the
+            // last one, LEFT/RIGHT (or jump) steps onto the platform.
+            else if (!this.lastLadder) this._stopClimbing();
             return;
         }
         if (!ladder) return;
@@ -159,15 +174,23 @@ export class Player {
         if ((up && grounded && ladder.y < body.y) ||
             (down && !grounded && body.y < ladder.y + ladder.h) ||
             (!grounded && (up || down))) {
-            this._startClimbing(ladder.x + ladder.w / 2);
+            this._startClimbing(ladder);
         }
     }
 
-    _startClimbing(ladderX) {
+    // True once the feet are above the platform the last ladder leads to.
+    _atLedge(body) {
+        return this.ladders.size === 0 && this.lastLadder !== null &&
+            body.bottom <= this.lastLadder.y - LEDGE - LEDGE_CLEARANCE;
+    }
+
+    _startClimbing(ladder) {
         const body = this.body;
+        const ladderX = ladder.x + ladder.w / 2;
 
         this.climbing = true;
         this.climbDir = 0;
+        this.lastLadder = ladder;
         body.gravityScale = 0;
         body.vx = 0;
         body.vy = 0;

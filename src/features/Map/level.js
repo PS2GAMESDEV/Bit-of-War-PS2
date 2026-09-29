@@ -31,6 +31,14 @@ const COLLIDER_LAYER = Object.freeze({
     ladder: LAYER.LADDER
 });
 
+// "#rrggbb" -> packed color; black when missing or malformed.
+function parseColor(hex) {
+    const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex ?? "");
+    return m
+        ? Color.new(parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16))
+        : Color.new(0, 0, 0);
+}
+
 // First index whose value is >= `value` in a sorted Float32Array.
 function lowerBound(values, value) {
     let lo = 0;
@@ -58,6 +66,7 @@ export class Level {
         const sprites = [];
         const groups = [];
 
+        this.background = parseColor(map.backgroundColor);
         this.props = [];
         this.chests = [];
         this.spawn = { x: 100, y: 100 };

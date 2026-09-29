@@ -131,6 +131,7 @@ export default class Game extends Scene {
     draw() {
         if (!this.level) return;
 
+        Screen.clear(this.level.background);
         this.level.render(this.camera);
         this.player.draw();
 

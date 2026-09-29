@@ -1,7 +1,8 @@
 // Converts the editor exports in tools/maps-src into the compact format the
 // game reads from src/data. Run: node tools/build-maps.js
 //
-//   { "tiles": { "<id>": [x0, y0, x1, y1, ...] },      sorted by x
+//   { "backgroundColor": "#rrggbb",
+//     "tiles": { "<id>": [x0, y0, x1, y1, ...] },      sorted by x
 //     "colliders": { "ground": [x, y, w, h, ...], "door": [...], "ladder": [...] } }
 const fs = require("fs");
 const path = require("path");
@@ -14,7 +15,7 @@ fs.mkdirSync(OUT, { recursive: true });
 
 for (const file of fs.readdirSync(SRC).filter(f => f.endsWith(".json"))) {
     const map = JSON.parse(fs.readFileSync(path.join(SRC, file), "utf8"));
-    const out = { tiles: {}, colliders: {} };
+    const out = { backgroundColor: map.backgroundColor ?? "#000000", tiles: {}, colliders: {} };
 
     for (const [id, placements] of Object.entries(map.tiles)) {
         out.tiles[id] = placements
