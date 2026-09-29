@@ -8,6 +8,13 @@ export const scaled = (image, factor) => ({
     height: image.height * factor
 });
 
+// Seconds as H:MM:SS.
+export function formatTime(seconds) {
+    const total = Math.floor(seconds);
+    const pad = n => (n < 10 ? "0" : "") + n;
+    return `${Math.floor(total / 3600)}:${pad(Math.floor(total / 60) % 60)}:${pad(total % 60)}`;
+}
+
 const widths = new Map();
 
 // X that horizontally centers `text` on screen; measured once per font/text.

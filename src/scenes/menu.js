@@ -1,6 +1,9 @@
-import { LANG, GLYPHS } from "../shared/lang/lang.js";
-import { centeredX, scaled } from "../shared/lib/ui.js";
+import { GLYPHS, LANGS, getLang, setLang, t } from "../shared/lang/lang.js";
+import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
+import { Save } from "../shared/lib/save.js";
+import { loadSettings, saveSettings, settings } from "../shared/lib/settings.js";
 import { Cutscene01 } from "./cutscene01.js";
+import Game from "./Game.js";
 import { log } from "../shared/lib/boot_log.js";
 
 // Diagnostic: true skips music.play(); the music is already ruled out (same freeze without it).
@@ -16,7 +19,6 @@ const GRAY =Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
 const WHITE = Color.new(255, 255, 255);
 
-const LANGS = ["en", "br", "sp"];
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
 export class Menu extends Scene {
@@ -38,7 +40,7 @@ export class Menu extends Scene {
         }
     };
 
-    enter({ images, fonts, music }) {
+    async enter({ images, fonts, music }) {
         log("Menu.enter");
         this.pad = Gamepad.player(0);
         this.text = fonts.text;
@@ -47,10 +49,9 @@ export class Menu extends Scene {
         this.logoSize = scaled(images.logo, 2);
 
         this.selected = 0;
-        this.music = 10;
-        this.sfx = 10;
-        this.langIndex = 0;
-        this.lang = LANGS[0];
+        // Volumes and language stored on the memory card (read once per run).
+        await loadSettings();
+        this.langIndex = LANGS.indexOf(getLang());
 
         this.screens = this._screens();
         this._go("main");
@@ -78,12 +79,20 @@ export class Menu extends Scene {
     }
 
     _t(key) {
-        return LANG[this.lang][key] || key;
+        return t(key);
     }
 
     _logo(title) {
         this.assets.images.logo.draw(0, 0, this.logoSize);
         this._print(205, title, GRAY, this.header);
+    }
+
+    // Load Game: shows the screen at once and fills `slot` when the card has been read
+    // (undefined while reading, null without a save).
+    async _openLoad() {
+        this.slot = undefined;
+        this._go("load");
+        this.slot = await Save.load();
     }
 
     _go(name, selected = 0) {
@@ -122,7 +131,8 @@ export class Menu extends Scene {
                     menu._move(3);
                     if (!confirm()) return;
                     if (menu.selected === 0) Scene.go(Cutscene01);
-                    else menu._go(["", "load", "options", "extras"][menu.selected]);
+                    else if (menu.selected === 1) menu._openLoad();
+                    else menu._go(["", "", "options", "extras"][menu.selected]);
                 },
                 draw() {
                     if (DIAG_SKIP !== "images") images.main.draw(48, 16, menu.mainSize);
@@ -132,10 +142,27 @@ export class Menu extends Scene {
 
             load: {
                 update() {
-                    if (confirm()) menu._go("main", 1);
+                    const slot = menu.slot;
+                    if (slot === undefined) return; // still reading the card
+
+                    if (menu.pad.justPressed(Gamepad.CIRCLE) || (confirm() && !slot?.progress)) {
+                        menu._go("main", 1);
+                    } else if (confirm()) {
+                        Scene.go(Game, { params: { save: slot.progress } });
+                    }
                 },
                 draw() {
                     menu._logo(menu._t("LOAD"));
+
+                    const slot = menu.slot;
+                    if (slot === undefined) return menu._print(245, menu._t("reading"), WHITE);
+                    if (slot === null || !slot.progress) {
+                        menu._print(245, menu._t(slot === null && !Save.isReady() ? "noCard" : "noSave"), WHITE);
+                    } else {
+                        menu._print(245, menu._t("level") + (slot.progress.levelIndex + 1), RED);
+                        menu._print(270, menu._t("time") + formatTime(slot.progress.playTime), WHITE);
+                    }
+                    if (slot?.bestTime != null) menu._print(305, menu._t("best") + formatTime(slot.bestTime), GRAY);
                 }
             },
 
@@ -146,27 +173,30 @@ export class Menu extends Scene {
                     const dir = (menu.pad.justPressed(Gamepad.RIGHT) ? 1 : 0) - (menu.pad.justPressed(Gamepad.LEFT) ? 1 : 0);
                     if (dir !== 0) {
                         if (menu.selected === 0) {
-                            menu.music = clamp(menu.music + dir, 0, 10);
-                            Sound.setVolume(menu.music * 10);
+                            settings.music = clamp(settings.music + dir, 0, 10);
+                            Sound.setVolume(settings.music * 10);
                         } else if (menu.selected === 1) {
-                            menu.sfx = clamp(menu.sfx + dir, 0, 10);
-                            Sound.setSfxVolume(menu.sfx * 10);
+                            settings.sfx = clamp(settings.sfx + dir, 0, 10);
+                            Sound.setSfxVolume(settings.sfx * 10);
                         } else if (menu.selected === 3) {
                             menu.langIndex = (menu.langIndex + dir + LANGS.length) % LANGS.length;
-                            menu.lang = LANGS[menu.langIndex];
+                            setLang(LANGS[menu.langIndex]);
                             sfx.selected.play();
                         }
                     }
 
                     if (!confirm()) return;
                     if (menu.selected === 2) menu._go("controls");
-                    if (menu.selected === 4) menu._go("main", 2);
+                    if (menu.selected === 4) {
+                        saveSettings(); // volumes and language go to the memory card
+                        menu._go("main", 2);
+                    }
                 },
                 draw() {
                     menu._logo(menu._t("OPTIONS"));
                     menu._list(245, 20, [
-                        menu._t("music") + menu.music,
-                        menu._t("sfx") + menu.sfx,
+                        menu._t("music") + settings.music,
+                        menu._t("sfx") + settings.sfx,
                         menu._t("controller"),
                         menu._t("language")
                     ]);

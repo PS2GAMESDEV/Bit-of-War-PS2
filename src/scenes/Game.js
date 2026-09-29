@@ -5,8 +5,12 @@ import {
     ASSETS_PATH, DOOR_CONFIG, GAME_SCALE, LAYER,
     PLAYER_ANIMATIONS as ANIM, PLAYER_MOVEMENT as MOVE
 } from "../shared/lib/constants.js";
-import { scaled } from "../shared/lib/ui.js";
+import { GLYPHS, t } from "../shared/lang/lang.js";
+import { Save } from "../shared/lib/save.js";
+import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
 import { Cutscene02 } from "./cutscene02.js";
+// Only used at runtime (menu.js imports this file too).
+import { Menu } from "./menu.js";
 
 const LEVELS = Object.freeze([
     "GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json",
@@ -22,6 +26,9 @@ const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2 });
 
 const FADE_OUT = Color.new(0, 0, 0, 128);
 const FADE_CLEAR = Color.new(0, 0, 0, 0);
+const WHITE = Color.new(255, 255, 255);
+const RED = Color.new(255, 0, 0);
+const NOTICE_TIME = 2;
 const FLASH_TIME = 0.1;
 const CAMERA_LERP = 6;
 const INSET = 4;
@@ -46,6 +53,9 @@ export default class Game extends Scene {
         images: {
             hud: "images/sprites/kratos/hud.png",
             powerup: "images/sprites/kratos/powerup.png"
+        },
+        fonts: {
+            text: { path: "font/font.ttf", size: 18, preload: GLYPHS }
         },
         sheets: {
             atlas: "images/tiles/texture.json",
@@ -91,8 +101,10 @@ export default class Game extends Scene {
         }
     };
 
-    async enter(assets) {
+    // `params.save` is the Progress read from the memory card (Load Game).
+    async enter(assets, params) {
         const { images, sheets } = assets;
+        const progress = params?.save ?? null;
 
         // Textures used every frame stay resident in VRAM.
         sheets.atlas.image.lock();
@@ -103,24 +115,54 @@ export default class Game extends Scene {
         this.powerup = images.powerup;
         this.hudSize = scaled(images.hud, GAME_SCALE);
         this.powerupSize = scaled(images.powerup, GAME_SCALE);
-        this.drawHud = () => this._drawHud();
+        this.drawHud = () => { this._drawHud(); this._drawOverlay(); };
 
         this.world = new Collision.World({ gravity: { x: 0, y: MOVE.GRAVITY }, autoStep: false });
         this.camera = new Camera2D.Camera({ current: true });
         this.player = new Player(assets);
 
         this.level = null;
-        this.levelIndex = 0;
+        this.levelIndex = progress ? progress.levelIndex : 0;
+        this.playTime = progress ? progress.playTime : 0;
+        this.bestTime = null;
+        this.notice = null;
         this.debug = false;
         this.state = STATE.PLAYING;
 
-        this._build(await readMap(0));
+        // A loaded level that has a cutscene before it shows it first (from
+        // update: a scene cannot push another while it is being entered);
+        // resume() then builds the level with this progress.
+        this.introCutscene = progress ? CUTSCENES[this.levelIndex] ?? null : null;
+        this.resumeProgress = this.introCutscene ? progress : null;
+
+        this._build(await readMap(this.levelIndex), progress);
     }
 
     update(dt) {
-        if (this.state === STATE.COMPLETED || !this.level) return;
+        if (!this.level) return;
+
+        if (this.introCutscene) {
+            if (!Scene.busy) {
+                const cutscene = this.introCutscene;
+                this.introCutscene = null;
+                Scene.push(cutscene, { drawBelow: false });
+            }
+            return;
+        }
 
         const pad = Gamepad.player(0);
+
+        if (this.notice && (this.notice.time -= dt) <= 0) this.notice = null;
+
+        if (this.state === STATE.COMPLETED) {
+            if (pad.justPressed(Gamepad.CROSS)) Scene.go(Menu);
+            return;
+        }
+
+        if (this.state === STATE.PLAYING) {
+            this.playTime += dt;
+            if (pad.justPressed(Gamepad.START)) this._saveAndQuit();
+        }
 
         if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
@@ -140,6 +182,37 @@ export default class Game extends Scene {
         Camera2D.screenSpace(this.drawHud);
     }
 
+    // Everything needed to put the player back where he stopped. `midLevel`
+    // false is the start of the current level (the player appears at the spawn).
+    _progress(midLevel) {
+        const { body } = this.player;
+        const chests = [];
+        if (midLevel) this.level.chests.forEach((c, i) => { if (c.opened) chests.push(i); });
+
+        return {
+            levelIndex: this.levelIndex,
+            playTime: this.playTime,
+            player: midLevel ? { x: body.x, y: body.y, facingLeft: this.player.facingLeft } : null,
+            chests
+        };
+    }
+
+    // START: writes the state to the memory card and goes back to the menu.
+    async _saveAndQuit() {
+        this.state = STATE.TRANSITIONING;
+        this.player.canMove = false;
+
+        const saved = await Save.saveProgress(this._progress(true));
+        if (saved) {
+            Scene.go(Menu);
+            return;
+        }
+
+        this.state = STATE.PLAYING;
+        this.player.canMove = true;
+        this.notice = { key: "saveFailed", time: NOTICE_TIME };
+    }
+
     // A cutscene was pushed over the game: free the level, hand the screen back.
     pause() {
         this._unload();
@@ -149,7 +222,9 @@ export default class Game extends Scene {
     // The cutscene ended: the level it interrupted is loaded now.
     async resume() {
         this.camera.makeCurrent();
-        this._build(await readMap(this.levelIndex));
+        const progress = this.resumeProgress;
+        this.resumeProgress = null;
+        this._build(await readMap(this.levelIndex), progress);
         this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
     }
 
@@ -158,10 +233,21 @@ export default class Game extends Scene {
         Camera2D.main.makeCurrent();
     }
 
-    _build(map) {
+    // `progress`, when given, puts the player and the opened chests back.
+    _build(map, progress = null) {
         this.world.clear();
         this.level = new Level(map, this.assets.sheets, this.world);
-        this.player.attach(this.world, this.level.spawn.x, this.level.spawn.y);
+
+        const at = progress?.player ?? this.level.spawn;
+        this.player.attach(this.world, at.x, at.y);
+        this.player.facingLeft = at.facingLeft ?? false;
+
+        for (const index of progress?.chests ?? []) {
+            const chest = this.level.chests[index];
+            if (!chest) continue;
+            chest.opened = true;
+            chest.sprite.frame = 1;
+        }
 
         this.camera
             .setBounds(0, 0, this.level.width, this.level.height)
@@ -217,12 +303,34 @@ export default class Game extends Scene {
 
         if (finished) {
             this.state = STATE.COMPLETED;
-        } else if (cutscene) {
-            Scene.push(cutscene, { drawBelow: false });
+            this.bestTime = await Save.saveCompletion(this.playTime);
         } else {
-            this._build(map);
-            this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
+            // Checkpoint at the start of the new level.
+            Save.saveProgress(this._progress(false));
+
+            if (cutscene) {
+                Scene.push(cutscene, { drawBelow: false });
+            } else {
+                this._build(map);
+                this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
+            }
         }
+    }
+
+    _drawOverlay() {
+        const font = this.assets.fonts.text;
+        const line = (y, text, color) => {
+            font.color = color;
+            font.print(centeredX(font, text), y, text);
+        };
+
+        if (this.state === STATE.COMPLETED) {
+            line(180, t("completed"), RED);
+            line(220, t("time") + formatTime(this.playTime), WHITE);
+            if (this.bestTime !== null) line(245, t("best") + formatTime(this.bestTime), WHITE);
+            line(300, t("pressX"), WHITE);
+        }
+        if (this.notice) line(400, t(this.notice.key), RED);
     }
 
     _drawHud() {

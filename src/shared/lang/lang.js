@@ -20,7 +20,17 @@ export const LANG = {
         challenges: "CHALLENGES",
         credits: "CREDITS",
 
-        back: "BACK"
+        back: "BACK",
+
+        reading: "READING MEMORY CARD...",
+        noCard: "NO MEMORY CARD",
+        noSave: "NO SAVED GAME",
+        level: "LEVEL ",
+        time: "TIME ",
+        best: "BEST ",
+        completed: "GAME COMPLETED",
+        pressX: "PRESS X",
+        saveFailed: "COULD NOT SAVE - CHECK THE MEMORY CARD"
     },
 
     br: {
@@ -44,7 +54,17 @@ export const LANG = {
         challenges: "DESAFIOS",
         credits: "CRÉDITOS",
 
-        back: "VOLTAR"
+        back: "VOLTAR",
+
+        reading: "LENDO O MEMORY CARD...",
+        noCard: "SEM MEMORY CARD",
+        noSave: "NENHUM JOGO SALVO",
+        level: "FASE ",
+        time: "TEMPO ",
+        best: "MELHOR ",
+        completed: "JOGO CONCLUÍDO",
+        pressX: "APERTE X",
+        saveFailed: "NÃO FOI POSSÍVEL SALVAR - VERIFIQUE O MEMORY CARD"
     },
 
     sp: {
@@ -68,9 +88,27 @@ export const LANG = {
         challenges: "DESAFÍOS",
         credits: "CRÉDITOS",
 
-        back: "ATRÁS"
+        back: "ATRÁS",
+
+        reading: "LEYENDO LA MEMORY CARD...",
+        noCard: "SIN MEMORY CARD",
+        noSave: "NO HAY PARTIDA GUARDADA",
+        level: "NIVEL ",
+        time: "TIEMPO ",
+        best: "MEJOR ",
+        completed: "JUEGO COMPLETADO",
+        pressX: "PULSA X",
+        saveFailed: "NO SE PUDO GUARDAR - REVISA LA MEMORY CARD"
     }
 };
+
+// Language picked in the options menu, shared with the game scenes.
+export const LANGS = ["en", "br", "sp"];
+let current = LANGS[0];
+
+export const getLang = () => current;
+export const setLang = lang => { current = lang; };
+export const t = key => LANG[current][key] || key;
 
 // Every glyph the menus can print, rasterized while the scene loads.
 export const GLYPHS = Font.ASCII + [...new Set(Object.values(LANG).flatMap(strings => Object.values(strings).join("")))].join("");
