@@ -30,6 +30,11 @@ export const LANG = {
         best: "BEST ",
         completed: "GAME COMPLETED",
         pressX: "PRESS X",
+        paused: "PAUSED",
+        resume: "RESUME",
+        saveGame: "SAVE GAME",
+        quit: "QUIT TO MENU",
+        gameSaved: "GAME SAVED",
         saveFailed: "COULD NOT SAVE - CHECK THE MEMORY CARD"
     },
 
@@ -64,6 +69,11 @@ export const LANG = {
         best: "MELHOR ",
         completed: "JOGO CONCLUÍDO",
         pressX: "APERTE X",
+        paused: "PAUSADO",
+        resume: "CONTINUAR",
+        saveGame: "SALVAR JOGO",
+        quit: "SAIR PARA O MENU",
+        gameSaved: "JOGO SALVO",
         saveFailed: "NÃO FOI POSSÍVEL SALVAR - VERIFIQUE O MEMORY CARD"
     },
 
@@ -98,6 +108,11 @@ export const LANG = {
         best: "MEJOR ",
         completed: "JUEGO COMPLETADO",
         pressX: "PULSA X",
+        paused: "PAUSA",
+        resume: "CONTINUAR",
+        saveGame: "GUARDAR PARTIDA",
+        quit: "SALIR AL MENÚ",
+        gameSaved: "PARTIDA GUARDADA",
         saveFailed: "NO SE PUDO GUARDAR - REVISA LA MEMORY CARD"
     }
 };

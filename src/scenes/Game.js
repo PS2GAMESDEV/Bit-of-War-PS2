@@ -2,7 +2,7 @@ import { Level } from "../features/Map/level.js";
 import { Player } from "../features/Player/player.js";
 import { PLAYER_CONTROLS as KEY } from "../shared/config/controls.js";
 import {
-    ASSETS_PATH, DOOR_CONFIG, GAME_SCALE, LAYER,
+    ASSETS_PATH, DOOR_CONFIG, GAME_SCALE, LAYER, SCREEN_HEIGHT, SCREEN_WIDTH,
     PLAYER_ANIMATIONS as ANIM, PLAYER_MOVEMENT as MOVE
 } from "../shared/lib/constants.js";
 import { GLYPHS, t } from "../shared/lang/lang.js";
@@ -22,10 +22,14 @@ const CUTSCENES = Object.freeze({
     5: Cutscene02
 });
 
-const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2 });
+const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED: 3 });
+
+// Pause menu rows (lang keys), top to bottom.
+const PAUSE_OPTIONS = Object.freeze(["resume", "saveGame", "quit"]);
 
 const FADE_OUT = Color.new(0, 0, 0, 128);
 const FADE_CLEAR = Color.new(0, 0, 0, 0);
+const PAUSE_DIM = Color.new(0, 0, 0, 100);
 const WHITE = Color.new(255, 255, 255);
 const RED = Color.new(255, 0, 0);
 const NOTICE_TIME = 2;
@@ -131,6 +135,7 @@ export default class Game extends Scene {
             blades: "sounds/sfx/blades.adp",
             chests: "sounds/sfx/chests.adp",
             jump: "sounds/sfx/jump.adp",
+            selector: "sounds/sfx/selector.adp",
             hurt: "sounds/sfx/soundHurt.adp",
             zeusShoot: "sounds/sfx/soundZeusLightningShoot.adp",
             zeusTransport: "sounds/sfx/soundZeusTransport.adp",
@@ -167,6 +172,8 @@ export default class Game extends Scene {
         this.notice = null;
         this.debug = false;
         this.state = STATE.PLAYING;
+        this.pauseSelected = 0;
+        this.saving = false;
 
         // A loaded level that has a cutscene before it shows it first (from
         // update: a scene cannot push another while it is being entered);
@@ -198,9 +205,18 @@ export default class Game extends Scene {
             return;
         }
 
+        if (this.state === STATE.PAUSED) {
+            this._updatePause(pad);
+            return;
+        }
+
         if (this.state === STATE.PLAYING) {
             this.playTime += dt;
-            if (pad.justPressed(Gamepad.START)) this._saveAndQuit();
+            if (pad.justPressed(Gamepad.START)) {
+                this.state = STATE.PAUSED;
+                this.pauseSelected = 0;
+                return;
+            }
         }
 
         if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
@@ -243,20 +259,34 @@ export default class Game extends Scene {
         };
     }
 
-    // START: writes the state to the memory card and goes back to the menu.
-    async _saveAndQuit() {
-        this.state = STATE.TRANSITIONING;
-        this.player.canMove = false;
+    // Paused: UP/DOWN pick a row, CROSS confirms, START resumes.
+    _updatePause(pad) {
+        if (this.saving) return;
+        if (pad.justPressed(Gamepad.START)) return this._resume();
 
-        const saved = await Save.saveProgress(this._progress(true));
-        if (saved) {
-            Scene.go(Menu);
-            return;
-        }
+        const previous = this.pauseSelected;
+        if (pad.justPressed(Gamepad.UP)) this.pauseSelected--;
+        if (pad.justPressed(Gamepad.DOWN)) this.pauseSelected++;
+        this.pauseSelected = Math.min(Math.max(this.pauseSelected, 0), PAUSE_OPTIONS.length - 1);
+        if (previous !== this.pauseSelected) this.assets.sfx.selector?.play();
 
+        if (!pad.justPressed(Gamepad.CROSS)) return;
+        const option = PAUSE_OPTIONS[this.pauseSelected];
+        if (option === "resume") this._resume();
+        else if (option === "saveGame") this._saveGame();
+        else Scene.go(Menu);
+    }
+
+    _resume() {
         this.state = STATE.PLAYING;
-        this.player.canMove = true;
-        this.notice = { key: "saveFailed", time: NOTICE_TIME };
+    }
+
+    // Writes the state to the memory card; the pause menu stays open.
+    async _saveGame() {
+        this.saving = true;
+        const saved = await Save.saveProgress(this._progress(true));
+        this.saving = false;
+        this.notice = { key: saved ? "gameSaved" : "saveFailed", time: NOTICE_TIME };
     }
 
     // A cutscene was pushed over the game: free the level, hand the screen back.
@@ -375,6 +405,11 @@ export default class Game extends Scene {
             line(220, t("time") + formatTime(this.playTime), WHITE);
             if (this.bestTime !== null) line(245, t("best") + formatTime(this.bestTime), WHITE);
             line(300, t("pressX"), WHITE);
+        }
+        if (this.state === STATE.PAUSED) {
+            Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PAUSE_DIM);
+            line(140, t("paused"), WHITE);
+            PAUSE_OPTIONS.forEach((key, i) => line(220 + i * 30, t(key), i === this.pauseSelected ? RED : WHITE));
         }
         if (this.notice) line(400, t(this.notice.key), RED);
     }
