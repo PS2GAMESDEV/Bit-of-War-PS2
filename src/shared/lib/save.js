@@ -8,8 +8,7 @@ let queue = Promise.resolve();
 // Files that make the save show up in the PS2 browser.
 const BROWSER_FILES = Object.freeze({
     "icon.sys": "assets/config/icon.sys",
-    "icon.icn": "assets/config/cuphead.icn",
-    "del.icn": "assets/config/cupheaddelete.icn"
+    "Cleitos.icn": "assets/config/Cleitos.icn"
 });
 
 function installBrowserFiles() {
