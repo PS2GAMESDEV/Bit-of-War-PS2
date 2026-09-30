@@ -127,6 +127,7 @@ export default class Game extends Scene {
             chests: "sounds/sfx/chests.adp",
             jump: "sounds/sfx/jump.adp",
             hurt: "sounds/sfx/soundHurt.adp",
+            harpieScreech: "sounds/sfx/soundHarpieScreech.adp",
             enemyDie: "sounds/sfx/soundEnDie.adp",
             minotaurDie: "sounds/sfx/soundMinotaur.adp"
         }

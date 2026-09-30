@@ -19,8 +19,9 @@ export class Harpie {
     static clip = "idle";
     static health = 2;
 
-    constructor(sprite, world, x, y) {
+    constructor(sprite, world, x, y, sheets, markers, sfx) {
         this.sprite = sprite;
+        this.sfxScreech = sfx?.harpieScreech;
         this.x = x;
         this.y = y;
         this.chasing = false;
@@ -52,6 +53,7 @@ export class Harpie {
         if (!this.chasing && distance <= SIGHT) {
             this.chasing = true;
             this.sprite.play("fly");
+            this.sfxScreech?.play();
         }
         if (!this.chasing) return;
 

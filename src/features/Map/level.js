@@ -12,7 +12,7 @@ import { Blood } from "../Vfx/blood.js";
 // static `health` and a `hurtbox` ({ x, y, w, h }), and optionally hurt(fromX)
 // and die(); one without a hurtbox (Zeus) is never hit. A class with a static `selfDrawn`
 // draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
-// (sprite, world, x, y, sheets, markers).
+// (sprite, world, x, y, sheets, markers, sfx).
 const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus });
 
 const TILE = 16 * GAME_SCALE;
@@ -200,7 +200,7 @@ export class Level {
             if (!Enemy?.selfDrawn) layer.props.push(sprite);
 
             if (Enemy) {
-                const enemy = new Enemy(sprite, world, x, y, sheets, this.markers);
+                const enemy = new Enemy(sprite, world, x, y, sheets, this.markers, this.sfx);
                 enemy.health = Enemy.health ?? Infinity;
                 this.enemies.push(enemy);
                 layer.enemies.push(enemy);
