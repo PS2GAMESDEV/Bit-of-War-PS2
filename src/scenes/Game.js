@@ -22,13 +22,15 @@ const CUTSCENES = Object.freeze({
     5: Cutscene02
 });
 
-const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED: 3 });
+const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED: 3, GAME_OVER: 4 });
 
 // Pause menu rows (lang keys), top to bottom.
 const PAUSE_OPTIONS = Object.freeze(["resume", "saveGame", "quit"]);
+const GAME_OVER_OPTIONS = Object.freeze(["restartSave", "saveQuit", "quitNoSave"]);
 
 const FADE_OUT = Color.new(0, 0, 0, 128);
 const FADE_CLEAR = Color.new(0, 0, 0, 0);
+const BLACK = Color.new(0, 0, 0);
 const PAUSE_DIM = Color.new(0, 0, 0, 100);
 const WHITE = Color.new(255, 255, 255);
 const RED = Color.new(255, 0, 0);
@@ -56,7 +58,8 @@ export default class Game extends Scene {
     static assets = {
         images: {
             hud: "images/sprites/kratos/hud.png",
-            powerup: "images/sprites/kratos/powerup.png"
+            powerup: "images/sprites/kratos/powerup.png",
+            gameOver: "images/ui/gameOver.png"
         },
         fonts: {
             text: { path: "font/font.ttf", size: 18, preload: GLYPHS }
@@ -72,12 +75,13 @@ export default class Game extends Scene {
                     [ANIM.ATK_R]: "3",
                     [ANIM.BLOCK_L]: "4",
                     [ANIM.BLOCK_R]: "5",
+                    [ANIM.WALK_L]: { frames: "6-7", fps: 6 },
+                    [ANIM.WALK_R]: { frames: "8-9", fps: 6 },
                     [ANIM.JUMP_L]: "6",
-                    [ANIM.JUMP_R]: "7",
-                    [ANIM.WALK_L]: { frames: "8-9", fps: 6 },
-                    [ANIM.WALK_R]: { frames: "10-11", fps: 6 },
-                    [ANIM.IDLE_L]: "8",
-                    [ANIM.IDLE_R]: "10"
+                    [ANIM.JUMP_R]: "8",
+                    [ANIM.IDLE_L]: "7",
+                    [ANIM.IDLE_R]: "9",
+                    [ANIM.DIE]: { frames: "10-11", fps: 1.5, mode: "once" }
                 }
             },
             blade: {
@@ -159,6 +163,7 @@ export default class Game extends Scene {
         this.powerup = images.powerup;
         this.hudSize = scaled(images.hud, GAME_SCALE);
         this.powerupSize = scaled(images.powerup, GAME_SCALE);
+        this.gameOverSize = scaled(images.gameOver, GAME_SCALE);
         this.drawHud = () => { this._drawHud(); this._drawOverlay(); };
 
         this.world = new Collision.World({ gravity: { x: 0, y: MOVE.GRAVITY }, autoStep: false });
@@ -172,7 +177,7 @@ export default class Game extends Scene {
         this.notice = null;
         this.debug = false;
         this.state = STATE.PLAYING;
-        this.pauseSelected = 0;
+        this.menuSelected = 0;
         this.saving = false;
 
         // A loaded level that has a cutscene before it shows it first (from
@@ -205,16 +210,21 @@ export default class Game extends Scene {
             return;
         }
 
-        if (this.state === STATE.PAUSED) {
-            this._updatePause(pad);
+        if (this.state === STATE.PAUSED || this.state === STATE.GAME_OVER) {
+            this._updateMenu(pad);
             return;
         }
 
         if (this.state === STATE.PLAYING) {
             this.playTime += dt;
-            if (pad.justPressed(Gamepad.START)) {
+            if (this.player.deathDone) {
+                this.state = STATE.GAME_OVER;
+                this.menuSelected = 0;
+                return;
+            }
+            if (pad.justPressed(Gamepad.START) && !this.player.dead) {
                 this.state = STATE.PAUSED;
-                this.pauseSelected = 0;
+                this.menuSelected = 0;
                 return;
             }
         }
@@ -259,22 +269,54 @@ export default class Game extends Scene {
         };
     }
 
-    // Paused: UP/DOWN pick a row, CROSS confirms, START resumes.
-    _updatePause(pad) {
+    // Pause and game over menus: UP/DOWN pick a row, CROSS confirms (START
+    // also resumes from the pause).
+    _updateMenu(pad) {
         if (this.saving) return;
-        if (pad.justPressed(Gamepad.START)) return this._resume();
 
-        const previous = this.pauseSelected;
-        if (pad.justPressed(Gamepad.UP)) this.pauseSelected--;
-        if (pad.justPressed(Gamepad.DOWN)) this.pauseSelected++;
-        this.pauseSelected = Math.min(Math.max(this.pauseSelected, 0), PAUSE_OPTIONS.length - 1);
-        if (previous !== this.pauseSelected) this.assets.sfx.selector?.play();
+        const paused = this.state === STATE.PAUSED;
+        if (paused && pad.justPressed(Gamepad.START)) return this._resume();
+
+        const options = paused ? PAUSE_OPTIONS : GAME_OVER_OPTIONS;
+        const previous = this.menuSelected;
+        if (pad.justPressed(Gamepad.UP)) this.menuSelected--;
+        if (pad.justPressed(Gamepad.DOWN)) this.menuSelected++;
+        this.menuSelected = Math.min(Math.max(this.menuSelected, 0), options.length - 1);
+        if (previous !== this.menuSelected) this.assets.sfx.selector?.play();
 
         if (!pad.justPressed(Gamepad.CROSS)) return;
-        const option = PAUSE_OPTIONS[this.pauseSelected];
+        const option = options[this.menuSelected];
         if (option === "resume") this._resume();
         else if (option === "saveGame") this._saveGame();
+        else if (option === "restartSave") this._restartFromSave();
+        else if (option === "saveQuit") this._saveAndQuit();
         else Scene.go(Menu);
+    }
+
+    // Game over: the last checkpoint on the card, or the start of this level
+    // when there is none.
+    async _restartFromSave() {
+        this.saving = true;
+        const data = await Save.load();
+        const progress = data?.progress ?? null;
+        const index = progress ? progress.levelIndex : this.levelIndex;
+        const map = await readMap(index);
+
+        this.saving = false;
+        this.levelIndex = index;
+        if (progress) this.playTime = progress.playTime;
+        this.player.revive();
+        this._build(map, progress);
+    }
+
+    // Game over: saves the start of this level and goes back to the menu.
+    async _saveAndQuit() {
+        this.saving = true;
+        const saved = await Save.saveProgress(this._progress(false));
+        this.saving = false;
+
+        if (saved) Scene.go(Menu);
+        else this.notice = { key: "saveFailed", time: NOTICE_TIME };
     }
 
     _resume() {
@@ -406,10 +448,17 @@ export default class Game extends Scene {
             if (this.bestTime !== null) line(245, t("best") + formatTime(this.bestTime), WHITE);
             line(300, t("pressX"), WHITE);
         }
+        if (this.state === STATE.GAME_OVER) {
+            const { width, height } = this.gameOverSize;
+
+            Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLACK);
+            this.assets.images.gameOver.draw((SCREEN_WIDTH - width) / 2, (SCREEN_HEIGHT - height) / 2, this.gameOverSize);
+            GAME_OVER_OPTIONS.forEach((key, i) => line(300 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
+        }
         if (this.state === STATE.PAUSED) {
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PAUSE_DIM);
             line(140, t("paused"), WHITE);
-            PAUSE_OPTIONS.forEach((key, i) => line(220 + i * 30, t(key), i === this.pauseSelected ? RED : WHITE));
+            PAUSE_OPTIONS.forEach((key, i) => line(220 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
         }
         if (this.notice) line(400, t(this.notice.key), RED);
     }

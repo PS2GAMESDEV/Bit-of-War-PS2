@@ -35,6 +35,9 @@ export const LANG = {
         saveGame: "SAVE GAME",
         quit: "QUIT TO MENU",
         gameSaved: "GAME SAVED",
+        restartSave: "RESTART FROM LAST SAVE",
+        saveQuit: "SAVE AND QUIT",
+        quitNoSave: "QUIT WITHOUT SAVING",
         saveFailed: "COULD NOT SAVE - CHECK THE MEMORY CARD"
     },
 
@@ -74,6 +77,9 @@ export const LANG = {
         saveGame: "SALVAR JOGO",
         quit: "SAIR PARA O MENU",
         gameSaved: "JOGO SALVO",
+        restartSave: "REINICIAR DO ÚLTIMO SAVE",
+        saveQuit: "SALVAR E SAIR",
+        quitNoSave: "SAIR SEM SALVAR",
         saveFailed: "NÃO FOI POSSÍVEL SALVAR - VERIFIQUE O MEMORY CARD"
     },
 
@@ -113,6 +119,9 @@ export const LANG = {
         saveGame: "GUARDAR PARTIDA",
         quit: "SALIR AL MENÚ",
         gameSaved: "PARTIDA GUARDADA",
+        restartSave: "REINICIAR DESDE LA ÚLTIMA PARTIDA",
+        saveQuit: "GUARDAR Y SALIR",
+        quitNoSave: "SALIR SIN GUARDAR",
         saveFailed: "NO SE PUDO GUARDAR - REVISA LA MEMORY CARD"
     }
 };

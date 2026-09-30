@@ -31,6 +31,7 @@ export class Player {
         this.sprite = new Sprite.Instance(sheets.kratos, { clip: ANIM.IDLE_R, scale: GAME_SCALE, origin: [0.5, 0] });
         this.blade = new Sprite.Instance(sheets.blade, { scale: GAME_SCALE });
         this.blade.on("end", () => { this.attacking = false; });
+        this.sprite.on("end", () => { if (this.dead) this.deathDone = true; });
 
         this.sfxJump = sfx.jump;
         this.sfxBlades = sfx.blades;
@@ -52,6 +53,8 @@ export class Player {
         this.climbDir = 0;
         this.jumps = MOVE.JUMPS;
         this.health = HURT.HEALTH;
+        this.dead = false;          // out of health: plays ANIM.DIE and ignores the pad
+        this.deathDone = false;     // the death animation has finished
         this.stun = 0;              // seconds left without control after a hit
         this.invulnerable = 0;      // seconds left immune (and translucent)
     }
@@ -69,6 +72,7 @@ export class Player {
 
         this.health--;
         this.sfxHurt.play();
+        if (this.health <= 0) return this._die();
         this.stun = HURT.STUN;
         this.invulnerable = HURT.INVULNERABLE;
         this.openingChest = false;
@@ -80,6 +84,28 @@ export class Player {
 
         body.vx = (fromX > this.pos.x ? -1 : 1) * HURT.KNOCK_X;
         body.vy = -HURT.KNOCK_Y;
+    }
+
+    _die() {
+        this.dead = true;
+        this.canMove = false;
+        this.openingChest = false;
+        if (this.climbing) this._stopClimbing();
+        this.attacking = false;
+        this.blade.stop();
+        this.body.vx = 0;
+        this.sprite.color = NORMAL;
+        this.sprite.play(ANIM.DIE, { restart: true });
+    }
+
+    // Back to full health after a game over (attach() puts him in the level).
+    revive() {
+        this.health = HURT.HEALTH;
+        this.dead = false;
+        this.deathDone = false;
+        this.invulnerable = 0;
+        this.stun = 0;
+        this.facingLeft = false;
     }
 
     // Where the blade is while it swings (the box that is drawn), or null.
@@ -148,6 +174,14 @@ export class Player {
 
     update(dt, pad) {
         const body = this.body;
+
+        if (this.dead) {
+            // He falls where he died (no control, no knockback) and lies there.
+            body.vx = 0;
+            this.world.step(dt);
+            this._syncPos();
+            return;
+        }
 
         if (this.invulnerable > 0) this.invulnerable -= dt;
 

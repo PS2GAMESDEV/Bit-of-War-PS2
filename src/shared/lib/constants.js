@@ -37,7 +37,8 @@ const PLAYER_ANIMATIONS = Object.freeze({
     ATK_R: "atk_r",
     CLIMB: "climb",
     IDLE_L: "idle_l",
-    IDLE_R: "idle_r"
+    IDLE_R: "idle_r",
+    DIE: "die"
 });
 
 // Units per second (the values used to be pixels per frame at 60 Hz).
