@@ -22,7 +22,6 @@ const BOLT_ART_ANGLE = 20 * Math.PI / 180;   // slope of the bolt drawn in the s
 const BOLT_SPEED = 300;         // units per second at full health
 const BOLT_SPEED_GAIN = 1;      // extra speed, as a fraction of BOLT_SPEED, once all his health is gone
 const DEATH_HOLD = 0.8;         // seconds the last frame of "die" stays before he is removed
-const HURT_TIME = 0.25;         // seconds the "damage" clip (frame 4) shows after a hit
 const BOLT_SIZE = 8 * GAME_SCALE;   // side of the box that hurts
 const BOLT_FRAME = 16 * GAME_SCALE;
 const VIEW_MARGIN = 2 * 16 * GAME_SCALE;    // a bolt this far outside the camera disappears
@@ -35,7 +34,7 @@ const VIEW_MARGIN = 2 * 16 * GAME_SCALE;    // a bolt this far outside the camer
  * (zeusMove2, zeusMove1, ...) as the zeusTransport sprite instead of himself,
  * and repeats. He has no body in the world.
  *
- * Other clips ready in the sheet: "damage" and "die".
+ * Other clips ready in the sheet: "damage" (frame 4 alone) and "die".
  */
 export class Zeus {
     static clip = "idle";
@@ -51,7 +50,7 @@ export class Zeus {
         this.deathTimer = 0;
         this.boltSheet = sheets.lighting;
         this.bolts = [];
-        this.hurtTime = 0;
+        this.hurting = false;       // the "hit" clip is playing
         this.attackInterval = ATTACK_INTERVAL;  // seconds; shortens as he loses health
         this.boltSpeed = BOLT_SPEED;    // units per second; raise it as he loses health
         this.transport = new Sprite.Instance(sheets.zeusTransport, { clip: "transport", scale: GAME_SCALE });
@@ -75,19 +74,22 @@ export class Zeus {
         return this.started && !this.transporting && !this.dying ? { x: this.x, y: this.y, w: SIZE, h: SIZE } : null;
     }
 
-    // Hit: shows the "damage" clip and the bolts get faster as his health runs out.
+    // Hit: plays the "hit" clip (frame 4 flashing with "float"), then transports to the
+    // other marker. The bolts get faster and come sooner as his health runs out.
     hurt() {
         const lost = 1 - Math.max(this.health, 0) / Zeus.health;
 
         this.boltSpeed = BOLT_SPEED * (1 + BOLT_SPEED_GAIN * lost);
         this.attackInterval = ATTACK_INTERVAL + (ATTACK_INTERVAL_MIN - ATTACK_INTERVAL) * lost;
-        this.hurtTime = HURT_TIME;
-        this.sprite.play("damage", { restart: true });
+        this.hurting = true;
+        this.attacking = false;     // an attack cut short by the hit is lost
+        this.sprite.play("hit", { restart: true });
     }
 
     // Out of health: plays "die" (once) and is removed by the Level a moment after it ends.
     die() {
         this.dying = true;
+        this.hurting = false;
         this.transporting = false;
         this.bolts.length = 0;
         this.deathTimer = Infinity;
@@ -116,7 +118,6 @@ export class Zeus {
         }
 
         this._moveBolts(dt, view);
-        if (this.hurtTime > 0 && (this.hurtTime -= dt) <= 0) this._recover();
 
         if (!this.started) {
             const visible = this.x + SIZE > view.x && this.x < view.x + view.w &&
@@ -127,8 +128,11 @@ export class Zeus {
             this.sprite.play("float");
         }
 
-        if (!this.arrived) this._fly(dt);
-        else this._attack(dt);
+        // Frozen while he flashes.
+        if (!this.hurting) {
+            if (!this.arrived) this._fly(dt);
+            else this._attack(dt);
+        }
 
         const toPlayer = target.centerX - (this.x + SIZE / 2);
         if (Math.abs(toPlayer) > TURN_DEADZONE) this.facingRight = toPlayer > 0;
@@ -171,26 +175,28 @@ export class Zeus {
             this.deathTimer = DEATH_HOLD;
             return;
         }
+        if (this.hurting) {
+            this.hurting = false;
+            this.sprite.play("idle");
+            this._transport();
+            return;
+        }
         if (!this.attacking) return;
 
         this.attacking = false;
         this.sprite.play("idle");
         this._strike();
 
-        if (this.attacks >= ATTACKS) {
-            this.arrived = false;
-            this.transporting = true;
-            this.transport.play("transport", { restart: true });
-            this.sfxTransport?.play();
-            this.stop = (this.stop + 1) % this.stops.length;
-        }
+        if (this.attacks >= ATTACKS) this._transport();
     }
 
-    // The hit is over: back to the clip he was in. An attack cut short by the
-    // hit is finished now.
-    _recover() {
-        this.sprite.play(this.arrived ? "idle" : "float");
-        if (this.attacking) this._attackEnded();
+    // Leaves for the other marker as the zeusTransport sprite.
+    _transport() {
+        this.arrived = false;
+        this.transporting = true;
+        this.transport.play("transport", { restart: true });
+        this.sfxTransport?.play();
+        this.stop = (this.stop + 1) % this.stops.length;
     }
 
     // Lightning from his center, towards the side the player is on.

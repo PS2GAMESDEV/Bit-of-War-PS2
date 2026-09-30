@@ -114,7 +114,8 @@ export default class Game extends Scene {
                     attack: { frames: "0,3", fps: 6, mode: "once" },
                     die: { frames: "1,5,6", fps: 4, mode: "once" },
                     float: "2",
-                    damage: "4"
+                    damage: "4",
+                    hit: { frames: "4,2,4,2,4,2", fps: 14, mode: "once" }
                 }
             },
             zeusTransport: {
