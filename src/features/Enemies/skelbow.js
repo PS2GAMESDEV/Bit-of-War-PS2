@@ -42,6 +42,20 @@ export class Skelbow {
         return { x: this.x, y: this.y, w: TILE, h: TILE };
     }
 
+    // An arrow that touches `box` is spent: returns its center x, or null.
+    arrowHit(box) {
+        const arrows = this.arrows;
+
+        for (let i = arrows.length - 1; i >= 0; i--) {
+            const { x, y } = arrows[i];
+            if (!Collision.overlaps(box, { x, y, w: ARROW_W, h: ARROW_H })) continue;
+
+            arrows.splice(i, 1);
+            return x + ARROW_W / 2;
+        }
+        return null;
+    }
+
     // `view` is the camera's visible rectangle { x, y, w, h }.
     update(target, dt, view) {
         const dx = target.centerX - (this.x + TILE / 2);

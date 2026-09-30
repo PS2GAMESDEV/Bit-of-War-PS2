@@ -1,4 +1,6 @@
-import { GAME_SCALE, LAYER, PLAYER_ANIMATIONS as ANIM, PLAYER_MOVEMENT as MOVE } from "../../shared/lib/constants.js";
+import {
+    GAME_SCALE, LAYER, PLAYER_ANIMATIONS as ANIM, PLAYER_HURT as HURT, PLAYER_MOVEMENT as MOVE
+} from "../../shared/lib/constants.js";
 import { PLAYER_CONTROLS as KEY } from "../../shared/config/controls.js";
 
 const SIZE = 16 * GAME_SCALE;
@@ -14,6 +16,10 @@ const PIXEL = 2 * GAME_SCALE;
 
 // The ladder probe and the door test are the body inset by this.
 const INSET = 4;
+
+// Sprite tints (128 per channel is the texture unchanged).
+const NORMAL = Color.new(128, 128, 128, 128);
+const GHOST = Color.new(128, 128, 128, 56);
 
 /**
  * Kratos. Position, gravity, floors and walls are handled by a dynamic body of
@@ -44,6 +50,34 @@ export class Player {
         this.climbing = false;
         this.climbDir = 0;
         this.jumps = MOVE.JUMPS;
+        this.health = HURT.HEALTH;
+        this.stun = 0;              // seconds left without control after a hit
+        this.invulnerable = 0;      // seconds left immune (and translucent)
+    }
+
+    get vulnerable() {
+        return this.invulnerable <= 0 && this.health > 0;
+    }
+
+    // Hit by something at `fromX` (its center): loses health and is thrown up
+    // and away from it.
+    hurt(fromX) {
+        if (!this.vulnerable) return;
+
+        const body = this.body;
+
+        this.health--;
+        this.stun = HURT.STUN;
+        this.invulnerable = HURT.INVULNERABLE;
+        this.openingChest = false;
+        if (this.climbing) this._stopClimbing();
+        if (this.attacking) {
+            this.attacking = false;
+            this.blade.stop();
+        }
+
+        body.vx = (fromX > this.pos.x ? -1 : 1) * HURT.KNOCK_X;
+        body.vy = -HURT.KNOCK_Y;
     }
 
     // Where the blade is while it swings (the box that is drawn), or null.
@@ -104,6 +138,7 @@ export class Player {
         this.lastLadder = null;
         this.jumps = MOVE.JUMPS;
         this.attacking = false;
+        this.stun = 0;
         this.struck.clear();
         this.blade.stop();
         this._syncPos();
@@ -112,13 +147,18 @@ export class Player {
     update(dt, pad) {
         const body = this.body;
 
-        if (this.canMove) this._input(pad, body);
+        if (this.invulnerable > 0) this.invulnerable -= dt;
+
+        // Stunned, the velocity of the hit is kept and the pad is ignored.
+        const stunned = this.stun > 0;
+        if (stunned) this.stun -= dt;
+        else if (this.canMove) this._input(pad, body);
         else body.vx = 0;
 
         this.world.step(dt);
         if (body.onGround) this.jumps = MOVE.JUMPS;
 
-        if (this.canMove) {
+        if (this.canMove && !stunned) {
             this._checkLadder(pad, body);
             if (pad.justPressed(KEY.ATK) && !this.attacking) this._attack();
         }
@@ -240,6 +280,8 @@ export class Player {
     _animate(pad, body) {
         const sprite = this.sprite;
         const left = this.facingLeft;
+
+        sprite.color = this.blade.color = this.invulnerable > 0 ? GHOST : NORMAL;
 
         if (this.openingChest) {
             sprite.frame = 0;

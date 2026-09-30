@@ -200,6 +200,11 @@ export default class Game extends Scene {
 
         const hitbox = this.player.hitbox;
         if (hitbox) this.level.strike(hitbox, this.player.pos.x, this.player.struck);
+
+        if (this.state === STATE.PLAYING && this.player.vulnerable) {
+            const fromX = this.level.hitPlayer(this.player.body);
+            if (fromX !== null) this.player.hurt(fromX);
+        }
     }
 
     draw() {

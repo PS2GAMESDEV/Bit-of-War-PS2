@@ -50,6 +50,17 @@ const PLAYER_MOVEMENT = Object.freeze({
     JUMPS: 1
 });
 
+// A hit on the player: he loses one health, is thrown up and away from the
+// attacker (units per second) with no control for STUN seconds, and stays
+// translucent and immune for INVULNERABLE seconds.
+const PLAYER_HURT = Object.freeze({
+    HEALTH: 5,
+    KNOCK_X: 200,
+    KNOCK_Y: 360,
+    STUN: 0.3,
+    INVULNERABLE: 1.2
+});
+
 // Units per second.
 const UNDEAD_SPEED = 60;
 const MINOTAUR_WALK_SPEED = 60;
@@ -77,6 +88,7 @@ export {
     LAYER,
     PLAYER_ANIMATIONS,
     PLAYER_MOVEMENT,
+    PLAYER_HURT,
     VFX_SCREEN_COLOR,
     DOOR_CONFIG
 }

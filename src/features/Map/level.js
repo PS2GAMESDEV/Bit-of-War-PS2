@@ -240,6 +240,19 @@ export class Level {
         }
     }
 
+    // What hurts a player whose body is `box`: an enemy touching it, or an
+    // arrow (which is spent). Returns the x of its center, or null.
+    hitPlayer(box) {
+        for (const enemy of this.enemies) {
+            const hurtbox = enemy.hurtbox;
+            if (hurtbox && Collision.overlaps(box, hurtbox)) return hurtbox.x + hurtbox.w / 2;
+
+            const arrowX = enemy.arrowHit?.(box) ?? null;
+            if (arrowX !== null) return arrowX;
+        }
+        return null;
+    }
+
     _remove(enemy) {
         this.enemies.splice(this.enemies.indexOf(enemy), 1);
 
