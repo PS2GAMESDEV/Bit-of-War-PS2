@@ -1,4 +1,4 @@
-import { GAME_SCALE, LAYER, PLAYER_MOVEMENT as MOVE } from "../../shared/lib/constants.js";
+import { GAME_SCALE, KNOCKBACK_DECAY, KNOCKBACK_SPEED, LAYER, PLAYER_MOVEMENT as MOVE } from "../../shared/lib/constants.js";
 
 const SIZE = 16 * GAME_SCALE;
 
@@ -27,6 +27,7 @@ export class Walker {
         this.runSpeed = runSpeed;
         this.sight = sight;
         this.running = false;
+        this.knock = 0;     // push from a hit, units per second (fades out)
         this.dir = facesRight ? 1 : -1;
         this.body = world.add({
             type: "dynamic",
@@ -38,9 +39,27 @@ export class Walker {
         });
     }
 
+    // Box the blade can hit.
+    get hurtbox() {
+        return this.body;
+    }
+
+    // Hit from `fromX` (the attacker's center): turns to face him and is
+    // pushed the other way.
+    hurt(fromX) {
+        const toAttacker = fromX > this.body.centerX ? 1 : -1;
+
+        this.dir = toAttacker;
+        this.knock = -toAttacker * KNOCKBACK_SPEED;
+    }
+
+    die() {
+        this.body.remove();
+    }
+
     // Before the world step: picks the direction and sets the velocity.
     // `target` is the player's body.
-    update(target) {
+    update(target, dt) {
         const body = this.body;
 
         if (body.onGround) {
@@ -56,7 +75,9 @@ export class Walker {
         // After the turn, so it does not chase what is now behind it.
         this.running = this.runSpeed > 0 && this._sees(target);
 
-        body.vx = this.dir * (this.running ? this.runSpeed : this.walkSpeed);
+        body.vx = this.dir * (this.running ? this.runSpeed : this.walkSpeed) + this.knock;
+        this.knock *= Math.max(0, 1 - KNOCKBACK_DECAY * dt);
+        if (Math.abs(this.knock) < 1) this.knock = 0;
         this.sprite.flipX = (this.dir > 0) !== this.facesRight;
         this.sprite.play(this.running ? "run" : "walk");
     }

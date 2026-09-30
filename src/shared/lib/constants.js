@@ -55,7 +55,18 @@ const UNDEAD_SPEED = 60;
 const MINOTAUR_WALK_SPEED = 60;
 const MINOTAUR_RUN_SPEED = 150;
 
+// Damage of one blade swing to each enemy it touches.
+const BLADE_DAMAGE = 1;
+
+// The push a hit gives an enemy that moves: initial units per second, and how
+// fast it fades (per second). About 26 units in all.
+const KNOCKBACK_SPEED = 260;
+const KNOCKBACK_DECAY = 10;
+
 export {
+    BLADE_DAMAGE,
+    KNOCKBACK_SPEED,
+    KNOCKBACK_DECAY,
     UNDEAD_SPEED,
     MINOTAUR_WALK_SPEED,
     MINOTAUR_RUN_SPEED,

@@ -115,7 +115,12 @@ export default class Game extends Scene {
                 frameHeight: 16,
                 clips: { transport: { frames: "0-1", fps: 8 } }
             },
-            undead: enemy("enUndead")
+            undead: enemy("enUndead"),
+            blood: {
+                path: "images/vfx/blood.png",
+                ...grid,
+                clips: { splash: "0" }
+            }
         },
         sfx: {
             blades: "sounds/sfx/blades.adp",
@@ -192,6 +197,9 @@ export default class Game extends Scene {
 
         this.level.update(this.player.body, dt, this.camera.visibleRect());
         this.player.update(dt, pad); // steps the world, enemies included
+
+        const hitbox = this.player.hitbox;
+        if (hitbox) this.level.strike(hitbox, this.player.pos.x, this.player.struck);
     }
 
     draw() {

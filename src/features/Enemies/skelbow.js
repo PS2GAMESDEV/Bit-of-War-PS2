@@ -21,6 +21,7 @@ const TURN_DEADZONE = 2;          // does not turn for a player right above or b
  */
 export class Skelbow {
     static clip = "idle";
+    static health = 3;
 
     constructor(sprite, world, x, y, sheets) {
         this.sprite = sprite;
@@ -34,6 +35,11 @@ export class Skelbow {
         this.arrows = [];
 
         this.sprite.on("end", () => this._release());
+    }
+
+    // Box the blade can hit.
+    get hurtbox() {
+        return { x: this.x, y: this.y, w: TILE, h: TILE };
     }
 
     // `view` is the camera's visible rectangle { x, y, w, h }.

@@ -39,10 +39,24 @@ export class Player {
         this.facingLeft = false;
         this.canMove = true;
         this.attacking = false;
+        this.struck = new Set();    // enemies already hit by the current swing
         this.openingChest = false;
         this.climbing = false;
         this.climbDir = 0;
         this.jumps = MOVE.JUMPS;
+    }
+
+    // Where the blade is while it swings (the box that is drawn), or null.
+    get hitbox() {
+        if (!this.attacking) return null;
+
+        const { x, y } = this.pos;
+        return {
+            x: this.facingLeft ? x - HALF - BLADE_WIDTH + PIXEL : x + HALF - PIXEL,
+            y: y + HALF - PIXEL,
+            w: BLADE_WIDTH,
+            h: SIZE
+        };
     }
 
     // Top-left of the sprite box: what attach() takes to put him back here.
@@ -90,6 +104,7 @@ export class Player {
         this.lastLadder = null;
         this.jumps = MOVE.JUMPS;
         this.attacking = false;
+        this.struck.clear();
         this.blade.stop();
         this._syncPos();
     }
@@ -156,6 +171,7 @@ export class Player {
 
     _attack() {
         this.attacking = true;
+        this.struck.clear();
         this.blade.play("swing", { restart: true });
         this.sfxBlades.play();
     }
@@ -256,13 +272,11 @@ export class Player {
 
     draw() {
         const { x, y } = this.pos;
+        const hitbox = this.hitbox;
 
-        if (this.attacking) {
+        if (hitbox) {
             this.blade.flipX = !this.facingLeft;
-            this.blade.draw(
-                this.facingLeft ? x - HALF - BLADE_WIDTH + PIXEL : x + HALF - PIXEL,
-                y + HALF - PIXEL
-            );
+            this.blade.draw(hitbox.x, hitbox.y);
         }
 
         this.sprite.draw(x, y);

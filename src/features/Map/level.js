@@ -1,13 +1,16 @@
-import { GAME_SCALE, LAYER, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js";
+import { BLADE_DAMAGE, GAME_SCALE, LAYER, VFX_SCREEN_COLOR } from "../../shared/lib/constants.js";
 import { Harpie } from "../Enemies/harpie.js";
 import { Minotaur } from "../Enemies/minotaur.js";
 import { Skelbow } from "../Enemies/skelbow.js";
 import { Undead } from "../Enemies/undead.js";
 import { Zeus } from "../Enemies/zeus.js";
+import { Blood } from "../Vfx/blood.js";
 
 // Sheet name -> enemy class, made from the map placements. A class has a
 // static `clip` (the sprite's first animation) and the methods update(target,
-// dt, view), sync() and, optionally, draw(). A class with a static `selfDrawn`
+// dt, view), sync() and, optionally, draw(). One the blade can hit also has a
+// static `health` and a `hurtbox` ({ x, y, w, h }), and optionally hurt(fromX)
+// and die(); one without a hurtbox (Zeus) is never hit. A class with a static `selfDrawn`
 // draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
 // (sprite, world, x, y, sheets, markers).
 const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus });
@@ -82,6 +85,7 @@ export class Level {
         this.layers = [];
         this.enemies = [];
         this.chests = [];
+        this.blood = new Blood(sheets.blood);
         this.spawn = { x: 100, y: 100 };
         this.width = 0;
         this.height = 0;
@@ -196,6 +200,7 @@ export class Level {
 
             if (Enemy) {
                 const enemy = new Enemy(sprite, world, x, y, sheets, this.markers);
+                enemy.health = Enemy.health ?? Infinity;
                 this.enemies.push(enemy);
                 layer.enemies.push(enemy);
             }
@@ -209,6 +214,43 @@ export class Level {
     // body and `view` the camera's visible rectangle.
     update(target, dt, view) {
         for (const enemy of this.enemies) enemy.update(target, dt, view);
+        this.blood.update(dt);
+    }
+
+    // The blade at `hitbox` (swung by the player at `fromX`) hits every enemy
+    // it touches that is not in `struck` yet: they bleed, react and, out of
+    // health, are removed. `struck` keeps one swing from hitting twice.
+    strike(hitbox, fromX, struck) {
+        for (let i = this.enemies.length - 1; i >= 0; i--) {
+            const enemy = this.enemies[i];
+            const box = enemy.hurtbox;
+            if (!box || struck.has(enemy) || !Collision.overlaps(hitbox, box)) continue;
+
+            struck.add(enemy);
+            const centerX = box.x + box.w / 2;
+            this.blood.spawn(centerX, box.y + box.h / 2, fromX > centerX);
+
+            enemy.health -= BLADE_DAMAGE;
+            if (enemy.health > 0) {
+                enemy.hurt?.(fromX);
+            } else {
+                enemy.die?.();
+                this._remove(enemy);
+            }
+        }
+    }
+
+    _remove(enemy) {
+        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+
+        for (const layer of this.layers) {
+            const at = layer.enemies.indexOf(enemy);
+            if (at < 0) continue;
+
+            layer.enemies.splice(at, 1);
+            const prop = layer.props.indexOf(enemy.sprite);
+            if (prop >= 0) layer.props.splice(prop, 1);
+        }
     }
 
     // Draws the layers in ascending order, only the slice of every tile group
@@ -245,5 +287,6 @@ export class Level {
         }
 
         if (!playerDrawn) drawPlayer?.();
+        this.blood.draw();
     }
 }
