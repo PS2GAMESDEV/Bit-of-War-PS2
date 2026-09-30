@@ -10,7 +10,8 @@ import { Blood } from "../Vfx/blood.js";
 // static `clip` (the sprite's first animation) and the methods update(target,
 // dt, view), sync() and, optionally, draw(). One the blade can hit also has a
 // static `health` and a `hurtbox` ({ x, y, w, h }), and optionally hurt(fromX)
-// and die(); one without a hurtbox (Zeus) is never hit. A class with a static `selfDrawn`
+// and die() (one that sets `dying` stays until it sets `dead`); one whose hurtbox
+// is null is not hit. A class with a static `selfDrawn`
 // draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
 // (sprite, world, x, y, sheets, markers, sfx).
 const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus });
@@ -216,6 +217,11 @@ export class Level {
     update(target, dt, view) {
         for (const enemy of this.enemies) enemy.update(target, dt, view);
         this.blood.update(dt);
+
+        // An enemy with a death animation stays until it says it is `dead`.
+        for (let i = this.enemies.length - 1; i >= 0; i--) {
+            if (this.enemies[i].dead) this._remove(this.enemies[i]);
+        }
     }
 
     // The blade at `hitbox` (swung by the player at `fromX`) hits every enemy
@@ -237,7 +243,7 @@ export class Level {
             } else {
                 enemy.die?.();
                 this.sfx[enemy.constructor.dieSfx ?? "enemyDie"]?.play();
-                this._remove(enemy);
+                if (!enemy.dying) this._remove(enemy);
             }
         }
     }

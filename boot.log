@@ -267,3 +267,386 @@ Menu.draw #2 end
 Menu.update #3 busy=false
 Menu.draw #3 begin
 Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+Menu.update #360 busy=false
+Menu.draw #360 begin
+Menu.update #480 busy=false
+Menu.draw #480 begin
+Menu.update #600 busy=false
+Menu.draw #600 begin
+Menu.update #720 busy=false
+Menu.draw #720 begin
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+loading 5/7 (frame 3)
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 6)
+loading 7/7 (frame 7)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #2 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #3 busy=false
+Menu.draw #120 begin
+Menu.update #120 busy=false
+loading 11/25 (frame 23)
+loading 15/25 (frame 24)
+loading 23/25 (frame 25)
+loading 25/25 (frame 26)
+loading 2/14 (frame 40)
+loading 3/14 (frame 41)
+loading 4/14 (frame 42)
+loading 5/14 (frame 44)
+loading 6/14 (frame 45)
+loading 7/14 (frame 47)
+loading 8/14 (frame 48)
+loading 9/14 (frame 50)
+loading 10/14 (frame 51)
+loading 11/14 (frame 52)
+loading 12/14 (frame 53)
+loading 13/14 (frame 55)
+loading 14/14 (frame 56)
+loading 5/7 (frame 59)
+loading 6/7 (frame 60)
+loading 7/7 (frame 65)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+Menu.update #360 busy=false
+Menu.draw #360 begin
+Menu.update #480 busy=false
+Menu.draw #480 begin
+Menu.update #600 busy=false
+Menu.draw #600 begin
+Menu.update #720 busy=false
+Menu.draw #720 begin
+Menu.update #840 busy=false
+Menu.draw #840 begin
+Menu.update #960 busy=false
+Menu.draw #960 begin
+Menu.update #1080 busy=false
+Menu.draw #1080 begin
+Menu.update #1200 busy=false
+Menu.draw #1200 begin
+Menu.update #1320 busy=false
+Menu.draw #1320 begin
+Menu.update #1440 busy=false
+Menu.draw #1440 begin
+Menu.update #1560 busy=false
+Menu.draw #1560 begin
+Menu.update #1680 busy=false
+Menu.draw #1680 begin
+Menu.update #1800 busy=false
+Menu.draw #1800 begin
+Menu.update #1920 busy=false
+Menu.draw #1920 begin
+Menu.update #2040 busy=false
+Menu.draw #2040 begin
+Menu.update #2160 busy=false
+Menu.draw #2160 begin
+Menu.update #2280 busy=false
+Menu.draw #2280 begin
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+loading 11/25 (frame 22)
+loading 16/25 (frame 23)
+loading 23/25 (frame 24)
+loading 25/25 (frame 25)
+loading 7/14 (frame 39)
+loading 8/14 (frame 40)
+loading 9/14 (frame 41)
+loading 10/14 (frame 42)
+loading 11/14 (frame 43)
+loading 12/14 (frame 44)
+loading 13/14 (frame 45)
+loading 14/14 (frame 46)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+loading 11/25 (frame 22)
+loading 16/25 (frame 23)
+loading 23/25 (frame 24)
+loading 25/25 (frame 25)
+loading 7/14 (frame 39)
+loading 8/14 (frame 40)
+loading 9/14 (frame 41)
+loading 10/14 (frame 42)
+loading 11/14 (frame 43)
+loading 12/14 (frame 44)
+loading 13/14 (frame 45)
+loading 14/14 (frame 46)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+loading 11/25 (frame 22)
+loading 15/25 (frame 23)
+loading 22/25 (frame 24)
+loading 25/25 (frame 25)
+loading 7/14 (frame 39)
+loading 8/14 (frame 40)
+loading 9/14 (frame 41)
+loading 10/14 (frame 42)
+loading 11/14 (frame 43)
+loading 12/14 (frame 44)
+loading 13/14 (frame 45)
+loading 14/14 (frame 46)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+Menu.update #360 busy=false
+Menu.draw #360 begin
+loading 16/27 (frame 22)
+loading 23/27 (frame 23)
+loading 27/27 (frame 24)
+loading 7/14 (frame 36)
+loading 8/14 (frame 37)
+loading 9/14 (frame 38)
+loading 10/14 (frame 39)
+loading 11/14 (frame 40)
+loading 12/14 (frame 41)
+loading 13/14 (frame 42)
+loading 14/14 (frame 43)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 5)
+loading 7/7 (frame 6)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+loading 16/27 (frame 22)
+loading 20/27 (frame 23)
+loading 27/27 (frame 24)
+loading 7/14 (frame 36)
+loading 8/14 (frame 37)
+loading 9/14 (frame 38)
+loading 10/14 (frame 39)
+loading 11/14 (frame 40)
+loading 12/14 (frame 41)
+loading 13/14 (frame 42)
+loading 14/14 (frame 43)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+loading 11/27 (frame 22)
+loading 15/27 (frame 23)
+loading 20/27 (frame 24)
+loading 26/27 (frame 25)
+loading 27/27 (frame 26)
+loading 7/14 (frame 37)
+loading 8/14 (frame 38)
+loading 9/14 (frame 39)
+loading 10/14 (frame 40)
+loading 11/14 (frame 41)
+loading 12/14 (frame 42)
+loading 13/14 (frame 43)
+loading 14/14 (frame 44)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 5)
+loading 7/7 (frame 6)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+Menu.update #360 busy=false
+Menu.draw #360 begin
+loading 16/27 (frame 22)
+loading 22/27 (frame 23)
+loading 25/27 (frame 24)
+loading 27/27 (frame 25)
+loading 7/14 (frame 37)
+loading 8/14 (frame 38)
+loading 9/14 (frame 40)
+loading 10/14 (frame 41)
+loading 11/14 (frame 42)
+loading 12/14 (frame 43)
+loading 13/14 (frame 44)
+loading 14/14 (frame 45)

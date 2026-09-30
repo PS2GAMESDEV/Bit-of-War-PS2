@@ -46,7 +46,7 @@ const PLAYER_MOVEMENT = Object.freeze({
     MAX_FALL_SPEED: 720,
     SPEED: 180,
     CLIMB_SPEED: 171,
-    JUMP_SPEED: 600,
+    JUMP_SPEED: 655,   // jumps 99 units: 83 (the old 600) plus half a block (16 units)
     JUMPS: 1
 });
 

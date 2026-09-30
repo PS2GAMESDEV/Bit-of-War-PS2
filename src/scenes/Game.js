@@ -115,6 +115,11 @@ export default class Game extends Scene {
                 frameHeight: 16,
                 clips: { transport: { frames: "0-1", fps: 8 } }
             },
+            lighting: {
+                path: "images/objects/lighting.png",
+                ...grid,
+                clips: { fly: { frames: "0-1", fps: 30 } }
+            },
             undead: enemy("enUndead"),
             blood: {
                 path: "images/vfx/blood.png",
@@ -127,6 +132,8 @@ export default class Game extends Scene {
             chests: "sounds/sfx/chests.adp",
             jump: "sounds/sfx/jump.adp",
             hurt: "sounds/sfx/soundHurt.adp",
+            zeusShoot: "sounds/sfx/soundZeusLightningShoot.adp",
+            zeusTransport: "sounds/sfx/soundZeusTransport.adp",
             harpieScreech: "sounds/sfx/soundHarpieScreech.adp",
             enemyDie: "sounds/sfx/soundEnDie.adp",
             minotaurDie: "sounds/sfx/soundMinotaur.adp"
