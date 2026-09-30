@@ -6,103 +6,120 @@
         "x": 0,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 112,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 144,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 176,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 0,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileGreyClouds": [
@@ -110,103 +127,120 @@
         "x": 0,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 112,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 144,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 176,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileSolidInterior": [
@@ -214,211 +248,246 @@
         "x": 0,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 112,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 144,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 176,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "controllerMusicBoss": [
@@ -426,7 +495,8 @@
         "x": 48,
         "y": 32,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tilePillarTop": [
@@ -434,31 +504,36 @@
         "x": 64,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tilePillar": [
@@ -466,67 +541,78 @@
         "x": 64,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "spriteKratos": [
@@ -534,7 +620,8 @@
         "x": 32,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "healthBarBoss": [
@@ -542,7 +629,17 @@
         "x": 208,
         "y": 32,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
+      }
+    ],
+    "bossZeus": [
+      {
+        "x": 160,
+        "y": 128,
+        "creationCode": null,
+        "locked": false,
+        "layer": 1
       }
     ]
   },
@@ -616,6 +713,18 @@
       "width": 16,
       "height": 16,
       "type": "ground"
+    }
+  ],
+  "markers": [
+    {
+      "name": "zeusMove1",
+      "x": 240,
+      "y": 64
+    },
+    {
+      "name": "zeusMove2",
+      "x": 16,
+      "y": 64
     }
   ]
 }

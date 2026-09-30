@@ -6,769 +6,897 @@
         "x": 16,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 176,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 176,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 272,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 288,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 336,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 352,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 368,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 384,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 400,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 432,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 656,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 720,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 784,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 784,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 752,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 752,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 720,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 656,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 432,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 400,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 384,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 368,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 336,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 288,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 272,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 912,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 896,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 896,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 912,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 944,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 976,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 992,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1024,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1040,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1056,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1056,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1040,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1024,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 992,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 976,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 944,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 352,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileBridge": [
@@ -776,79 +904,92 @@
         "x": 112,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 144,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 384,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 176,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 144,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 112,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tilePillar": [
@@ -856,1177 +997,1373 @@
         "x": 240,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tilePillarTop": [
@@ -2034,169 +2371,197 @@
         "x": 240,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 960,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 736,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileWallTop": [
@@ -2204,463 +2569,540 @@
         "x": 416,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 432,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 656,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 400,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 432,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 656,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 704,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 400,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 384,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 368,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 288,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 352,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 336,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 304,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 288,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 272,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 224,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 240,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 256,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 272,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 96,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 896,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 928,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1008,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1024,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 400,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileWall": [
@@ -2668,201 +3110,253 @@
         "x": 416,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 432,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 656,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 656,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 672,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 688,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 400,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 416,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 432,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 448,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 464,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 480,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 496,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 512,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 528,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 544,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 560,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 608,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 624,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 640,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileWallBrokenLeft": [
@@ -2870,19 +3364,22 @@
         "x": 752,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 576,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 320,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileWallBroken": [
@@ -2890,25 +3387,29 @@
         "x": 768,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 592,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 336,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileWallBrokenRight": [
@@ -2916,19 +3417,22 @@
         "x": 608,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 352,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "door": [
@@ -2936,25 +3440,29 @@
         "x": 64,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1040,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1040,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grocktl": [
@@ -2962,61 +3470,71 @@
         "x": 176,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 192,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 16,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1040,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 784,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 784,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grockmm": [
@@ -3024,445 +3542,519 @@
         "x": 192,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1056,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1056,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1056,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1056,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 832,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grockml": [
@@ -3470,157 +4062,183 @@
         "x": 16,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 800,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 784,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1040,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 32,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 48,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 1072,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grocktm": [
@@ -3628,49 +4246,57 @@
         "x": 80,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 64,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 32,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 16,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grockbl": [
@@ -3678,21 +4304,15 @@
         "x": 1072,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 784,
         "y": 320,
         "creationCode": null,
-        "locked": false
-      }
-    ],
-    "tilePlatformLeft": [
-      {
-        "x": 1040,
-        "y": 128,
-        "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tilePlatformMiddle": [
@@ -3700,13 +4320,15 @@
         "x": 1056,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 768,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tilePlatformSingle": [
@@ -3714,25 +4336,29 @@
         "x": 816,
         "y": 48,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 0,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grocktr": [
@@ -3740,31 +4366,36 @@
         "x": 896,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 272,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 320,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grockbm": [
@@ -3772,7 +4403,8 @@
         "x": 784,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "grockmr": [
@@ -3780,151 +4412,176 @@
         "x": 80,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 816,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 208,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 224,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 240,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 848,
         "y": 256,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 288,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 864,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 880,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 208,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 128,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 48,
         "y": 144,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 80,
         "y": 352,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "tileWater": [
@@ -3932,25 +4589,29 @@
         "x": 112,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 128,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 144,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       },
       {
         "x": 160,
         "y": 400,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 0
       }
     ],
     "obLifeChest": [
@@ -3958,7 +4619,8 @@
         "x": 1056,
         "y": 112,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "obMagicChest": [
@@ -3966,7 +4628,8 @@
         "x": 1056,
         "y": 304,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "enUndead": [
@@ -3974,55 +4637,64 @@
         "x": 224,
         "y": 160,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 288,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 544,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 976,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 544,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 432,
         "y": 336,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 752,
         "y": 192,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 464,
         "y": 48,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 240,
         "y": 48,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "enMinotaur": [
@@ -4030,19 +4702,22 @@
         "x": 432,
         "y": 176,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 560,
         "y": 48,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       },
       {
         "x": 384,
         "y": 48,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "enSkelbow": [
@@ -4050,7 +4725,8 @@
         "x": 1024,
         "y": 64,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "enSkelbowR": [
@@ -4058,7 +4734,8 @@
         "x": 128,
         "y": 96,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "enHarpie": [
@@ -4066,7 +4743,8 @@
         "x": 704,
         "y": 80,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "spriteKratos": [
@@ -4074,14 +4752,23 @@
         "x": 64,
         "y": 368,
         "creationCode": null,
-        "locked": false
+        "locked": false,
+        "layer": 1
       }
     ],
     "tilePlatformleft": [
       {
         "x": 752,
         "y": 208,
-        "locked": false
+        "creationCode": null,
+        "locked": false,
+        "layer": 0
+      },
+      {
+        "x": 1040,
+        "y": 128,
+        "locked": false,
+        "layer": 0
       }
     ]
   },
@@ -4353,13 +5040,6 @@
       "type": "ground"
     },
     {
-      "x": 1056,
-      "y": 128,
-      "width": 16,
-      "height": 16,
-      "type": "ground"
-    },
-    {
       "x": 1040,
       "y": 320,
       "width": 16,
@@ -4454,6 +5134,13 @@
       "x": 816,
       "y": 48,
       "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 1040,
+      "y": 128,
+      "width": 32,
       "height": 16,
       "type": "ground"
     }

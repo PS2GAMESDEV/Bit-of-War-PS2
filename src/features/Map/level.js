@@ -3,11 +3,14 @@ import { Harpie } from "../Enemies/harpie.js";
 import { Minotaur } from "../Enemies/minotaur.js";
 import { Skelbow } from "../Enemies/skelbow.js";
 import { Undead } from "../Enemies/undead.js";
+import { Zeus } from "../Enemies/zeus.js";
 
 // Sheet name -> enemy class, made from the map placements. A class has a
 // static `clip` (the sprite's first animation) and the methods update(target,
-// dt, view), sync() and, optionally, draw().
-const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie });
+// dt, view), sync() and, optionally, draw(). A class with a static `selfDrawn`
+// draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
+// (sprite, world, x, y, sheets, markers).
+const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus });
 
 const TILE = 16 * GAME_SCALE;
 
@@ -26,7 +29,8 @@ const PROP_SHEET = Object.freeze({
     enMinotaur: "minotaur",
     enSkelbow: "skelbow",
     enSkelbowR: "skelbow",
-    enHarpie: "harpie"
+    enHarpie: "harpie",
+    bossZeus: "zeus"
 });
 
 const CHEST_FLASH = Object.freeze({
@@ -66,33 +70,68 @@ function findFrame(atlas, id) {
 }
 
 /**
- * One map: a TileMap for the static tiles (drawn by VU1), Sprite instances for
- * torches, enemies and chests, and the solid/door/ladder bodies in `world`.
+ * One map: per layer a TileMap for the static tiles (drawn by VU1) plus the
+ * Sprite instances of torches, enemies and chests, and the solid/door/ladder
+ * bodies in `world`. Layers are drawn in ascending order; the player is drawn
+ * in the layer of the spawn point (spriteKratos).
  */
 export class Level {
     constructor(map, sheets, world) {
-        const atlas = sheets.atlas;
-        const sprites = [];
-        const groups = [];
-
         this.background = parseColor(map.backgroundColor);
-        this.props = [];
+        this.markers = {};
+        this.layers = [];
         this.enemies = [];
         this.chests = [];
         this.spawn = { x: 100, y: 100 };
         this.width = 0;
         this.height = 0;
+        this.playerLayer = 0;
         this._range = { first: 0, count: 0 };
 
-        for (const [id, placements] of Object.entries(map.tiles)) {
+        // Named points, scaled: { name: [{ x, y }, ...] }.
+        for (const [name, points] of Object.entries(map.markers ?? {})) {
+            this.markers[name] = [];
+            for (let i = 0; i < points.length; i += 2) {
+                this.markers[name].push({ x: points[i] * GAME_SCALE, y: points[i + 1] * GAME_SCALE });
+            }
+        }
+
+        for (const { layer, tiles } of map.layers) {
+            this.layers.push(this._buildLayer(layer, tiles, sheets, world));
+        }
+
+        for (const [type, rects] of Object.entries(map.colliders)) {
+            const layer = COLLIDER_LAYER[type];
+
+            for (let i = 0; i < rects.length; i += 4) {
+                world.add({
+                    x: rects[i] * GAME_SCALE,
+                    y: rects[i + 1] * GAME_SCALE,
+                    w: rects[i + 2] * GAME_SCALE,
+                    h: rects[i + 3] * GAME_SCALE,
+                    layer,
+                    sensor: layer !== LAYER.SOLID
+                });
+            }
+        }
+    }
+
+    _buildLayer(index, tiles, sheets, world) {
+        const atlas = sheets.atlas;
+        const sprites = [];
+        const groups = [];
+        const layer = { index, groups, props: [], enemies: [], tiles: null };
+
+        for (const [id, placements] of Object.entries(tiles)) {
             if (id === "spriteKratos") {
                 this.spawn = { x: placements[0] * GAME_SCALE, y: placements[1] * GAME_SCALE };
+                this.playerLayer = index;
                 continue;
             }
 
             const sheetName = PROP_SHEET[id];
             if (sheetName) {
-                this._addProps(sheets[sheetName], sheetName, placements, world, sheets);
+                this._addProps(layer, sheets[sheetName], sheetName, placements, world, sheets);
                 continue;
             }
 
@@ -128,32 +167,20 @@ export class Level {
             groups.push({ first: sprites.length - count, xs, reach: w });
         }
 
-        this.groups = groups;
-        this.tiles = new TileMap.Instance({
-            descriptor: new TileMap.Descriptor({
-                textures: [atlas.image],
-                materials: [{ textureIndex: 0, blendMode: BLEND, endOffset: sprites.length - 1 }]
-            }),
-            spriteBuffer: TileMap.SpriteBuffer.fromObjects(sprites)
-        });
-
-        for (const [type, rects] of Object.entries(map.colliders)) {
-            const layer = COLLIDER_LAYER[type];
-
-            for (let i = 0; i < rects.length; i += 4) {
-                world.add({
-                    x: rects[i] * GAME_SCALE,
-                    y: rects[i + 1] * GAME_SCALE,
-                    w: rects[i + 2] * GAME_SCALE,
-                    h: rects[i + 3] * GAME_SCALE,
-                    layer,
-                    sensor: layer !== LAYER.SOLID
-                });
-            }
+        if (sprites.length) {
+            layer.tiles = new TileMap.Instance({
+                descriptor: new TileMap.Descriptor({
+                    textures: [atlas.image],
+                    materials: [{ textureIndex: 0, blendMode: BLEND, endOffset: sprites.length - 1 }]
+                }),
+                spriteBuffer: TileMap.SpriteBuffer.fromObjects(sprites)
+            });
         }
+
+        return layer;
     }
 
-    _addProps(sheet, sheetName, placements, world, sheets) {
+    _addProps(layer, sheet, sheetName, placements, world, sheets) {
         const flash = CHEST_FLASH[sheetName];
 
         for (let i = 0; i < placements.length; i += 2) {
@@ -165,9 +192,13 @@ export class Level {
             if (Enemy) options.clip = Enemy.clip;
 
             const sprite = new Sprite.Instance(sheet, options);
-            this.props.push(sprite);
+            if (!Enemy?.selfDrawn) layer.props.push(sprite);
 
-            if (Enemy) this.enemies.push(new Enemy(sprite, world, x, y, sheets));
+            if (Enemy) {
+                const enemy = new Enemy(sprite, world, x, y, sheets, this.markers);
+                this.enemies.push(enemy);
+                layer.enemies.push(enemy);
+            }
 
             // The chest rect doubles as a Collision shape for Collision.overlaps().
             if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, flash, opened: false });
@@ -180,25 +211,39 @@ export class Level {
         for (const enemy of this.enemies) enemy.update(target, dt, view);
     }
 
-    // Draws only the slice of every tile group that the camera can see.
-    render(camera) {
+    // Draws the layers in ascending order, only the slice of every tile group
+    // that the camera can see. `drawPlayer` runs after the entities of the
+    // player's layer, so higher layers are drawn over the player.
+    render(camera, drawPlayer) {
         for (const enemy of this.enemies) enemy.sync();
 
         const view = camera.visibleRect();
         const right = view.x + view.w;
         const range = this._range;
+        let playerDrawn = false;
 
-        for (const group of this.groups) {
-            const from = lowerBound(group.xs, view.x - group.reach);
-            const to = lowerBound(group.xs, right);
-            if (to <= from) continue;
+        for (const layer of this.layers) {
+            if (!playerDrawn && layer.index > this.playerLayer) {
+                drawPlayer?.();
+                playerDrawn = true;
+            }
 
-            range.first = group.first + from;
-            range.count = to - from;
-            this.tiles.render(0, 0, range);
+            if (layer.tiles) {
+                for (const group of layer.groups) {
+                    const from = lowerBound(group.xs, view.x - group.reach);
+                    const to = lowerBound(group.xs, right);
+                    if (to <= from) continue;
+
+                    range.first = group.first + from;
+                    range.count = to - from;
+                    layer.tiles.render(0, 0, range);
+                }
+            }
+
+            Sprite.drawAll(layer.props);
+            for (const enemy of layer.enemies) enemy.draw?.();
         }
 
-        Sprite.drawAll(this.props);
-        for (const enemy of this.enemies) enemy.draw?.();
+        if (!playerDrawn) drawPlayer?.();
     }
 }

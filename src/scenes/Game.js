@@ -98,6 +98,23 @@ export default class Game extends Scene {
                 frameHeight: 3,
                 clips: { fly: "0" }
             },
+            zeus: {
+                path: "images/enemies/bossZeus.png",
+                ...grid,
+                clips: {
+                    idle: "7",
+                    attack: { frames: "0,3", fps: 6, mode: "once" },
+                    die: { frames: "1,5,6", fps: 4, mode: "once" },
+                    float: "2",
+                    damage: "4"
+                }
+            },
+            zeusTransport: {
+                path: "images/enemies/zeusTransport.png",
+                frameWidth: 32,
+                frameHeight: 16,
+                clips: { transport: { frames: "0-1", fps: 8 } }
+            },
             undead: enemy("enUndead")
         },
         sfx: {
@@ -181,8 +198,7 @@ export default class Game extends Scene {
         if (!this.level) return;
 
         Screen.clear(this.level.background);
-        this.level.render(this.camera);
-        this.player.draw();
+        this.level.render(this.camera, () => this.player.draw());
 
         if (this.debug) this.world.drawDebug();
 
@@ -192,14 +208,13 @@ export default class Game extends Scene {
     // Everything needed to put the player back where he stopped. `midLevel`
     // false is the start of the current level (the player appears at the spawn).
     _progress(midLevel) {
-        const { body } = this.player;
         const chests = [];
         if (midLevel) this.level.chests.forEach((c, i) => { if (c.opened) chests.push(i); });
 
         return {
             levelIndex: this.levelIndex,
             playTime: this.playTime,
-            player: midLevel ? { x: body.x, y: body.y, facingLeft: this.player.facingLeft } : null,
+            player: midLevel ? { ...this.player.origin, facingLeft: this.player.facingLeft } : null,
             chests
         };
     }

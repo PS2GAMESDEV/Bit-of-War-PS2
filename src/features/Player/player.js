@@ -3,16 +3,17 @@ import { PLAYER_CONTROLS as KEY } from "../../shared/config/controls.js";
 
 const SIZE = 16 * GAME_SCALE;
 const HALF = SIZE / 2;
+
+// The body is smaller than the 16x16 sprite so Kratos does not catch between
+// two blocks. It is centered on the sprite and rests on its bottom edge.
+const BODY = 12 * GAME_SCALE;
+const BODY_PAD_X = (SIZE - BODY) / 2;
+const BODY_PAD_Y = SIZE - BODY;
 const BLADE_WIDTH = 48 * GAME_SCALE;
 const PIXEL = 2 * GAME_SCALE;
 
 // The ladder probe and the door test are the body inset by this.
 const INSET = 4;
-
-// The maps end a ladder one tile under the platform it leads to. Climbing goes
-// on past the ladder until the feet are LEDGE_CLEARANCE above that platform.
-const LEDGE = 16 * GAME_SCALE;
-const LEDGE_CLEARANCE = 3;
 
 /**
  * Kratos. Position, gravity, floors and walls are handled by a dynamic body of
@@ -44,13 +45,19 @@ export class Player {
         this.jumps = MOVE.JUMPS;
     }
 
-    // Puts the player in `world` (a new level clears it).
+    // Top-left of the sprite box: what attach() takes to put him back here.
+    get origin() {
+        return { x: this.pos.x - HALF, y: this.pos.y };
+    }
+
+    // Puts the player in `world` (a new level clears it). (x, y) is the top-left
+    // of the 16x16 sprite box; the smaller body sits at its feet.
     attach(world, x, y) {
         this.world = world;
         this.body = world.add({
             type: "dynamic",
-            x, y,
-            w: SIZE, h: SIZE,
+            x: x + BODY_PAD_X, y: y + BODY_PAD_Y,
+            w: BODY, h: BODY,
             layer: LAYER.PLAYER,
             mask: LAYER.SOLID,
             maxSpeedY: MOVE.MAX_FALL_SPEED
@@ -62,8 +69,8 @@ export class Player {
         // onEnter would never fire.
         this.probe = world.add({
             type: "kinematic",
-            x, y,
-            w: SIZE - 2 * INSET, h: SIZE - 2 * INSET,
+            x: x + BODY_PAD_X + INSET, y: y + BODY_PAD_Y + INSET,
+            w: BODY - 2 * INSET, h: BODY - 2 * INSET,
             sensor: true,
             layer: LAYER.PROBE,
             mask: LAYER.LADDER
@@ -114,7 +121,7 @@ export class Player {
             this.climbDir = pad.anyPressed(Gamepad.UP | Gamepad.TRIANGLE) ? -1
                 : pad.anyPressed(Gamepad.DOWN | Gamepad.CROSS) ? 1 : 0;
             body.vy = this.climbDir * MOVE.CLIMB_SPEED;
-            if (this.climbDir < 0 && this._atLedge(body)) body.vy = 0;
+            if (this._pastLadder(body, this.climbDir)) body.vy = 0;
 
             const jump = pad.justPressed(KEY.JUMP);
             if (jump || pad.anyPressed(Gamepad.LEFT | Gamepad.RIGHT)) {
@@ -178,10 +185,14 @@ export class Player {
         }
     }
 
-    // True once the feet are above the platform the last ladder leads to.
-    _atLedge(body) {
-        return this.ladders.size === 0 && this.lastLadder !== null &&
-            body.bottom <= this.lastLadder.y - LEDGE - LEDGE_CLEARANCE;
+    // Climbing stays inside the ladder's collider: with no ladder under the
+    // probe, moving further away from the last one (`dir` -1 up, 1 down) is blocked.
+    _pastLadder(body, dir) {
+        const ladder = this.lastLadder;
+        if (dir === 0 || this.ladders.size > 0 || ladder === null) return false;
+
+        const above = body.centerY < ladder.y + ladder.h / 2;
+        return dir < 0 ? above : !above;
     }
 
     _startClimbing(ladder) {
@@ -194,7 +205,7 @@ export class Player {
         body.gravityScale = 0;
         body.vx = 0;
         body.vy = 0;
-        body.setPosition(ladderX - HALF, body.y);
+        body.setPosition(ladderX - BODY / 2, body.y);
     }
 
     _stopClimbing() {
@@ -205,8 +216,8 @@ export class Player {
     }
 
     _syncPos() {
-        this.pos.x = this.body.x + HALF;
-        this.pos.y = this.body.y;
+        this.pos.x = this.body.x + BODY / 2;
+        this.pos.y = this.body.y - BODY_PAD_Y;
         this.probe.setPosition(this.body.x + INSET, this.body.y + INSET);
     }
 
