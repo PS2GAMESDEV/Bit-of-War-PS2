@@ -10,6 +10,7 @@ const SIGHT = 4 * 16 * GAME_SCALE;
 // enMinotaur: patrols like the enUndead and runs at the player it sees.
 export class Minotaur extends Walker {
     static health = 5;
+    static dieSfx = "minotaurDie";
 
     constructor(sprite, world, x, y) {
         super(sprite, world, x, y, {

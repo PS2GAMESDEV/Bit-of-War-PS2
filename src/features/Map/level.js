@@ -79,7 +79,8 @@ function findFrame(atlas, id) {
  * in the layer of the spawn point (spriteKratos).
  */
 export class Level {
-    constructor(map, sheets, world) {
+    constructor(map, sheets, world, sfx = {}) {
+        this.sfx = sfx;
         this.background = parseColor(map.backgroundColor);
         this.markers = {};
         this.layers = [];
@@ -235,6 +236,7 @@ export class Level {
                 enemy.hurt?.(fromX);
             } else {
                 enemy.die?.();
+                this.sfx[enemy.constructor.dieSfx ?? "enemyDie"]?.play();
                 this._remove(enemy);
             }
         }

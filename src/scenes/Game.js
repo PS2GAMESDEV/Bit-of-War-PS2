@@ -125,7 +125,10 @@ export default class Game extends Scene {
         sfx: {
             blades: "sounds/sfx/blades.adp",
             chests: "sounds/sfx/chests.adp",
-            jump: "sounds/sfx/jump.adp"
+            jump: "sounds/sfx/jump.adp",
+            hurt: "sounds/sfx/soundHurt.adp",
+            enemyDie: "sounds/sfx/soundEnDie.adp",
+            minotaurDie: "sounds/sfx/soundMinotaur.adp"
         }
     };
 
@@ -271,7 +274,7 @@ export default class Game extends Scene {
     // `progress`, when given, puts the player and the opened chests back.
     _build(map, progress = null) {
         this.world.clear();
-        this.level = new Level(map, this.assets.sheets, this.world);
+        this.level = new Level(map, this.assets.sheets, this.world, this.assets.sfx);
 
         const at = progress?.player ?? this.level.spawn;
         this.player.attach(this.world, at.x, at.y);

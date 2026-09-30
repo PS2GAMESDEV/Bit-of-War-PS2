@@ -34,6 +34,7 @@ export class Player {
 
         this.sfxJump = sfx.jump;
         this.sfxBlades = sfx.blades;
+        this.sfxHurt = sfx.hurt;
 
         this.pos = { x: 0, y: 0 };
         this.body = null;
@@ -67,6 +68,7 @@ export class Player {
         const body = this.body;
 
         this.health--;
+        this.sfxHurt.play();
         this.stun = HURT.STUN;
         this.invulnerable = HURT.INVULNERABLE;
         this.openingChest = false;
