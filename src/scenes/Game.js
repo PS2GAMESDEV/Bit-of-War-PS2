@@ -143,6 +143,11 @@ export default class Game extends Scene {
                 ...grid,
                 clips: { fly: "0" }
             },
+            dizzyStar: {
+                path: "images/vfx/dizzyStar.png",
+                ...grid,
+                clips: { spin: { frames: "0-1", fps: 24 } }
+            },
             lighting: {
                 path: "images/objects/lighting.png",
                 ...grid,

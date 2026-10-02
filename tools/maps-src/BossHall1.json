@@ -917,15 +917,6 @@
         "layer": 0
       }
     ],
-    "tileDoorToZeusFloatUp": [
-      {
-        "x": 224,
-        "y": 176,
-        "creationCode": null,
-        "locked": false,
-        "layer": 0
-      }
-    ],
     "door": [
       {
         "x": 32,
@@ -945,6 +936,12 @@
         "x": 224,
         "y": 160,
         "creationCode": null,
+        "locked": false,
+        "layer": 0
+      },
+      {
+        "x": 224,
+        "y": 176,
         "locked": false,
         "layer": 0
       }
@@ -1018,5 +1015,6 @@
       "height": 32,
       "type": "door"
     }
-  ]
+  ],
+  "markers": []
 }

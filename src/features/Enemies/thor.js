@@ -21,6 +21,7 @@ const HAMMER_SIZE = 8 * GAME_SCALE;
 const FIRST_DEATH_FRAME = 6;
 const LAST_DEATH_FRAME = 11;
 const DEATH_HOLD = 0.8;
+const DIZZY_OFFSET_Y = 2 * GAME_SCALE;
 
 // Hops towards the player and emits expanding hammer orbits. A hit flashes
 // for 1.5 seconds, then floats back to centerThor without clearing the orbits.
@@ -38,6 +39,9 @@ export class Thor {
         this.center = markers.centerThor?.[0] ?? { x, y };
         this.hammerSheet = sheets.hammer;
         this.hammers = [];
+        this.dizzyStars = new Sprite.Instance(sheets.dizzyStar, {
+            scale: GAME_SCALE, origin: [0.5, 0.5], autoUpdate: false
+        });
         this.view = null;
         this.started = false;
         this.hurting = false;
@@ -100,6 +104,7 @@ export class Thor {
         this.body.mask = LAYER.SOLID;
         // Selecting a sheet frame stops animation: time cannot advance "die".
         this.sprite.frame = this.deathFrame = FIRST_DEATH_FRAME;
+        this.dizzyStars.play("spin", { restart: true });
     }
 
     deathHit() {
@@ -124,6 +129,7 @@ export class Thor {
         this.sprite.flipX = this.facingRight !== FACES_RIGHT;
 
         if (this.dying) {
+            this.dizzyStars.update(dt);
             if ((this.deathTimer -= dt) <= 0) {
                 this.x = this.body.x;
                 this.y = this.body.y;
@@ -273,6 +279,9 @@ export class Thor {
 
     draw() {
         this.sprite.draw();
+        if (this.dying && !this.dead) {
+            this.dizzyStars.draw(this.sprite.x + HALF, this.sprite.y - DIZZY_OFFSET_Y);
+        }
         this._drawHammers();
     }
 }

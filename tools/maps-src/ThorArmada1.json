@@ -5715,13 +5715,6 @@
   },
   "colliders": [
     {
-      "x": 0,
-      "y": 16,
-      "width": 16,
-      "height": 368,
-      "type": "ground"
-    },
-    {
       "x": 16,
       "y": 336,
       "width": 32,
@@ -5918,41 +5911,6 @@
       "type": "ground"
     },
     {
-      "x": 1024,
-      "y": 304,
-      "width": 16,
-      "height": 64,
-      "type": "ground"
-    },
-    {
-      "x": 1040,
-      "y": 304,
-      "width": 32,
-      "height": 16,
-      "type": "ground"
-    },
-    {
-      "x": 1040,
-      "y": 352,
-      "width": 48,
-      "height": 16,
-      "type": "ground"
-    },
-    {
-      "x": 992,
-      "y": 240,
-      "width": 48,
-      "height": 16,
-      "type": "ground"
-    },
-    {
-      "x": 1024,
-      "y": 256,
-      "width": 16,
-      "height": 32,
-      "type": "ground"
-    },
-    {
       "x": 752,
       "y": 208,
       "width": 16,
@@ -5967,17 +5925,17 @@
       "type": "door"
     },
     {
-      "x": 1040,
-      "y": 320,
-      "width": 16,
-      "height": 32,
-      "type": "door"
-    },
-    {
       "x": 1072,
       "y": 0,
       "width": 16,
       "height": 224,
+      "type": "ground"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 16,
+      "height": 336,
       "type": "ground"
     }
   ],

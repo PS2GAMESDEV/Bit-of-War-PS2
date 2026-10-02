@@ -9161,6 +9161,14 @@
       "width": 16,
       "height": 32,
       "type": "door"
+    },
+    {
+      "x": 1088,
+      "y": 0,
+      "width": 16,
+      "height": 240,
+      "type": "ground"
     }
-  ]
+  ],
+  "markers": []
 }
