@@ -3,7 +3,7 @@ import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
 import { Save } from "../shared/lib/save.js";
 import { loadSettings, saveSettings, settings } from "../shared/lib/settings.js";
 import { Cutscene01 } from "./cutscene01.js";
-import Game from "./Game.js";
+import Game, { LEVELS } from "./Game.js";
 import { log } from "../shared/lib/boot_log.js";
 
 // Diagnostic: true skips music.play(); the music is already ruled out (same freeze without it).
@@ -14,6 +14,10 @@ const DIAG_NO_MUSIC = false;
 //   "text"   no font.print at all: only the images are drawn
 //   "images" no image draw on the main screen: only the text is drawn
 const DIAG_SKIP = "";
+
+// Temporary testing menu; disable to hide the level selector.
+const TEMP_LEVEL_SELECT = true;
+const LEVEL_ROWS = 6;
 
 const GRAY =Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
@@ -40,7 +44,7 @@ export class Menu extends Scene {
         }
     };
 
-    async enter({ images, fonts, music }) {
+    async enter({ images, fonts, music }, params) {
         log("Menu.enter");
         this.pad = Gamepad.player(0);
         this.text = fonts.text;
@@ -54,7 +58,11 @@ export class Menu extends Scene {
         this.langIndex = LANGS.indexOf(getLang());
 
         this.screens = this._screens();
-        this._go("main");
+        if (TEMP_LEVEL_SELECT && Number.isInteger(params?.testLevelIndex)) {
+            this._go("levels", clamp(params.testLevelIndex, 0, LEVELS.length - 1));
+        } else {
+            this._go("main");
+        }
         log("Menu.enter: before music.play");
         if (!DIAG_NO_MUSIC) music.menu.play();
         log("Menu.enter: done");
@@ -128,15 +136,38 @@ export class Menu extends Scene {
         return {
             main: {
                 update() {
-                    menu._move(3);
+                    menu._move(TEMP_LEVEL_SELECT ? 4 : 3);
                     if (!confirm()) return;
                     if (menu.selected === 0) Scene.go(Cutscene01);
                     else if (menu.selected === 1) menu._openLoad();
-                    else menu._go(["", "", "options", "extras"][menu.selected]);
+                    else menu._go(["", "", "options", "extras", "levels"][menu.selected]);
                 },
                 draw() {
                     if (DIAG_SKIP !== "images") images.main.draw(48, 16, menu.mainSize);
-                    menu._list(244, 20, [menu._t("newgame"), menu._t("load"), menu._t("options"), menu._t("extra")]);
+                    const labels = [menu._t("newgame"), menu._t("load"), menu._t("options"), menu._t("extra")];
+                    if (TEMP_LEVEL_SELECT) labels.push(menu._t("testLevels"));
+                    menu._list(244, 20, labels);
+                }
+            },
+
+            levels: {
+                update() {
+                    menu._move(LEVELS.length);
+                    if (menu.pad.justPressed(Gamepad.CIRCLE) || (confirm() && menu.selected === LEVELS.length)) {
+                        menu._go("main", 4);
+                    } else if (confirm()) {
+                        Scene.go(Game, { params: { testLevelIndex: menu.selected } });
+                    }
+                },
+                draw() {
+                    menu._logo(menu._t("testLevels"));
+                    const first = Math.min(Math.max(0, menu.selected - LEVEL_ROWS + 1), Math.max(0, LEVELS.length - LEVEL_ROWS));
+                    LEVELS.slice(first, first + LEVEL_ROWS).forEach((file, row) => {
+                        const index = first + row;
+                        menu._print(245 + row * 20, `${index + 1}. ${file.replace(/\.json$/, "")}`, index === menu.selected ? RED : WHITE);
+                    });
+                    menu._print(385, menu._t("back"), menu.selected === LEVELS.length ? RED : WHITE);
+                    menu._print(420, menu._t("testLevelControls"), GRAY);
                 }
             },
 

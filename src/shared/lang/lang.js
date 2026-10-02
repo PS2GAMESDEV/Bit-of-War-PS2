@@ -1,6 +1,9 @@
 export const LANG = {
     en: {
         newgame: "NEW GAME",
+        testLevels: "TEST LEVELS (TEMP)",
+        testLevelControls: "UP/DOWN: SELECT   X: PLAY   O: BACK",
+        restartLevel: "RESTART LEVEL",
         load: "LOAD",
         options: "OPTIONS",
         extra: "EXTRA",
@@ -43,6 +46,9 @@ export const LANG = {
 
     br: {
         newgame: "NOVO JOGO",
+        testLevels: "TESTAR FASES (TEMP)",
+        testLevelControls: "CIMA/BAIXO: ESCOLHER   X: JOGAR   O: VOLTAR",
+        restartLevel: "REINICIAR FASE",
         load: "CARREGAR",
         options: "OPÇÕES",
         extra: "EXTRA",
@@ -85,6 +91,9 @@ export const LANG = {
 
     sp: {
         newgame: "Nuevo Juego",
+        testLevels: "PROBAR NIVELES (TEMP)",
+        testLevelControls: "ARRIBA/ABAJO: ELEGIR   X: JUGAR   O: VOLVER",
+        restartLevel: "REINICIAR NIVEL",
         load: "CARGA",
         options: "OPCIONES",
         extra: "EXTRA",

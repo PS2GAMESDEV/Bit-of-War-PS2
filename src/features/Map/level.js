@@ -9,6 +9,10 @@ import { Dragon } from "../Enemies/dragon.js";
 import { Vbow } from "../Enemies/vbow.js";
 import { VSoldier } from "../Enemies/vsoldier.js";
 import { Spearman } from "../Enemies/spearman.js";
+import { Anubis } from "../Enemies/anubis.js";
+import { Mummy } from "../Enemies/mummy.js";
+import { Scarab } from "../Enemies/scarab.js";
+import { Scorpion } from "../Enemies/scorpion.js";
 import { Blood } from "../Vfx/blood.js";
 
 // Sheet name -> enemy class, made from the map placements. A class has a
@@ -23,7 +27,8 @@ import { Blood } from "../Vfx/blood.js";
 // (sprite, world, x, y, sheets, markers, sfx).
 const ENEMY_CLASS = Object.freeze({
     undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus, thor: Thor,
-    dragon: Dragon, vbow: Vbow, vsoldier: VSoldier, spearman: Spearman
+    dragon: Dragon, vbow: Vbow, vsoldier: VSoldier, spearman: Spearman,
+    anubis: Anubis, mummy: Mummy, scarab: Scarab, scorpion: Scorpion
 });
 
 const TILE = 16 * GAME_SCALE;
@@ -39,6 +44,9 @@ const BLEND = Screen.alphaEquation(
 
 // Map ids that are placed as sprites instead of atlas tiles -> sheet name.
 const PROP_SHEET = Object.freeze({
+    bgCloud: "bgCloud",
+    bgGreyCloud: "bgGreyCloud",
+    bgPyramid: "bgPyramid",
     obLifeChest: "lifeChest",
     obMagicChest: "magicChest",
     spriteTorch: "torch",
@@ -53,6 +61,12 @@ const PROP_SHEET = Object.freeze({
     enVsoldier: "vsoldier",
     enVSoldier: "vsoldier",
     enSpearman: "spearman",
+    enAnubis: "anubis",
+    enAnubisWarrior: "anubis",
+    enMummy: "mummy",
+    enScarab: "scarab",
+    enScorpion: "scorpion",
+    enScorpionR: "scorpion",
     bossZeus: "zeus",
     bossThor: "thor"
 });
@@ -128,6 +142,7 @@ export class Level {
         for (const { layer, tiles } of map.layers) {
             this.layers.push(this._buildLayer(layer, tiles, sheets, world));
         }
+        this.layers.sort((a, b) => a.index - b.index);
 
         for (const [type, rects] of Object.entries(map.colliders)) {
             const layer = COLLIDER_LAYER[type];

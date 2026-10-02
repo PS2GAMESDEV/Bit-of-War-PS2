@@ -12,11 +12,12 @@ import { Cutscene02 } from "./cutscene02.js";
 // Only used at runtime (menu.js imports this file too).
 import { Menu } from "./menu.js";
 
-const LEVELS = Object.freeze([
+export const LEVELS = Object.freeze([
     "GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json",
     "Summit.json", "BossHall1.json", "Boss1.json", "ThorArmada1.json",
     "ThorInterior1.json", "ThorArmada2.json", "ThorInterior2.json",
-    "Boss2.json"
+    "Boss2.json", "Desert1.json", "DesertInterior1.json",
+    "Desert2.json", "Desert3.json"
 ]);
 
 // Level index -> cutscene shown before that level.
@@ -29,6 +30,8 @@ const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED
 // Pause menu rows (lang keys), top to bottom.
 const PAUSE_OPTIONS = Object.freeze(["resume", "saveGame", "quit"]);
 const GAME_OVER_OPTIONS = Object.freeze(["restartSave", "saveQuit", "quitNoSave"]);
+const TEST_PAUSE_OPTIONS = Object.freeze(["resume", "restartLevel", "testLevels"]);
+const TEST_GAME_OVER_OPTIONS = Object.freeze(["restartLevel", "testLevels"]);
 
 const FADE_OUT = Color.new(0, 0, 0, 128);
 const FADE_CLEAR = Color.new(0, 0, 0, 0);
@@ -71,6 +74,21 @@ export default class Game extends Scene {
         },
         sheets: {
             atlas: "images/tiles/texture.json",
+            bgCloud: {
+                path: "images/tiles/bgCloud.png",
+                frameWidth: 48,
+                frameHeight: 16
+            },
+            bgGreyCloud: {
+                path: "images/tiles/bgGreyCloud.png",
+                frameWidth: 48,
+                frameHeight: 16
+            },
+            bgPyramid: {
+                path: "images/tiles/bgPyramid.png",
+                frameWidth: 256,
+                frameHeight: 256
+            },
             kratos: {
                 path: "images/sprites/kratos/spritesheet.png",
                 ...grid,
@@ -104,15 +122,23 @@ export default class Game extends Scene {
             magicChest: chest("obMagicChest"),
             harpie: enemy("enHarpie", { idle: "2", fly: { frames: "0-1", fps: 8 } }),
             dragon: enemy("enDragon", { idle: "0", fly: { frames: "0-1", fps: 8 } }),
+            scarab: enemy("enScarab", { idle: "0", fly: { frames: "0-1", fps: 8 } }),
             minotaur: enemy("enMinotaur", { run: { frames: "2-3", fps: 12 } }),
             spearman: enemy("enSpearman", { run: { frames: "2-3", fps: 12 } }),
+            anubis: enemy("enAnubis", { run: { frames: "2-3", fps: 12 } }),
             skelbow: enemy("enSkelbow", { shoot: { frames: "0-1", fps: 4, mode: "once" } }),
             vbow: enemy("enVbow", { shoot: { frames: "0-1", fps: 6, mode: "once" } }),
+            scorpion: enemy("enScorpion", { shoot: { frames: "0-1", fps: 6, mode: "once" } }),
             arrow: {
                 path: "images/objects/arrow.png",
                 frameWidth: 10,
                 frameHeight: 3,
                 clips: { fly: "0" }
+            },
+            scorpionSpike: {
+                path: "images/objects/scorpionSpike.png",
+                ...grid,
+                clips: { fly: { frames: "0-1", fps: 12 } }
             },
             zeus: {
                 path: "images/enemies/bossZeus.png",
@@ -155,6 +181,7 @@ export default class Game extends Scene {
             },
             undead: enemy("enUndead"),
             vsoldier: enemy("enVsoldier"),
+            mummy: enemy("enMummy"),
             blood: {
                 path: "images/vfx/blood.png",
                 ...grid,
@@ -175,10 +202,12 @@ export default class Game extends Scene {
         }
     };
 
-    // `params.save` is the Progress read from the memory card (Load Game).
+    // `params.save` restores campaign progress; `testLevelIndex` opens a test session.
     async enter(assets, params) {
         const { images, sheets } = assets;
-        const progress = params?.save ?? null;
+        const testIndex = params?.testLevelIndex;
+        this.testMode = Number.isInteger(testIndex) && testIndex >= 0 && testIndex < LEVELS.length;
+        const progress = this.testMode ? null : params?.save ?? null;
 
         // Textures used every frame stay resident in VRAM.
         sheets.atlas.image.lock();
@@ -197,7 +226,7 @@ export default class Game extends Scene {
         this.player = new Player(assets);
 
         this.level = null;
-        this.levelIndex = progress ? progress.levelIndex : 0;
+        this.levelIndex = this.testMode ? testIndex : progress ? progress.levelIndex : 0;
         this.playTime = progress ? progress.playTime : 0;
         this.bestTime = null;
         this.notice = null;
@@ -317,13 +346,19 @@ export default class Game extends Scene {
 
     // Pause and game over menus: UP/DOWN pick a row, CROSS confirms (START
     // also resumes from the pause).
+    _menuOptions() {
+        const paused = this.state === STATE.PAUSED;
+        if (this.testMode) return paused ? TEST_PAUSE_OPTIONS : TEST_GAME_OVER_OPTIONS;
+        return paused ? PAUSE_OPTIONS : GAME_OVER_OPTIONS;
+    }
+
     _updateMenu(pad) {
         if (this.saving) return;
 
         const paused = this.state === STATE.PAUSED;
         if (paused && pad.justPressed(Gamepad.START)) return this._resume();
 
-        const options = paused ? PAUSE_OPTIONS : GAME_OVER_OPTIONS;
+        const options = this._menuOptions();
         const previous = this.menuSelected;
         if (pad.justPressed(Gamepad.UP)) this.menuSelected--;
         if (pad.justPressed(Gamepad.DOWN)) this.menuSelected++;
@@ -334,16 +369,16 @@ export default class Game extends Scene {
         const option = options[this.menuSelected];
         if (option === "resume") this._resume();
         else if (option === "saveGame") this._saveGame();
-        else if (option === "restartSave") this._restartFromSave();
+        else if (option === "restartSave" || option === "restartLevel") this._restartFromSave();
         else if (option === "saveQuit") this._saveAndQuit();
-        else Scene.go(Menu);
+        else Scene.go(Menu, { params: this.testMode ? { testLevelIndex: this.levelIndex } : {} });
     }
 
     // Game over: the last checkpoint on the card, or the start of this level
     // when there is none.
     async _restartFromSave() {
         this.saving = true;
-        const data = await Save.load();
+        const data = this.testMode ? null : await Save.load();
         const progress = data?.progress ?? null;
         const index = progress ? progress.levelIndex : this.levelIndex;
         const map = await readMap(index);
@@ -454,6 +489,12 @@ export default class Game extends Scene {
         this.state = STATE.TRANSITIONING;
         this.player.canMove = false;
 
+        if (this.testMode) {
+            await this.camera.fade(FADE_OUT, DOOR_CONFIG.TRANSITION_DELAY);
+            Scene.go(Menu, { params: { testLevelIndex: this.levelIndex } });
+            return;
+        }
+
         const next = this.levelIndex + 1;
         const cutscene = CUTSCENES[next];
         const finished = next >= LEVELS.length;
@@ -507,12 +548,12 @@ export default class Game extends Scene {
 
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLACK);
             this.assets.images.gameOver.draw((SCREEN_WIDTH - width) / 2, (SCREEN_HEIGHT - height) / 2, this.gameOverSize);
-            GAME_OVER_OPTIONS.forEach((key, i) => line(300 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
+            this._menuOptions().forEach((key, i) => line(300 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
         }
         if (this.state === STATE.PAUSED) {
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PAUSE_DIM);
             line(140, t("paused"), WHITE);
-            PAUSE_OPTIONS.forEach((key, i) => line(220 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
+            this._menuOptions().forEach((key, i) => line(220 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
         }
         if (this.notice) line(400, t(this.notice.key), RED);
     }
