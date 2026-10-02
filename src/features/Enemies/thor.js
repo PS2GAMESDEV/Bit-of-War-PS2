@@ -17,8 +17,9 @@ const HAMMER_SPREAD = 30 * GAME_SCALE;
 const HAMMER_ORBIT = 3.75;
 const FULL_TURN = 2 * Math.PI;
 const HAMMER_SIZE = 8 * GAME_SCALE;
-const FIRST_DEATH_FRAME = 5;
-const LAST_DEATH_FRAME = 10;
+// Cell 5 is empty; the six visible death poses occupy cells 6 through 11.
+const FIRST_DEATH_FRAME = 6;
+const LAST_DEATH_FRAME = 11;
 const DEATH_HOLD = 0.8;
 
 // Hops towards the player and emits expanding hammer orbits. A hit flashes

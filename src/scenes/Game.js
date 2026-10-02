@@ -136,7 +136,7 @@ export default class Game extends Scene {
                 float: "2",
                 hit: { frames: "3-4", fps: 24 },
                 // Selected manually by Thor; this clip is never played by time.
-                die: "5-10"
+                die: "6-11"
             }),
             hammer: {
                 path: "images/objects/hammer.png",

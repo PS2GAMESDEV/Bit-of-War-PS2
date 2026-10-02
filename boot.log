@@ -1953,3 +1953,172 @@ loading 31/37 (frame 30)
 loading 34/37 (frame 31)
 loading 36/37 (frame 32)
 loading 37/37 (frame 33)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+loading 5/5 (frame 22)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+loading 5/5 (frame 22)
+loading 2/14 (frame 39)
+loading 3/14 (frame 40)
+loading 4/14 (frame 41)
+loading 5/14 (frame 43)
+loading 6/14 (frame 44)
+loading 7/14 (frame 46)
+loading 8/14 (frame 47)
+loading 9/14 (frame 49)
+loading 10/14 (frame 50)
+loading 11/14 (frame 51)
+loading 12/14 (frame 53)
+loading 13/14 (frame 54)
+loading 14/14 (frame 56)
+loading 5/7 (frame 58)
+loading 6/7 (frame 59)
+  loading 6/7 still waiting (frame 60)
+loading 7/7 (frame 63)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+loading 13/37 (frame 78)
+loading 19/37 (frame 79)
+loading 21/37 (frame 80)
+loading 25/37 (frame 81)
+loading 26/37 (frame 82)
+loading 27/37 (frame 83)
+loading 33/37 (frame 84)
+loading 35/37 (frame 85)
+loading 36/37 (frame 87)
+loading 37/37 (frame 90)
+loading 5/7 (frame 92)
+loading 6/7 (frame 94)
+loading 7/7 (frame 98)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #2 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #3 busy=false
+Menu.draw #120 begin
+Menu.update #120 busy=false
+Menu.draw #240 begin
+Menu.update #240 busy=false
+Menu.draw #360 begin
+Menu.update #360 busy=false
+Menu.draw #480 begin
+Menu.update #480 busy=false
+Menu.draw #600 begin
+Menu.update #600 busy=false
+Menu.draw #720 begin
+Menu.update #720 busy=false
+Menu.draw #840 begin
+Menu.update #840 busy=false
+Menu.draw #960 begin
+Menu.update #960 busy=false
+Menu.draw #1080 begin
+Menu.update #1080 busy=false
+Menu.draw #1200 begin
+Menu.update #1200 busy=false
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+loading 5/7 (frame 2)
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 7)
+loading 7/7 (frame 8)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+loading 13/37 (frame 22)
+loading 18/37 (frame 23)
+loading 21/37 (frame 24)
+loading 25/37 (frame 25)
+loading 26/37 (frame 26)
+loading 27/37 (frame 27)
+loading 33/37 (frame 28)
+loading 35/37 (frame 29)
+loading 36/37 (frame 31)
+loading 37/37 (frame 34)
