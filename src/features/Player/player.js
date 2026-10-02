@@ -54,7 +54,7 @@ export class Player {
         this.climbDir = 0;
         this.jumps = MOVE.JUMPS;
         this.health = HURT.HEALTH;
-        this.dead = false;          // out of health: plays ANIM.DIE and ignores the pad
+        this.dead = false;          // plays ANIM.DIE and ignores the pad
         this.deathDone = false;     // the death animation has finished
         this.stun = 0;              // seconds left without control after a hit
         this.invulnerable = 0;      // seconds left immune (and translucent)
@@ -89,8 +89,15 @@ export class Player {
     }
 
     _die() {
+        if (this.dead) return;
+
+        this.health = 0;
         this.dead = true;
+        this.deathDone = false;
         this.canMove = false;
+        this.defending = false;
+        this.invulnerable = 0;
+        this.stun = 0;
         this.openingChest = false;
         if (this.climbing) this._stopClimbing();
         this.attacking = false;
@@ -138,7 +145,7 @@ export class Player {
             x: x + BODY_PAD_X, y: y + BODY_PAD_Y,
             w: BODY, h: BODY,
             layer: LAYER.PLAYER,
-            mask: LAYER.SOLID,
+            mask: LAYER.SOLID | LAYER.KILL,
             maxSpeedY: MOVE.MAX_FALL_SPEED
         });
 
@@ -156,6 +163,9 @@ export class Player {
         });
         this.ladders.clear();
         world.onEnter = (a, b) => {
+            const other = a === this.body ? b : b === this.body ? a : null;
+            if (other?.layer === LAYER.KILL) this._die();
+
             const ladder = a.layer === LAYER.LADDER ? a : b;
             if (ladder.layer === LAYER.LADDER) this.ladders.add(ladder);
         };
@@ -200,6 +210,11 @@ export class Player {
         else body.vx = 0;
 
         this.world.step(dt);
+        // A kill sensor can start death during the step. Keep its animation.
+        if (this.dead) {
+            this._syncPos();
+            return;
+        }
         if (body.onGround) this.jumps = MOVE.JUMPS;
 
         if (this.canMove && !stunned) {

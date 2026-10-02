@@ -13,7 +13,8 @@ const LAYER = Object.freeze({
     LADDER: 4,
     DOOR: 8,
     PROBE: 16,
-    ENEMY: 32
+    ENEMY: 32,
+    KILL: 64
 });
 
 const VFX_SCREEN_COLOR = Object.freeze({

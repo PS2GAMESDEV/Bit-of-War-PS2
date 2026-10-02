@@ -3,7 +3,7 @@
 //
 //   { "backgroundColor": "#rrggbb",
 //     "layers": [ { "layer": 0, "tiles": { "<id>": [x0, y0, x1, y1, ...] } }, ... ],
-//     "colliders": { "ground": [x, y, w, h, ...], "door": [...], "ladder": [...] },
+//     "colliders": { "ground": [x, y, w, h, ...], "door": [...], "ladder": [...], "kill": [...] },
 //     "markers": { "<name>": [x0, y0, x1, y1, ...] } }   in editor order
 //
 // "layers" is sorted by draw order (ascending, the last one is drawn on top) and
@@ -13,7 +13,7 @@ const path = require("path");
 
 const SRC = path.join(__dirname, "maps-src");
 const OUT = path.join(__dirname, "..", "src", "data");
-const COLLIDERS = ["ground", "door", "ladder"];
+const COLLIDERS = ["ground", "door", "ladder", "kill"];
 
 fs.mkdirSync(OUT, { recursive: true });
 

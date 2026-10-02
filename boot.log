@@ -191,3 +191,134 @@ loading 42/46 (frame 73)
 loading 44/46 (frame 74)
 loading 45/46 (frame 75)
 loading 46/46 (frame 78)
+---- main.js start
+before Scene.run
+after Scene.run
+loading 4/7 (frame 1)
+  loadingScreen #1 draw begin
+  loadingScreen #1 draw end
+  loadingScreen #2 draw begin
+  loadingScreen #2 draw end
+loading 5/7 (frame 3)
+  loadingScreen #3 draw begin
+  loadingScreen #3 draw end
+loading 6/7 (frame 6)
+loading 7/7 (frame 7)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #2 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #3 busy=false
+Menu.draw #120 begin
+Menu.update #120 busy=false
+Menu.draw #240 begin
+Menu.update #240 busy=false
+loading 5/5 (frame 23)
+loading 6/7 (frame 43)
+loading 7/7 (frame 46)
+  loading 7/7 still waiting (frame 60)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+Menu.update #240 busy=false
+Menu.draw #240 begin
+Menu.update #360 busy=false
+Menu.draw #360 begin
+Menu.update #480 busy=false
+Menu.draw #480 begin
+Menu.update #600 busy=false
+Menu.draw #600 begin
+Menu.draw #720 begin
+loading 8/46 (frame 62)
+loading 10/46 (frame 63)
+loading 16/46 (frame 64)
+loading 19/46 (frame 65)
+loading 24/46 (frame 66)
+loading 26/46 (frame 67)
+loading 33/46 (frame 68)
+loading 34/46 (frame 69)
+loading 36/46 (frame 70)
+loading 37/46 (frame 71)
+loading 42/46 (frame 72)
+loading 44/46 (frame 73)
+loading 45/46 (frame 74)
+loading 46/46 (frame 77)
+loading 5/7 (frame 79)
+loading 6/7 (frame 80)
+loading 7/7 (frame 83)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+Menu.update #120 busy=false
+Menu.draw #120 begin
+loading 9/46 (frame 99)
+loading 11/46 (frame 100)
+loading 15/46 (frame 102)
+loading 19/46 (frame 103)
+loading 23/46 (frame 104)
+loading 26/46 (frame 105)
+loading 32/46 (frame 106)
+loading 34/46 (frame 107)
+loading 35/46 (frame 108)
+loading 36/46 (frame 109)
+loading 42/46 (frame 110)
+loading 44/46 (frame 111)
+loading 45/46 (frame 112)
+loading 46/46 (frame 115)
+loading 5/7 (frame 117)
+loading 6/7 (frame 118)
+  loading 6/7 still waiting (frame 120)
+loading 7/7 (frame 121)
+Menu.enter
+Menu.enter: before music.play
+Menu.enter: done
+Menu.update #1 busy=false
+Menu.draw #1 begin
+Menu.draw #1 end
+Menu.update #2 busy=false
+Menu.draw #2 begin
+Menu.draw #2 end
+Menu.update #3 busy=false
+Menu.draw #3 begin
+Menu.draw #3 end
+loading 8/46 (frame 137)
+loading 10/46 (frame 138)
+loading 11/46 (frame 139)
+loading 15/46 (frame 140)
+loading 18/46 (frame 141)
+loading 23/46 (frame 142)
+loading 26/46 (frame 143)
+loading 31/46 (frame 144)
+loading 34/46 (frame 145)
+loading 36/46 (frame 146)
+loading 42/46 (frame 148)
+loading 44/46 (frame 149)
+loading 45/46 (frame 150)
+loading 46/46 (frame 153)

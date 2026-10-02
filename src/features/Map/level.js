@@ -79,7 +79,8 @@ const CHEST_FLASH = Object.freeze({
 const COLLIDER_LAYER = Object.freeze({
     ground: LAYER.SOLID,
     door: LAYER.DOOR,
-    ladder: LAYER.LADDER
+    ladder: LAYER.LADDER,
+    kill: LAYER.KILL
 });
 
 // "#rrggbb" -> packed color; black when missing or malformed.
@@ -110,7 +111,7 @@ function findFrame(atlas, id) {
 
 /**
  * One map: per layer a TileMap for the static tiles (drawn by VU1) plus the
- * Sprite instances of torches, enemies and chests, and the solid/door/ladder
+ * Sprite instances of torches, enemies and chests, and the solid/door/ladder/kill
  * bodies in `world`. Layers are drawn in ascending order; the player is drawn
  * in the layer of the spawn point (spriteKratos).
  */
