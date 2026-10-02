@@ -64,14 +64,14 @@
       },
       {
         "x": 31,
-        "y": 407,
+        "y": 400,
         "creationCode": null,
         "locked": false,
         "layer": 1
       },
       {
         "x": 47,
-        "y": 406,
+        "y": 400,
         "creationCode": null,
         "locked": false,
         "layer": 1
@@ -1189,5 +1189,11 @@
       "type": "kill"
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "name": "startCutscene",
+      "x": 288,
+      "y": 384
+    }
+  ]
 }

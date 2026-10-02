@@ -13,6 +13,7 @@ import { Anubis } from "../Enemies/anubis.js";
 import { Mummy } from "../Enemies/mummy.js";
 import { Scarab } from "../Enemies/scarab.js";
 import { Scorpion } from "../Enemies/scorpion.js";
+import { Bastet } from "../Enemies/bastet.js";
 import { Blood } from "../Vfx/blood.js";
 
 // Sheet name -> enemy class, made from the map placements. A class has a
@@ -33,8 +34,13 @@ const ENEMY_CLASS = Object.freeze({
 
 const TILE = 16 * GAME_SCALE;
 
+const BASTET_PART = Object.freeze({ bossBastet: "bastet", lwSphinx: "sphinx" });
+
 // Editor tile variants share artwork; collision comes from map.colliders.
-const TILE_ALIAS = Object.freeze({ tileMastSolid: "tileMast" });
+const TILE_ALIAS = Object.freeze({
+    tileMastSolid: "tileMast",
+    tileEgyptianPillarSolid: "tileEgyptianPillar"
+});
 
 const BLEND = Screen.alphaEquation(
     Screen.SRC_RGB, Screen.DST_RGB,
@@ -122,6 +128,7 @@ export class Level {
         this.markers = {};
         this.layers = [];
         this.enemies = [];
+        this.bastet = null;
         this.projectileGroups = [];
         this.bossReward = null;
         this.chests = [];
@@ -189,6 +196,12 @@ export class Level {
                 continue;
             }
 
+            const bossPart = BASTET_PART[id];
+            if (bossPart) {
+                this._addBastetPart(layer, bossPart, placements, sheets);
+                continue;
+            }
+
             const sheetName = PROP_SHEET[id];
             if (sheetName) {
                 this._addProps(layer, sheets[sheetName], sheetName, placements, world, sheets);
@@ -238,6 +251,22 @@ export class Level {
         }
 
         return layer;
+    }
+
+    _addBastetPart(layer, name, placements, sheets) {
+        if (!placements.length) return;
+        if (!this.bastet) {
+            this.bastet = new Bastet();
+            this.enemies.push(this.bastet);
+        }
+
+        const sprite = this.bastet.addPart(name, sheets[name],
+            placements[0] * GAME_SCALE, placements[1] * GAME_SCALE);
+        // Draw the mount before its rider when they share a layer, regardless
+        // of the order of the map's entries.
+        const rider = layer.props.indexOf(this.bastet.parts.bastet);
+        if (name === "sphinx" && rider >= 0) layer.props.splice(rider, 0, sprite);
+        else layer.props.push(sprite);
     }
 
     _addProps(layer, sheet, sheetName, placements, world, sheets) {

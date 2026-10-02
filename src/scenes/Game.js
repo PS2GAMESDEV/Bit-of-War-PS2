@@ -17,7 +17,7 @@ export const LEVELS = Object.freeze([
     "Summit.json", "BossHall1.json", "Boss1.json", "ThorArmada1.json",
     "ThorInterior1.json", "ThorArmada2.json", "ThorInterior2.json",
     "Boss2.json", "Desert1.json", "DesertInterior1.json",
-    "Desert2.json", "Desert3.json"
+    "Desert2.json", "Desert3.json", "BossHall3.json"
 ]);
 
 // Level index -> cutscene shown before that level.
@@ -164,6 +164,35 @@ export default class Game extends Scene {
                 // Selected manually by Thor; this clip is never played by time.
                 die: "6-11"
             }),
+            bastet: {
+                path: "images/enemies/bossBastet.png",
+                ...grid,
+                clips: {
+                    idle: "11",
+                    die: { frames: "0-4", mode: "once" },
+                    attack: { frames: "5-6", mode: "once" },
+                    stunning: "7-8",
+                    fall: "9",
+                    move: "10-11"
+                }
+            },
+            sphinx: {
+                path: "images/enemies/sphinx.png",
+                frameWidth: 128,
+                frameHeight: 128,
+                clips: {
+                    idle: "0",
+                    hit: { frames: "1-2", fps: 24, loops: 18 },
+                    stunning: "3",
+                    attack: { frames: "4-7", mode: "once" }
+                }
+            },
+            sphinxDeath: {
+                path: "images/enemies/sphinx2.png",
+                frameWidth: 160,
+                frameHeight: 160,
+                clips: { die: { frames: "0-11", mode: "once" } }
+            },
             hammer: {
                 path: "images/objects/hammer.png",
                 ...grid,
