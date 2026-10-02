@@ -67,7 +67,8 @@ export class Walker {
             // floor under the next step.
             const front = this.dir > 0 ? body.right + 1 : body.x - 1;
             const wall = this.world.solidAt(front, body.y + SIZE / 2, LAYER.SOLID);
-            const floor = this.world.solidAt(front, body.bottom + 1, LAYER.SOLID);
+            const floor = this.world.solidAt(front, body.bottom + 1, LAYER.SOLID) ||
+                this.world.raycast(front, body.bottom - 1, front, body.bottom + 2, { mask: LAYER.SOLID }) !== null;
 
             if (wall || !floor) this.dir = -this.dir;
         }

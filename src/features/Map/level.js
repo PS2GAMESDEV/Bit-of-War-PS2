@@ -4,6 +4,11 @@ import { Minotaur } from "../Enemies/minotaur.js";
 import { Skelbow } from "../Enemies/skelbow.js";
 import { Undead } from "../Enemies/undead.js";
 import { Zeus } from "../Enemies/zeus.js";
+import { Thor } from "../Enemies/thor.js";
+import { Dragon } from "../Enemies/dragon.js";
+import { Vbow } from "../Enemies/vbow.js";
+import { VSoldier } from "../Enemies/vsoldier.js";
+import { Spearman } from "../Enemies/spearman.js";
 import { Blood } from "../Vfx/blood.js";
 
 // Sheet name -> enemy class, made from the map placements. A class has a
@@ -11,12 +16,20 @@ import { Blood } from "../Vfx/blood.js";
 // dt, view), sync() and, optionally, draw(). One the blade can hit also has a
 // static `health` and a `hurtbox` ({ x, y, w, h }), and optionally hurt(fromX)
 // and die() (one that sets `dying` stays until it sets `dead`); one whose hurtbox
-// is null is not hit. A class with a static `selfDrawn`
+// is null is not hit. Optional deathHit() advances a death sequence per hit;
+// contactBox can differ from hurtbox to keep a corpse hittable but harmless.
+// A class with a static `selfDrawn`
 // draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
 // (sprite, world, x, y, sheets, markers, sfx).
-const ENEMY_CLASS = Object.freeze({ undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus });
+const ENEMY_CLASS = Object.freeze({
+    undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus, thor: Thor,
+    dragon: Dragon, vbow: Vbow, vsoldier: VSoldier, spearman: Spearman
+});
 
 const TILE = 16 * GAME_SCALE;
+
+// Editor tile variants share artwork; collision comes from map.colliders.
+const TILE_ALIAS = Object.freeze({ tileMastSolid: "tileMast" });
 
 const BLEND = Screen.alphaEquation(
     Screen.SRC_RGB, Screen.DST_RGB,
@@ -34,7 +47,14 @@ const PROP_SHEET = Object.freeze({
     enSkelbow: "skelbow",
     enSkelbowR: "skelbow",
     enHarpie: "harpie",
-    bossZeus: "zeus"
+    enDragon: "dragon",
+    enVbow: "vbow",
+    enVbowR: "vbow",
+    enVsoldier: "vsoldier",
+    enVSoldier: "vsoldier",
+    enSpearman: "spearman",
+    bossZeus: "zeus",
+    bossThor: "thor"
 });
 
 const CHEST_FLASH = Object.freeze({
@@ -69,8 +89,9 @@ function lowerBound(values, value) {
 }
 
 function findFrame(atlas, id) {
-    const index = atlas.findFrame(id + ".png");
-    return index >= 0 ? index : atlas.findFrame(id);
+    const name = TILE_ALIAS[id] ?? id;
+    const index = atlas.findFrame(name + ".png");
+    return index >= 0 ? index : atlas.findFrame(name);
 }
 
 /**
@@ -86,6 +107,8 @@ export class Level {
         this.markers = {};
         this.layers = [];
         this.enemies = [];
+        this.projectileGroups = [];
+        this.bossReward = null;
         this.chests = [];
         this.blood = new Blood(sheets.blood);
         this.spawn = { x: 100, y: 100 };
@@ -118,6 +141,21 @@ export class Level {
                     layer,
                     sensor: layer !== LAYER.SOLID
                 });
+            }
+        }
+
+        // Bridge ladder openings only between two solid platform edges.
+        const ladders = map.colliders.ladder ?? [];
+        for (let i = 0; i < ladders.length; i += 4) {
+            const x = ladders[i] * GAME_SCALE;
+            const y = ladders[i + 1] * GAME_SCALE;
+            const w = ladders[i + 2] * GAME_SCALE;
+            const floors = world.query(x - 1, y, w + 2, 1, LAYER.SOLID)
+                .filter(floor => floor.y === y && !floor.sensor && !floor.oneWay);
+            const hasLeftFloor = floors.some(floor => floor.right === x);
+            const hasRightFloor = floors.some(floor => floor.x === x + w);
+            if (hasLeftFloor && hasRightFloor) {
+                world.add({ x, y, w, h: 2 * GAME_SCALE, layer: LAYER.SOLID, oneWay: true });
             }
         }
     }
@@ -216,6 +254,11 @@ export class Level {
     // body and `view` the camera's visible rectangle.
     update(target, dt, view) {
         for (const enemy of this.enemies) enemy.update(target, dt, view);
+        for (let i = this.projectileGroups.length - 1; i >= 0; i--) {
+            const group = this.projectileGroups[i];
+            group.update(dt, view);
+            if (group.dead) this.projectileGroups.splice(i, 1);
+        }
         this.blood.update(dt);
 
         // An enemy with a death animation stays until it says it is `dead`.
@@ -237,6 +280,11 @@ export class Level {
             const centerX = box.x + box.w / 2;
             this.blood.spawn(centerX, box.y + box.h / 2, fromX > centerX);
 
+            if (enemy.dying && enemy.deathHit) {
+                enemy.deathHit();
+                continue;
+            }
+
             enemy.health -= BLADE_DAMAGE;
             if (enemy.health > 0) {
                 enemy.hurt?.(fromX);
@@ -249,20 +297,38 @@ export class Level {
     }
 
     // What hurts a player whose body is `box`: an enemy touching it, or an
-    // arrow (which is spent). Returns the x of its center, or null.
-    hitPlayer(box) {
-        for (const enemy of this.enemies) {
-            const hurtbox = enemy.hurtbox;
-            if (hurtbox && Collision.overlaps(box, hurtbox)) return hurtbox.x + hurtbox.w / 2;
+    // projectile (which is spent). Only archer arrows can be blocked;
+    // contact and other projectiles still hurt while defending.
+    hitPlayer(box, blocking = false) {
+        let fromX = null;
+        for (const sources of [this.enemies, this.projectileGroups]) {
+            for (const enemy of sources) {
+                const contactBox = enemy.contactBox;
+                const hurtbox = contactBox === undefined ? enemy.hurtbox : contactBox;
+                if (hurtbox && Collision.overlaps(box, hurtbox)) {
+                    const contactX = hurtbox.x + hurtbox.w / 2;
+                    if (!blocking) return contactX;
+                    if (fromX === null) fromX = contactX;
+                }
 
-            const arrowX = enemy.arrowHit?.(box) ?? null;
-            if (arrowX !== null) return arrowX;
+                const blockArrows = blocking && enemy.constructor.blockableArrows;
+                let arrowX;
+                do {
+                    arrowX = enemy.arrowHit?.(box) ?? null;
+                    if (!blockArrows && arrowX !== null) {
+                        if (!blocking) return arrowX;
+                        if (fromX === null) fromX = arrowX;
+                    }
+                } while (blockArrows && arrowX !== null);
+            }
         }
-        return null;
+        return fromX;
     }
 
     _remove(enemy) {
         this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        const projectiles = enemy.detachProjectiles?.();
+        if (projectiles) this.projectileGroups.push(projectiles);
 
         for (const layer of this.layers) {
             const at = layer.enemies.indexOf(enemy);
@@ -272,6 +338,9 @@ export class Level {
             const prop = layer.props.indexOf(enemy.sprite);
             if (prop >= 0) layer.props.splice(prop, 1);
         }
+
+        // A boss grants its reward only after its death animation and removal.
+        if (enemy.constructor.reward) this.bossReward = enemy.constructor.reward;
     }
 
     // Draws the layers in ascending order, only the slice of every tile group
@@ -308,6 +377,7 @@ export class Level {
         }
 
         if (!playerDrawn) drawPlayer?.();
+        for (const group of this.projectileGroups) group.draw();
         this.blood.draw();
     }
 }

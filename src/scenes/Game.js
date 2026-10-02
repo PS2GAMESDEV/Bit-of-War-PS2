@@ -14,7 +14,9 @@ import { Menu } from "./menu.js";
 
 const LEVELS = Object.freeze([
     "GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json",
-    "Summit.json", "BossHall1.json", "Boss1.json"
+    "Summit.json", "BossHall1.json", "Boss1.json", "ThorArmada1.json",
+    "ThorInterior1.json", "ThorArmada2.json", "ThorInterior2.json",
+    "Boss2.json"
 ]);
 
 // Level index -> cutscene shown before that level.
@@ -22,7 +24,7 @@ const CUTSCENES = Object.freeze({
     5: Cutscene02
 });
 
-const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED: 3, GAME_OVER: 4 });
+const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED: 3, GAME_OVER: 4, BOSS_REWARD: 5 });
 
 // Pause menu rows (lang keys), top to bottom.
 const PAUSE_OPTIONS = Object.freeze(["resume", "saveGame", "quit"]);
@@ -35,6 +37,7 @@ const PAUSE_DIM = Color.new(0, 0, 0, 100);
 const WHITE = Color.new(255, 255, 255);
 const RED = Color.new(255, 0, 0);
 const NOTICE_TIME = 2;
+const BOSS_REWARD_TIME = 3;
 const FLASH_TIME = 0.1;
 const CAMERA_LERP = 6;
 const INSET = 4;
@@ -59,7 +62,9 @@ export default class Game extends Scene {
         images: {
             hud: "images/sprites/kratos/hud.png",
             powerup: "images/sprites/kratos/powerup.png",
-            gameOver: "images/ui/gameOver.png"
+            gameOver: "images/ui/gameOver.png",
+            gotZeusLightning: "images/ui/gotZeusLightning.png",
+            gotMjolnir: "images/ui/gotMjolnir.png"
         },
         fonts: {
             text: { path: "font/font.ttf", size: 18, preload: GLYPHS }
@@ -98,8 +103,11 @@ export default class Game extends Scene {
             lifeChest: chest("obLifeChest"),
             magicChest: chest("obMagicChest"),
             harpie: enemy("enHarpie", { idle: "2", fly: { frames: "0-1", fps: 8 } }),
+            dragon: enemy("enDragon", { idle: "0", fly: { frames: "0-1", fps: 8 } }),
             minotaur: enemy("enMinotaur", { run: { frames: "2-3", fps: 12 } }),
+            spearman: enemy("enSpearman", { run: { frames: "2-3", fps: 12 } }),
             skelbow: enemy("enSkelbow", { shoot: { frames: "0-1", fps: 4, mode: "once" } }),
+            vbow: enemy("enVbow", { shoot: { frames: "0-1", fps: 6, mode: "once" } }),
             arrow: {
                 path: "images/objects/arrow.png",
                 frameWidth: 10,
@@ -124,12 +132,24 @@ export default class Game extends Scene {
                 frameHeight: 16,
                 clips: { transport: { frames: "0-1", fps: 8 } }
             },
+            thor: enemy("bossThor", {
+                float: "2",
+                hit: { frames: "3-4", fps: 24 },
+                // Selected manually by Thor; this clip is never played by time.
+                die: "5-10"
+            }),
+            hammer: {
+                path: "images/objects/hammer.png",
+                ...grid,
+                clips: { fly: "0" }
+            },
             lighting: {
                 path: "images/objects/lighting.png",
                 ...grid,
                 clips: { fly: { frames: "0-1", fps: 30 } }
             },
             undead: enemy("enUndead"),
+            vsoldier: enemy("enVsoldier"),
             blood: {
                 path: "images/vfx/blood.png",
                 ...grid,
@@ -176,6 +196,7 @@ export default class Game extends Scene {
         this.playTime = progress ? progress.playTime : 0;
         this.bestTime = null;
         this.notice = null;
+        this.bossReward = null;
         this.debug = false;
         this.state = STATE.PLAYING;
         this.menuSelected = 0;
@@ -192,6 +213,15 @@ export default class Game extends Scene {
 
     update(dt) {
         if (!this.level) return;
+
+        // No input or world steps while the weapon acquisition image is shown.
+        if (this.state === STATE.BOSS_REWARD) {
+            if ((this.bossReward.time -= dt) <= 0) {
+                this.bossReward = null;
+                this._nextLevel();
+            }
+            return;
+        }
 
         if (this.introCutscene) {
             if (!Scene.busy) {
@@ -234,13 +264,23 @@ export default class Game extends Scene {
         if (pad.justPressed(KEY.INTERACT)) this._interact();
 
         this.level.update(this.player.body, dt, this.camera.visibleRect());
+        if (this.state === STATE.PLAYING && this.level.bossReward) {
+            const image = this.assets.images[this.level.bossReward];
+            this.level.bossReward = null;
+            this.bossReward = { image, size: scaled(image, GAME_SCALE), time: BOSS_REWARD_TIME };
+            this.state = STATE.BOSS_REWARD;
+            this.player.canMove = false;
+            this.player.body.vx = 0;
+            this.player.body.vy = 0;
+            return;
+        }
         this.player.update(dt, pad); // steps the world, enemies included
 
         const hitbox = this.player.hitbox;
         if (hitbox) this.level.strike(hitbox, this.player.pos.x, this.player.struck);
 
-        if (this.state === STATE.PLAYING && this.player.vulnerable) {
-            const fromX = this.level.hitPlayer(this.player.body);
+        if (this.state === STATE.PLAYING && (this.player.vulnerable || this.player.defending)) {
+            const fromX = this.level.hitPlayer(this.player.body, this.player.defending);
             if (fromX !== null) this.player.hurt(fromX);
         }
     }
@@ -354,6 +394,7 @@ export default class Game extends Scene {
 
     // `progress`, when given, puts the player and the opened chests back.
     _build(map, progress = null) {
+        this.bossReward = null;
         this.world.clear();
         this.level = new Level(map, this.assets.sheets, this.world, this.assets.sfx);
 
@@ -437,6 +478,13 @@ export default class Game extends Scene {
     }
 
     _drawOverlay() {
+        if (this.state === STATE.BOSS_REWARD) {
+            const { image, size } = this.bossReward;
+            Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLACK);
+            image.draw((SCREEN_WIDTH - size.width) / 2, (SCREEN_HEIGHT - size.height) / 2, size);
+            return;
+        }
+
         const font = this.assets.fonts.text;
         const line = (y, text, color) => {
             font.color = color;

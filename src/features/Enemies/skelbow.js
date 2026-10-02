@@ -22,6 +22,9 @@ const TURN_DEADZONE = 2;          // does not turn for a player right above or b
 export class Skelbow {
     static clip = "idle";
     static health = 3;
+    static cooldown = COOLDOWN;
+    static arrowSpeed = ARROW_SPEED;
+    static blockableArrows = true;
 
     constructor(sprite, world, x, y, sheets) {
         this.sprite = sprite;
@@ -30,7 +33,7 @@ export class Skelbow {
         this.x = x;
         this.y = y;
         this.dir = FACES_RIGHT ? 1 : -1;
-        this.cooldown = COOLDOWN;
+        this.cooldown = this.constructor.cooldown;
         this.shooting = false;
         this.arrows = [];
 
@@ -78,7 +81,7 @@ export class Skelbow {
         if (!this.shooting) return;
 
         this.shooting = false;
-        this.cooldown = COOLDOWN;
+        this.cooldown = this.constructor.cooldown;
         this.sprite.play("idle");
 
         const x = this.dir > 0 ? this.x + TILE : this.x - ARROW_W;
@@ -100,7 +103,7 @@ export class Skelbow {
         for (let i = arrows.length - 1; i >= 0; i--) {
             const arrow = arrows[i];
 
-            arrow.x += arrow.dir * ARROW_SPEED * dt;
+            arrow.x += arrow.dir * this.constructor.arrowSpeed * dt;
             arrow.sprite.x = arrow.x;
 
             const tip = arrow.dir > 0 ? arrow.x + ARROW_W : arrow.x;

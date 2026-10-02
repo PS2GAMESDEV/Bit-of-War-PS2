@@ -46,6 +46,7 @@ export class Player {
 
         this.facingLeft = false;
         this.canMove = true;
+        this.defending = false;
         this.attacking = false;
         this.struck = new Set();    // enemies already hit by the current swing
         this.openingChest = false;
@@ -70,6 +71,7 @@ export class Player {
 
         const body = this.body;
 
+        this.defending = false;
         this.health--;
         this.sfxHurt.play();
         if (this.health <= 0) return this._die();
@@ -106,6 +108,7 @@ export class Player {
         this.invulnerable = 0;
         this.stun = 0;
         this.facingLeft = false;
+        this.defending = false;
     }
 
     // Where the blade is while it swings (the box that is drawn), or null.
@@ -161,6 +164,7 @@ export class Player {
         };
 
         this.canMove = true;
+        this.defending = false;
         this.climbing = false;
         this.climbDir = 0;
         this.lastLadder = null;
@@ -174,6 +178,7 @@ export class Player {
 
     update(dt, pad) {
         const body = this.body;
+        this.defending = false;
 
         if (this.dead) {
             // He falls where he died (no control, no knockback) and lies there.
@@ -188,7 +193,10 @@ export class Player {
         // Stunned, the velocity of the hit is kept and the pad is ignored.
         const stunned = this.stun > 0;
         if (stunned) this.stun -= dt;
-        else if (this.canMove) this._input(pad, body);
+        else if (this.canMove) {
+            this._checkLadder(pad, body);
+            this._input(pad, body);
+        }
         else body.vx = 0;
 
         this.world.step(dt);
@@ -196,7 +204,12 @@ export class Player {
 
         if (this.canMove && !stunned) {
             this._checkLadder(pad, body);
-            if (pad.justPressed(KEY.ATK) && !this.attacking) this._attack();
+            this.defending = !this.climbing && body.onGround && pad.pressed(KEY.BLOCK);
+            if (this.defending && this.attacking) {
+                this.attacking = false;
+                this.blade.stop();
+            }
+            if (!this.defending && pad.justPressed(KEY.ATK) && !this.attacking) this._attack();
         }
 
         if (this.openingChest && (this.attacking || body.vx !== 0 || !body.onGround || pad.pressed(KEY.BLOCK))) {
@@ -210,7 +223,7 @@ export class Player {
     _input(pad, body) {
         if (this.climbing) {
             this.climbDir = pad.anyPressed(Gamepad.UP | Gamepad.TRIANGLE) ? -1
-                : pad.anyPressed(Gamepad.DOWN | Gamepad.CROSS) ? 1 : 0;
+                : pad.pressed(Gamepad.DOWN) ? 1 : 0;
             body.vy = this.climbDir * MOVE.CLIMB_SPEED;
             if (this._pastLadder(body, this.climbDir)) body.vy = 0;
 
@@ -253,9 +266,20 @@ export class Player {
     }
 
     _checkLadder(pad, body) {
-        const ladder = this.ladders.values().next().value;
+        // Standing on the ladder top leaves the probe above the ladder sensor.
+        const ladder = this.ladders.values().next().value ??
+            (pad.pressed(Gamepad.DOWN) && body.ground?.oneWay
+                ? this.world.query(body.x + INSET, body.bottom, BODY - 2 * INSET, INSET, LAYER.LADDER)[0]
+                : null);
 
         if (this.climbing) {
+            const top = this.lastLadder;
+            if (this.climbDir < 0 && top && body.bottom <= top.y &&
+                this.world.query(top.x, top.y, top.w, 1, LAYER.SOLID).some(floor => floor.oneWay && floor.y === top.y)) {
+                body.setPosition(body.x, top.y - body.h);
+                this._stopClimbing();
+                return;
+            }
             const landed = this.climbDir > 0 && body.onGround;
             if (landed) this._stopClimbing();
             else if (ladder) this.lastLadder = ladder;
@@ -271,20 +295,20 @@ export class Player {
         const grounded = body.onGround;
 
         if ((up && grounded && ladder.y < body.y) ||
-            (down && !grounded && body.y < ladder.y + ladder.h) ||
+            (down && (!grounded || body.ground?.oneWay) && body.y < ladder.y + ladder.h) ||
             (!grounded && (up || down))) {
             this._startClimbing(ladder);
         }
     }
 
-    // Climbing stays inside the ladder's collider: with no ladder under the
-    // probe, moving further away from the last one (`dir` -1 up, 1 down) is blocked.
+    // Stop at the ladder endpoints, even after the inset probe leaves the sensor.
     _pastLadder(body, dir) {
         const ladder = this.lastLadder;
-        if (dir === 0 || this.ladders.size > 0 || ladder === null) return false;
+        if (dir === 0 || ladder === null) return false;
+        if (dir < 0) return body.bottom <= ladder.y;
+        if (this.ladders.size > 0) return false;
 
-        const above = body.centerY < ladder.y + ladder.h / 2;
-        return dir < 0 ? above : !above;
+        return body.centerY >= ladder.y + ladder.h / 2;
     }
 
     _startClimbing(ladder) {
@@ -295,6 +319,7 @@ export class Player {
         this.climbDir = 0;
         this.lastLadder = ladder;
         body.gravityScale = 0;
+        body.dropThrough = true;
         body.vx = 0;
         body.vy = 0;
         body.setPosition(ladderX - BODY / 2, body.y);
@@ -304,6 +329,7 @@ export class Player {
         this.climbing = false;
         this.climbDir = 0;
         this.body.gravityScale = 1;
+        this.body.dropThrough = false;
         this.body.vy = 0;
     }
 
@@ -339,7 +365,7 @@ export class Player {
 
         if (body.vy < 0) clip = left ? ANIM.JUMP_L : ANIM.JUMP_R;
         else if (body.onGround) {
-            if (pad.pressed(KEY.BLOCK)) clip = left ? ANIM.BLOCK_L : ANIM.BLOCK_R;
+            if (this.defending) clip = left ? ANIM.BLOCK_L : ANIM.BLOCK_R;
             else if (body.vx !== 0) clip = left ? ANIM.WALK_L : ANIM.WALK_R;
             else clip = left ? ANIM.IDLE_L : ANIM.IDLE_R;
         }

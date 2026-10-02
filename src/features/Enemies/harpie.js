@@ -18,9 +18,11 @@ const TURN_DEADZONE = 2;
 export class Harpie {
     static clip = "idle";
     static health = 2;
+    static speed = SPEED;
 
     constructor(sprite, world, x, y, sheets, markers, sfx) {
         this.sprite = sprite;
+        this.sprite.flipY = true;
         this.sfxScreech = sfx?.harpieScreech;
         this.x = x;
         this.y = y;
@@ -52,6 +54,7 @@ export class Harpie {
 
         if (!this.chasing && distance <= SIGHT) {
             this.chasing = true;
+            this.sprite.flipY = false;
             this.sprite.play("fly");
             this.sfxScreech?.play();
         }
@@ -61,7 +64,7 @@ export class Harpie {
         this.sprite.flipX = this.facingRight !== FACES_RIGHT;
 
         if (distance > ARRIVED) {
-            const step = Math.min(SPEED * dt, distance);
+            const step = Math.min(this.constructor.speed * dt, distance);
             this.x += (dx / distance) * step;
             this.y += (dy / distance) * step;
         }

@@ -40,6 +40,7 @@ export class Zeus {
     static clip = "idle";
     static selfDrawn = true;
     static health = 10;
+    static reward = "gotZeusLightning";
 
     constructor(sprite, world, x, y, sheets, markers, sfx) {
         this.sprite = sprite;
