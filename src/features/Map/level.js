@@ -21,7 +21,8 @@ import { Blood } from "../Vfx/blood.js";
 // dt, view), sync() and, optionally, draw(). One the blade can hit also has a
 // static `health` and a `hurtbox` ({ x, y, w, h }), and optionally hurt(fromX)
 // and die() (one that sets `dying` stays until it sets `dead`); one whose hurtbox
-// is null is not hit. Optional deathHit() advances a death sequence per hit;
+// is null is not hit. Optional hurtboxes exposes several parts of the same
+// enemy; a swing still deals damage only once. Optional deathHit() advances a death sequence per hit;
 // contactBox can differ from hurtbox to keep a corpse hittable but harmless.
 // A class with a static `selfDrawn`
 // draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
@@ -198,7 +199,7 @@ export class Level {
 
             const bossPart = BASTET_PART[id];
             if (bossPart) {
-                this._addBastetPart(layer, bossPart, placements, sheets);
+                this._addBastetPart(layer, bossPart, placements, sheets, world);
                 continue;
             }
 
@@ -253,10 +254,10 @@ export class Level {
         return layer;
     }
 
-    _addBastetPart(layer, name, placements, sheets) {
+    _addBastetPart(layer, name, placements, sheets, world) {
         if (!placements.length) return;
         if (!this.bastet) {
-            this.bastet = new Bastet();
+            this.bastet = new Bastet(world, sheets, this.markers);
             this.enemies.push(this.bastet);
         }
 
@@ -267,6 +268,7 @@ export class Level {
         const rider = layer.props.indexOf(this.bastet.parts.bastet);
         if (name === "sphinx" && rider >= 0) layer.props.splice(rider, 0, sprite);
         else layer.props.push(sprite);
+        if (name === "sphinx") layer.enemies.push(this.bastet);
     }
 
     _addProps(layer, sheet, sheetName, placements, world, sheets) {
@@ -318,8 +320,10 @@ export class Level {
     strike(hitbox, fromX, struck) {
         for (let i = this.enemies.length - 1; i >= 0; i--) {
             const enemy = this.enemies[i];
-            const box = enemy.hurtbox;
-            if (!box || struck.has(enemy) || !Collision.overlaps(hitbox, box)) continue;
+            if (struck.has(enemy)) continue;
+            const boxes = enemy.hurtboxes;
+            const box = boxes ? boxes.find(box => box && Collision.overlaps(hitbox, box)) : enemy.hurtbox;
+            if (!box || (!boxes && !Collision.overlaps(hitbox, box))) continue;
 
             struck.add(enemy);
             const centerX = box.x + box.w / 2;

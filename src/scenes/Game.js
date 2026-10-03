@@ -170,10 +170,11 @@ export default class Game extends Scene {
                 clips: {
                     idle: "11",
                     die: { frames: "0-4", mode: "once" },
-                    attack: { frames: "5-6", mode: "once" },
+                    attack: { frames: "5-6", fps: 4 },
                     stunning: "7-8",
                     fall: "9",
-                    move: "10-11"
+                    move: "10-11",
+                    walk: { frames: "10-11", fps: 3 }
                 }
             },
             sphinx: {
@@ -182,9 +183,9 @@ export default class Game extends Scene {
                 frameHeight: 128,
                 clips: {
                     idle: "0",
-                    hit: { frames: "1-2", fps: 24, loops: 18 },
+                    hit: { frames: "1-2", fps: 48 },
                     stunning: "3",
-                    attack: { frames: "4-7", mode: "once" }
+                    attack: { frames: "4-7", fps: 3 }
                 }
             },
             sphinxDeath: {
@@ -192,6 +193,24 @@ export default class Game extends Scene {
                 frameWidth: 160,
                 frameHeight: 160,
                 clips: { die: { frames: "0-11", mode: "once" } }
+            },
+            fireAttack: {
+                path: "images/objects/fireAttack.png",
+                frameWidth: 64,
+                frameHeight: 96,
+                clips: { burn: { frames: "0-1", fps: 4 } }
+            },
+            bastAttack: {
+                path: "images/objects/bastAttack.png",
+                frameWidth: 32,
+                frameHeight: 128,
+                clips: { attack: { frames: "0-1", fps: 4 } }
+            },
+            thunderAttack: {
+                path: "images/objects/thunderAttack.png",
+                frameWidth: 32,
+                frameHeight: 32,
+                clips: { spin: { frames: "0-1", fps: 4 } }
             },
             hammer: {
                 path: "images/objects/hammer.png",
@@ -325,6 +344,13 @@ export default class Game extends Scene {
 
         if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
+
+        const boss = this.level.bastet;
+        if (this.state === STATE.PLAYING && !this.player.dead && boss?.shouldStart(this.player.body)) {
+            // The in-level Bastet cutscene is not available yet. Once added,
+            // play it here and call boss.start() only when it finishes.
+            boss.start();
+        }
 
         this.level.update(this.player.body, dt, this.camera.visibleRect());
         if (this.state === STATE.PLAYING && this.level.bossReward) {
