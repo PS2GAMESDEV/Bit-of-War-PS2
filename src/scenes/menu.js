@@ -2,7 +2,7 @@ import { GLYPHS, LANGS, getLang, setLang, t } from "../shared/lang/lang.js";
 import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
 import { Save } from "../shared/lib/save.js";
 import { loadSettings, saveSettings, settings } from "../shared/lib/settings.js";
-import { Cutscene01 } from "./cutscene01.js";
+import { Scene01 } from "./scene1-1.js";
 import Game, { LEVELS } from "./Game.js";
 import { log } from "../shared/lib/boot_log.js";
 
@@ -138,7 +138,7 @@ export class Menu extends Scene {
                 update() {
                     menu._move(TEMP_LEVEL_SELECT ? 4 : 3);
                     if (!confirm()) return;
-                    if (menu.selected === 0) Scene.go(Cutscene01);
+                    if (menu.selected === 0) Scene.go(Scene01);
                     else if (menu.selected === 1) menu._openLoad();
                     else menu._go(["", "", "options", "extras", "levels"][menu.selected]);
                 },

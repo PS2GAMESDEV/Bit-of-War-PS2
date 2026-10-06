@@ -4,6 +4,6 @@ import { VSoldier } from "./vsoldier.js";
 export class Mummy extends VSoldier {
     constructor(sprite, world, x, y) {
         super(sprite, world, x, y);
-        this.walkSpeed *= 1.796875;
+        this.walkSpeed *= 1.5;
     }
 }

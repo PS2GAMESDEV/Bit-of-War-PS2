@@ -39,7 +39,7 @@ const VIEW_MARGIN = 2 * 16 * GAME_SCALE;    // a bolt this far outside the camer
 export class Zeus {
     static clip = "idle";
     static selfDrawn = true;
-    static health = 10;
+    static health = 5;
     static reward = "gotZeusLightning";
 
     constructor(sprite, world, x, y, sheets, markers, sfx) {
@@ -66,6 +66,7 @@ export class Zeus {
         this.attacks = 0;
         this.cooldown = 0;
         this.facingRight = FACES_RIGHT;
+        this.healthBarVisible = false;
 
         this.sprite.on("end", () => this._attackEnded());
     }
@@ -157,6 +158,7 @@ export class Zeus {
             this.transporting = false;
             this.attacks = 0;
             this.cooldown = 0;   // the first attack comes right away
+            this.healthBarVisible = true;
         }
     }
 
@@ -246,6 +248,14 @@ export class Zeus {
     }
 
     draw() {
+        if(this.healthBarVisible) {
+        Draw.rect(392, 36, 104, 8, Color.new(0, 0, 0));
+        
+        if(this.health > 0) {
+            Draw.rect(394, 38, this.health * 20, 4, Color.new(255, 0, 0));
+        }
+        }
+        
         (this.transporting ? this.transport : this.sprite).draw();
         for (const bolt of this.bolts) bolt.sprite.draw();
     }

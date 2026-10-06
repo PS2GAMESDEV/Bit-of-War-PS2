@@ -6,7 +6,7 @@ const TILE = 16 * GAME_SCALE;
 const FACES_RIGHT = true;
 
 const SIGHT = 6 * TILE;         // distance at which she notices the player
-const SPEED = 120;               // units per second
+const SPEED = 90;               // units per second
 const ARRIVED = 2;              // closer than this to the player she stops, so she does not jitter
 const TURN_DEADZONE = 2;
 
@@ -17,7 +17,7 @@ const TURN_DEADZONE = 2;
  */
 export class Harpie {
     static clip = "idle";
-    static health = 2;
+    static health = 1;
     static speed = SPEED;
 
     constructor(sprite, world, x, y, sheets, markers, sfx) {

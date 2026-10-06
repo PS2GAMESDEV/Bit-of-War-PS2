@@ -8,9 +8,11 @@ import {
 import { GLYPHS, t } from "../shared/lang/lang.js";
 import { Save } from "../shared/lib/save.js";
 import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
-import { Cutscene02 } from "./cutscene02.js";
-// Only used at runtime (menu.js imports this file too).
 import { Menu } from "./menu.js";
+import { Scene02 } from "./scene1-2.js";
+import { Scene03 } from "./scene2-1.js";
+import { Scene04 } from "./scene2-2.js";
+
 
 export const LEVELS = Object.freeze([
     "GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json",
@@ -22,10 +24,26 @@ export const LEVELS = Object.freeze([
 
 // Level index -> cutscene shown before that level.
 const CUTSCENES = Object.freeze({
-    5: Cutscene02
+    5: Scene02,
+    6: Scene03,
+    10: Scene04
+});
+
+const LEVEL_MUSIC = Object.freeze({
+    0: "level1", 1: "level1", 2: "level1", 3: "level1", /*BossHall1*/ 5: "boss",
+    6: "level2", 7: "level2", 8: "level2", 9: "level2", 10: "boss",
+    11: "level3", 12: "level3", 13: "level3", 14: "level3", 15: "boss"
 });
 
 const STATE = Object.freeze({ PLAYING: 0, TRANSITIONING: 1, COMPLETED: 2, PAUSED: 3, GAME_OVER: 4, BOSS_REWARD: 5 });
+
+const HEALTHCOLORS = Object.freeze([
+    Color.new(255, 102, 0, 255),
+    Color.new(255, 204, 0, 255),
+    Color.new(204, 255, 0, 255),
+    Color.new(102, 250, 0, 255),
+    Color.new(0, 255, 0, 255),
+]);
 
 // Pause menu rows (lang keys), top to bottom.
 const PAUSE_OPTIONS = Object.freeze(["resume", "saveGame", "quit"]);
@@ -39,6 +57,7 @@ const BLACK = Color.new(0, 0, 0);
 const PAUSE_DIM = Color.new(0, 0, 0, 100);
 const WHITE = Color.new(255, 255, 255);
 const RED = Color.new(255, 0, 0);
+const BLUE = Color.new(0, 0, 255, 255);
 const NOTICE_TIME = 2;
 const BOSS_REWARD_TIME = 3;
 const FLASH_TIME = 0.1;
@@ -65,10 +84,23 @@ export default class Game extends Scene {
         images: {
             hud: "images/sprites/kratos/hud.png",
             powerup: "images/sprites/kratos/powerup.png",
+            puGorgonHead: "images/sprites/kratos/puGorgonHead.png",
+            puHammer: "images/sprites/kratos/puHammer.png",
+            puLightning: "images/sprites/kratos/puLightning.png",
+            puSpinAttack: "images/sprites/kratos/puSpinAttack.png",
             gameOver: "images/ui/gameOver.png",
             gotZeusLightning: "images/ui/gotZeusLightning.png",
             gotMjolnir: "images/ui/gotMjolnir.png"
         },
+
+        music: {
+            gaia: "sounds/music/level1.ogg",
+            level1: "sounds/music/musicLevel1_old.ogg",
+            level2: "sounds/music/musicLevel2.ogg",
+            level3: "sounds/music/musicLevel3.ogg",
+            boss: "sounds/music/musicBoss.ogg"
+        },
+
         fonts: {
             text: { path: "font/font.ttf", size: 18, preload: GLYPHS }
         },
@@ -264,6 +296,18 @@ export default class Game extends Scene {
 
         this.hud = images.hud;
         this.powerup = images.powerup;
+        
+        this.powerups = [
+            images.puGorgonHead,
+            images.puHammer,
+            images.puLightning,
+            images.puSpinAttack
+        ];
+        
+        this.powerupIndex = 0;
+        this.unlockedPowerups = 4;
+        
+        this.powerupSize = scaled(images.powerup, GAME_SCALE);
         this.hudSize = scaled(images.hud, GAME_SCALE);
         this.powerupSize = scaled(images.powerup, GAME_SCALE);
         this.gameOverSize = scaled(images.gameOver, GAME_SCALE);
@@ -315,6 +359,19 @@ export default class Game extends Scene {
         }
 
         const pad = Gamepad.player(0);
+        
+        
+        
+        if (pad.justPressed(Gamepad.R2) && this.unlockedPowerups > 0) {
+            this.powerupIndex++;
+        
+            if (this.powerupIndex >= this.unlockedPowerups) {
+                this.powerupIndex = 0;
+            }
+        }
+        
+        
+        
 
         if (this.notice && (this.notice.time -= dt) <= 0) this.notice = null;
 
@@ -399,6 +456,25 @@ export default class Game extends Scene {
         };
     }
 
+    _playLevelMusic() {
+        const name = LEVEL_MUSIC[this.levelIndex];
+
+        if (!name) {
+            this.music?.stop();
+            this.music = null;
+            return;
+        }
+
+        const music = this.assets.music[name];
+
+        if (this.music === music) return;
+        
+        this.music?.stop();
+        this.music = music;
+        music.play();
+        
+    }
+
     // Pause and game over menus: UP/DOWN pick a row, CROSS confirms (START
     // also resumes from the pause).
     _menuOptions() {
@@ -442,6 +518,7 @@ export default class Game extends Scene {
         this.levelIndex = index;
         if (progress) this.playTime = progress.playTime;
         this.player.revive();
+        if(!this.music.playing()) this.music.play();
         this._build(map, progress);
     }
 
@@ -484,6 +561,9 @@ export default class Game extends Scene {
 
     exit() {
         this._unload();
+        this.music?.stop();
+        this.music = null;
+        
         Camera2D.main.makeCurrent();
     }
 
@@ -509,6 +589,8 @@ export default class Game extends Scene {
             .follow(this.player.pos, { lerp: CAMERA_LERP });
 
         this.state = STATE.PLAYING;
+        
+        this._playLevelMusic();
         std.gc();
     }
 
@@ -534,6 +616,7 @@ export default class Game extends Scene {
 
     _openChest(chest) {
         chest.opened = true;
+        this.player.health = 5;
         chest.sprite.frame = 1;
         this.assets.sfx.chests.play();
         this.camera.flash(chest.flash, FLASH_TIME);
@@ -600,10 +683,10 @@ export default class Game extends Scene {
         }
         if (this.state === STATE.GAME_OVER) {
             const { width, height } = this.gameOverSize;
-
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLACK);
             this.assets.images.gameOver.draw((SCREEN_WIDTH - width) / 2, (SCREEN_HEIGHT - height) / 2, this.gameOverSize);
             this._menuOptions().forEach((key, i) => line(300 + i * 30, t(key), i === this.menuSelected ? RED : WHITE));
+            this.music.stop();
         }
         if (this.state === STATE.PAUSED) {
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PAUSE_DIM);
@@ -615,12 +698,32 @@ export default class Game extends Scene {
 
     _drawHud() {
         const x = 16 * GAME_SCALE;
+        const healthWidth = this.player.health * 20;
+        const magicWidth = this.player.magic * 20;
 
         this.hud.draw(x, 0, this.hudSize);
-        this.powerup.draw(
-            x + 14 * GAME_SCALE,
-            this.hudSize.height / 2 + this.powerupSize.height / 4,
-            this.powerupSize
-        );
+        
+        const powerup = this.powerups[this.powerupIndex];
+
+        if (powerup) {
+            powerup.draw(
+                x + 14 * GAME_SCALE,
+                this.hudSize.height / 2 + this.powerupSize.height / 4,
+                this.powerupSize
+            );
+        }
+        
+        Draw.rect(x + 92, 36, healthWidth + 4, 8, BLACK);
+        Draw.rect(x + 92, 46, magicWidth + 4, 8, BLACK);
+
+        if (healthWidth > 0) {
+            let healthColor = HEALTHCOLORS[this.player.health-1];
+            Draw.rect(x + 94, 38, healthWidth, 4, healthColor);
+        }
+
+        if(magicWidth > 0) {
+            Draw.rect(x + 94, 48, magicWidth, 4, BLUE);
+        }
+
     }
 }

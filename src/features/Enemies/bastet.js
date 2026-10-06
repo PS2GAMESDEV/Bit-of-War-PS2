@@ -20,7 +20,7 @@ const TORNADO_LIFETIME = 8;
 // Both map placements belong to one boss, so a swing damages their shared
 // health only once. A hit interrupts the fire with Bastet's counterattack.
 export class Bastet {
-    static health = 10;
+    static health = 5;
 
     constructor(world, sheets, markers) {
         this.world = world;
@@ -233,6 +233,11 @@ export class Bastet {
 
     // The two character sprites are already drawn with their map layers.
     draw() {
+        Draw.rect(392, 36, 104, 8, Color.new(0, 0, 0));
+        
+        if(this.health > 0) {
+            Draw.rect(394, 38, this.health * 20, 4, Color.new(255, 0, 0));
+        }
         if (this.state === "sphinxAttack") this.fire.draw();
         else if (this.state === "bastetAttack") this.bastAttack.draw();
         for (const tornado of this.tornadoes) tornado.sprite.draw();

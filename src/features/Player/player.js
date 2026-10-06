@@ -54,6 +54,7 @@ export class Player {
         this.climbDir = 0;
         this.jumps = MOVE.JUMPS;
         this.health = HURT.HEALTH;
+        this.magic = HURT.MAGIC;
         this.dead = false;          // plays ANIM.DIE and ignores the pad
         this.deathDone = false;     // the death animation has finished
         this.stun = 0;              // seconds left without control after a hit
@@ -110,6 +111,7 @@ export class Player {
     // Back to full health after a game over (attach() puts him in the level).
     revive() {
         this.health = HURT.HEALTH;
+        this.magic = HURT.MAGIC;
         this.dead = false;
         this.deathDone = false;
         this.invulnerable = 0;
@@ -127,7 +129,7 @@ export class Player {
             x: this.facingLeft ? x - HALF - BLADE_WIDTH + PIXEL : x + HALF - PIXEL,
             y: y + HALF - PIXEL,
             w: BLADE_WIDTH,
-            h: SIZE
+            h: SIZE /2
         };
     }
 
@@ -394,6 +396,7 @@ export class Player {
         const hitbox = this.hitbox;
 
         if (hitbox) {
+            //Draw.rect(hitbox.x, hitbox.y, BLADE_WIDTH, 16, Color.new(255, 0, 0, 96))
             this.blade.flipX = !this.facingLeft;
             this.blade.draw(hitbox.x, hitbox.y);
         }

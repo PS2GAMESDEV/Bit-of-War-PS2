@@ -57,16 +57,17 @@ const PLAYER_MOVEMENT = Object.freeze({
 // translucent and immune for INVULNERABLE seconds.
 const PLAYER_HURT = Object.freeze({
     HEALTH: 5,
+    MAGIC: 1,
     KNOCK_X: 200,
     KNOCK_Y: 360,
     STUN: 0.3,
-    INVULNERABLE: 1.2
+    INVULNERABLE: 1.3
 });
 
 // Units per second.
 const UNDEAD_SPEED = 60;
 const MINOTAUR_WALK_SPEED = 60;
-const MINOTAUR_RUN_SPEED = 150;
+const MINOTAUR_RUN_SPEED = 120;
 
 // Damage of one blade swing to each enemy it touches.
 const BLADE_DAMAGE = 1;

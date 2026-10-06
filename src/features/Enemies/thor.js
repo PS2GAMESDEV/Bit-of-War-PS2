@@ -29,7 +29,7 @@ const DIZZY_OFFSET_Y = 2 * GAME_SCALE;
 export class Thor {
     static clip = "idle";
     static selfDrawn = true;
-    static health = 10;
+    static health = 5;
     static reward = "gotMjolnir";
 
     constructor(sprite, world, x, y, sheets, markers) {
@@ -278,6 +278,13 @@ export class Thor {
     }
 
     draw() {
+        
+        Draw.rect(392, 36, 104, 8, Color.new(0, 0, 0));
+        
+        if(this.health > 0) {
+            Draw.rect(394, 38, this.health * 20, 4, Color.new(255, 0, 0));
+        }
+        
         this.sprite.draw();
         if (this.dying && !this.dead) {
             this.dizzyStars.draw(this.sprite.x + HALF, this.sprite.y - DIZZY_OFFSET_Y);

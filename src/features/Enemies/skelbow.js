@@ -17,7 +17,7 @@ const TURN_DEADZONE = 2;          // does not turn for a player right above or b
  */
 export class Skelbow {
     static clip = "idle";
-    static health = 3;
+    static health = 1;
     static cooldown = COOLDOWN;
     static arrowSpeed = ARROW_SPEED;
     static arrowSheetName = "arrow";
