@@ -293,7 +293,7 @@ export class Level {
             }
 
             // The chest rect doubles as a Collision shape for Collision.overlaps().
-            if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, flash, opened: false });
+            if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, type: sheetName === "lifeChest" ? "life" : "magic", flash, opened: false });
         }
     }
 

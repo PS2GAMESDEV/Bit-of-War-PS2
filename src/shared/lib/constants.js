@@ -47,7 +47,7 @@ const PLAYER_MOVEMENT = Object.freeze({
     GRAVITY: 2160,
     MAX_FALL_SPEED: 720,
     SPEED: 180,
-    CLIMB_SPEED: 171,
+    CLIMB_SPEED: 170,
     JUMP_SPEED: 655,   // jumps 99 units: 83 (the old 600) plus half a block (16 units)
     JUMPS: 1
 });
@@ -57,7 +57,7 @@ const PLAYER_MOVEMENT = Object.freeze({
 // translucent and immune for INVULNERABLE seconds.
 const PLAYER_HURT = Object.freeze({
     HEALTH: 5,
-    MAGIC: 1,
+    MAGIC: 5,
     KNOCK_X: 200,
     KNOCK_Y: 360,
     STUN: 0.3,

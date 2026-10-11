@@ -1,7 +1,7 @@
 const PLAYER_CONTROLS = Object.freeze({
     JUMP: Gamepad.CROSS,
     ATK: Gamepad.SQUARE,
-    BLOCK: Gamepad.R1,
+    BLOCK: Gamepad.L1,
     INTERACT: Gamepad.CIRCLE
 });
 

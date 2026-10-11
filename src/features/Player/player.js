@@ -260,16 +260,15 @@ export class Player {
         if (pad.pressed(Gamepad.RIGHT)) this.facingLeft = false;
         else if (pad.pressed(Gamepad.LEFT)) this.facingLeft = true;
 
-        body.vx = defending ? 0
+        body.vx = (defending || this.attacking && body.onGround) ? 0
             : pad.pressed(Gamepad.RIGHT) ? MOVE.SPEED
             : pad.pressed(Gamepad.LEFT) ? -MOVE.SPEED : 0;
 
-        if (pad.justPressed(KEY.JUMP) && !defending) this._jump(body);
+        if (pad.justPressed(KEY.JUMP) && !defending && body.onGround) this._jump(body);
     }
 
     _jump(body) {
         if (this.jumps === 0) return;
-
         this.sfxJump.play();
         body.vy = -MOVE.JUMP_SPEED;
         this.jumps--;

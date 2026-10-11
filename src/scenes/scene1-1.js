@@ -6,10 +6,13 @@ const CHUNK = 6;
 const FRAME_TIME = 30;
 const FRAME_RATE = 60;
 const FAST_FRAME_RATE = 360;
-const SCROLL_SPEED = 30;
-const FAST_SCROLL_SPEED = 120;
+//const SCROLL_SPEED = 30;
+//const FAST_SCROLL_SPEED = 120;
 const SCROLL_END = -672;
 const END_WAIT = 9;
+
+const SCROLL_SPEED = 30;
+const FAST_SCROLL_SPEED = 150;
 
 export class Scene01 extends Scene {
     static root = "assets";

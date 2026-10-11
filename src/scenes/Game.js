@@ -61,8 +61,10 @@ const BLUE = Color.new(0, 0, 255, 255);
 const NOTICE_TIME = 2;
 const BOSS_REWARD_TIME = 3;
 const FLASH_TIME = 0.1;
-const CAMERA_LERP = 6;
+const CAMERA_LERP = 8 //6;
 const INSET = 4;
+
+const font = new Font();
 
 const grid = { frameWidth: 16, frameHeight: 16 };
 
@@ -297,15 +299,14 @@ export default class Game extends Scene {
         this.hud = images.hud;
         this.powerup = images.powerup;
         
+        this.powerupIndex = 0;
+        this.unlockedPowerups = 1;
         this.powerups = [
             images.puGorgonHead,
-            images.puHammer,
             images.puLightning,
+            images.puHammer,
             images.puSpinAttack
         ];
-        
-        this.powerupIndex = 0;
-        this.unlockedPowerups = 4;
         
         this.powerupSize = scaled(images.powerup, GAME_SCALE);
         this.hudSize = scaled(images.hud, GAME_SCALE);
@@ -358,20 +359,15 @@ export default class Game extends Scene {
             return;
         }
 
-        const pad = Gamepad.player(0);
+        const pad = Gamepad.player(0);    
         
-        
-        
-        if (pad.justPressed(Gamepad.R2) && this.unlockedPowerups > 0) {
+        if (pad.justPressed(Gamepad.TRIANGLE) && this.unlockedPowerups > 0) {
             this.powerupIndex++;
         
             if (this.powerupIndex >= this.unlockedPowerups) {
                 this.powerupIndex = 0;
             }
         }
-        
-        
-        
 
         if (this.notice && (this.notice.time -= dt) <= 0) this.notice = null;
 
@@ -399,7 +395,7 @@ export default class Game extends Scene {
             }
         }
 
-        if (pad.justPressed(Gamepad.L1)) this.debug = !this.debug;
+        if (pad.justPressed(Gamepad.SELECT)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
 
         const boss = this.level.bastet;
@@ -471,8 +467,8 @@ export default class Game extends Scene {
         
         this.music?.stop();
         this.music = music;
-        music.play();
         
+        music.play();
     }
 
     // Pause and game over menus: UP/DOWN pick a row, CROSS confirms (START
@@ -586,7 +582,7 @@ export default class Game extends Scene {
 
         this.camera
             .setBounds(0, 0, this.level.width, this.level.height)
-            .follow(this.player.pos, { lerp: CAMERA_LERP });
+            .follow(this.player.pos, { lerp: CAMERA_LERP, deadzone: { w: 0, h: 96 } });
 
         this.state = STATE.PLAYING;
         
@@ -616,7 +612,10 @@ export default class Game extends Scene {
 
     _openChest(chest) {
         chest.opened = true;
-        this.player.health = 5;
+
+        if(chest.type === "life") this.player.health = 5;
+        else this.player.magic = 5;
+
         chest.sprite.frame = 1;
         this.assets.sfx.chests.play();
         this.camera.flash(chest.flash, FLASH_TIME);
@@ -720,10 +719,8 @@ export default class Game extends Scene {
             let healthColor = HEALTHCOLORS[this.player.health-1];
             Draw.rect(x + 94, 38, healthWidth, 4, healthColor);
         }
-
-        if(magicWidth > 0) {
-            Draw.rect(x + 94, 48, magicWidth, 4, BLUE);
-        }
-
+        
+        if(magicWidth > 0) Draw.rect(x + 94, 48, magicWidth, 4, BLUE);
+        
     }
 }
