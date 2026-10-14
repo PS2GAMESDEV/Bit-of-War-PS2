@@ -1392,6 +1392,30 @@
         "y": 0.5
       }
     },
+    "tileLadderTop.png": {
+      "frame": {
+        "x": 160,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 16,
+        "h": 16
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "tileLadderGrey.png": {
       "frame": {
         "x": 176,
@@ -2208,8 +2232,6 @@
         "y": 0.5
       }
     },
-    
-    
     "tileBlue.png": {
       "frame": {
         "x": 240,
@@ -2234,13 +2256,6 @@
         "y": 0.5
       }
     }
-    
-    
-    
-    
-    
-    
-    
   },
   "meta": {
     "app": "http://free-tex-packer.com",

@@ -6,7 +6,7 @@ const FRAME_TIME = 12 / 60;
 const ARROW_BLINK = 20 / 60;
 
 const frameImages = {};
-for (let i = 0; i < FRAME_COUNT; i++) frameImages[`f${i}`] = `images/cutscenes/1-2/en/${i}.png`;
+for (let i = 0; i < FRAME_COUNT; i++) frameImages[`f${i}`] = `images/cutscenes/1-2/EN/${i}.png`;
 
 // Frames 4-7 wait for CROSS; the others advance by themselves.
 const waitsForInput = frame => frame >= 4 && frame <= 7;

@@ -19,8 +19,8 @@ export class Scene01 extends Scene {
 
     static assets = {
         images: {
-            scroll: "images/cutscenes/texts/en/text1-1.png",
-            end: "images/cutscenes/1-1/en/text-end.png",
+            scroll: "images/cutscenes/texts/EN/text1-1.png",
+            end: "images/cutscenes/1-1/EN/text-end.png",
             mask: "images/cutscenes/bg.png"
         },
         music: { level1: "sounds/music/level1.ogg" }

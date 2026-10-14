@@ -3914,7 +3914,8 @@
         "x": 1056,
         "y": 32,
         "locked": false,
-        "layer": 1
+        "layer": 1,
+        "creationCode": null
       }
     ],
     "grockbl": [
@@ -4842,13 +4843,15 @@
         "x": 1056,
         "y": 48,
         "locked": false,
-        "layer": 1
+        "layer": 1,
+        "creationCode": null
       },
       {
         "x": 64,
         "y": 112,
         "locked": false,
-        "layer": 1
+        "layer": 1,
+        "creationCode": null
       }
     ]
   },
@@ -5325,6 +5328,20 @@
     {
       "x": 976,
       "y": 48,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 448,
+      "y": 368,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 496,
+      "y": 352,
       "width": 16,
       "height": 16,
       "type": "ground"
