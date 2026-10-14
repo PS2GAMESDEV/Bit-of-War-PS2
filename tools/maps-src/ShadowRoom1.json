@@ -1,0 +1,454 @@
+{
+  "backgroundColor": "#808080",
+  "tiles": {
+    "tileGrey": [
+      {
+        "x": 32,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 304,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 320,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 384,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 32,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 48,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 64,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 80,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 96,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 112,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 128,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 144,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 160,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 176,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 192,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 208,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 224,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 240,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 224,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 240,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 304,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 320,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 384,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 192,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 160,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 128,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 96,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 64,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 256,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 240,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 224,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 208,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 256,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 240,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 224,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 208,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      }
+    ],
+    "skZeusPopIn": [
+      {
+        "x": 240,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      }
+    ],
+    "spriteKratos": [
+      {
+        "x": 57,
+        "y": 384,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      }
+    ]
+  },
+  "colliders": [
+    {
+      "x": 0,
+      "y": 208,
+      "width": 16,
+      "height": 192,
+      "type": "ground"
+    },
+    {
+      "x": 16,
+      "y": 288,
+      "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 64,
+      "y": 336,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 96,
+      "y": 352,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 128,
+      "y": 368,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 160,
+      "y": 352,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 192,
+      "y": 336,
+      "width": 16,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 224,
+      "y": 288,
+      "width": 32,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 256,
+      "y": 208,
+      "width": 16,
+      "height": 192,
+      "type": "ground"
+    },
+    {
+      "x": 0,
+      "y": 400,
+      "width": 272,
+      "height": 16,
+      "type": "ground"
+    }
+  ],
+  "markers": [
+    {
+      "name": "shadowKratosPoint",
+      "x": 240,
+      "y": 272
+    }
+  ]
+}
