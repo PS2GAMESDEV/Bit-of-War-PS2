@@ -99,7 +99,7 @@ export default class Game extends Scene {
             gaia: "sounds/music/level1.ogg",
             level1: "sounds/music/musicLevel1_old.ogg",
             level2: "sounds/music/musicLevel2.ogg",
-            level3: "sounds/music/musicLevel3.ogg",
+            level3: "sounds/music/musicLevel3.wav",
             boss: "sounds/music/musicBoss.ogg"
         },
 
