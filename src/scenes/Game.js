@@ -21,7 +21,7 @@ export const LEVELS = Object.freeze([
     "Boss2.json", "Desert1.json", "DesertInterior1.json",
     "Desert2.json", "Desert3.json", "BossHall3.json",
     "FusionExternal1.json", "FusionGuantlet1.json", "FusionExternal2.json", "FusionGuantlet2.json",
-    "FusionExternal3.json", "FusionGuantlet3.json"
+    "FusionExternal3.json", "FusionGuantlet3.json", "EmptyRoom.json", "ChestRoom.json"
 ]);
 
 // Level index -> cutscene shown before that level.

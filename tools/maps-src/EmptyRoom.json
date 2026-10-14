@@ -1,0 +1,1317 @@
+{
+  "backgroundColor": "#808080",
+  "tiles": {
+    "bgGreyCloud": [
+      {
+        "x": 96,
+        "y": 288,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 272,
+        "y": 256,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 496,
+        "y": 320,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 144,
+        "y": 192,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 512,
+        "y": 208,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 688,
+        "y": 256,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 896,
+        "y": 224,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 976,
+        "y": 304,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 688,
+        "y": 112,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 336,
+        "y": 144,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      },
+      {
+        "x": 96,
+        "y": 80,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      }
+    ],
+    "door": [
+      {
+        "x": 16,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 384,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 384,
+        "locked": false,
+        "layer": 0
+      }
+    ],
+    "tileGrey": [
+      {
+        "x": 640,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 656,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 672,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 688,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 704,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 720,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 736,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 752,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 768,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 784,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 800,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 816,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 832,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 848,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 864,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 880,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 896,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 912,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 928,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 944,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 960,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 976,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 992,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1008,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1024,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1040,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 32,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 48,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 64,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 80,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 96,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 112,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 128,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 144,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 160,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 176,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 192,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 208,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 224,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 240,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 256,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 272,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 288,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 304,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 320,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 336,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 352,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 368,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 384,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 400,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 416,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 432,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 448,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 464,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 480,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 496,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 512,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 528,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 544,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 560,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 576,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 592,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 608,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 624,
+        "y": 400,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 384,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 320,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 240,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 224,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 208,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 192,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 176,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 160,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 144,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 128,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 112,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 96,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 80,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 64,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 48,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 32,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 16,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 0,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 16,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 32,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 48,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 64,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 80,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 96,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 112,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 128,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 144,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 160,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 176,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 192,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 208,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 224,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 240,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 256,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 256,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 16,
+        "y": 304,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 304,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 320,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 0,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 384,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 368,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 352,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 336,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 320,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 304,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 256,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 240,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 224,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 208,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 192,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 176,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 160,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 144,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 128,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 112,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 96,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 80,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 64,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 48,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 32,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 16,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1072,
+        "y": 0,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 0,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 16,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 32,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 48,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 64,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 80,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 96,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 112,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 128,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 144,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 160,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 176,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 192,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 208,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 224,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 240,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 256,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 272,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 288,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 304,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      },
+      {
+        "x": 1056,
+        "y": 320,
+        "locked": false,
+        "layer": 0,
+        "creationCode": null
+      }
+    ],
+    "spriteKratos": [
+      {
+        "x": 32,
+        "y": 384,
+        "locked": false,
+        "layer": 1,
+        "creationCode": null
+      }
+    ]
+  },
+  "colliders": [
+    {
+      "x": 0,
+      "y": 400,
+      "width": 1088,
+      "height": 16,
+      "type": "ground"
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 368,
+      "type": "ground"
+    },
+    {
+      "x": 0,
+      "y": 368,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 1056,
+      "y": 0,
+      "width": 32,
+      "height": 368,
+      "type": "ground"
+    },
+    {
+      "x": 1072,
+      "y": 368,
+      "width": 16,
+      "height": 32,
+      "type": "ground"
+    },
+    {
+      "x": 1056,
+      "y": 368,
+      "width": 16,
+      "height": 32,
+      "type": "door"
+    }
+  ],
+  "markers": []
+}
