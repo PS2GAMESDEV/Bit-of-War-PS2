@@ -151,224 +151,148 @@ test("marker gates the fight, including arriving past it, and is consumed only o
     assert.equal(f.boss.shouldStart(f.target), false);
 });
 
-test("fire alternates each quarter second; both parts advance a quarter tile per second with slower movement animation", () => {
+const STEP = 1 / 20;
+function runUntil(f, predicate, limit = 20) {
+    for (let t = 0; t < limit && !predicate(); t += STEP) advance(f, STEP);
+    assert.ok(predicate(), "condition reached");
+}
+const blade = f => f.level.strike(f.boss.body, f.target.centerX, new Set());
+
+test("fire phase alternates frames each quarter second, advances at the original speed, then idles three seconds", () => {
     const f = fixture();
     const x = f.boss.body.x;
     const offset = { ...f.boss.riderOffset };
     f.boss.start();
     assert.equal(f.boss.parts.sphinx.clip, "attack");
     assert.equal(f.boss.parts.bastet.clip, "walk");
-    assert.equal(f.boss.fire.x + 64 * GAME_SCALE, f.boss.body.x + 16 * GAME_SCALE);
+    assert.equal(f.boss.fire.x + 48 * GAME_SCALE, f.boss.body.x);
     assert.equal(f.boss.fire.y + 96 * GAME_SCALE, f.boss.body.bottom);
+    assert.deepEqual(f.boss.hurtboxes, [], "invulnerable while breathing fire");
     advance(f, 0.249);
     assert.equal(f.boss.fire.frame, 0);
     advance(f, 0.001);
     assert.equal(f.boss.fire.frame, 1);
-    assert.equal(f.boss.parts.bastet.frame, 10);
-    assert.equal(f.boss.parts.sphinx.frame, 4);
-    advance(f, 0.25);
-    assert.equal(f.boss.fire.frame, 0);
-    assert.equal(f.boss.parts.bastet.frame, 11);
-    assert.equal(f.boss.parts.sphinx.frame, 5);
-    advance(f, 4.5);
+    advance(f, 4.75);
     assert.equal(f.boss.state, "idle");
-    assert.ok(Math.abs(f.boss.body.x - (x - 20 * GAME_SCALE)) < 1e-9);
+    assert.ok(Math.abs(x - f.boss.body.x - 50 * GAME_SCALE) < 1e-9, "10 px/s for 5 s");
     assert.equal(f.boss.parts.bastet.x - f.boss.parts.sphinx.x, offset.x);
     assert.equal(f.boss.parts.bastet.y - f.boss.parts.sphinx.y, offset.y);
     assert.equal(f.boss.parts.bastet.clip, "idle");
-    assert.equal(f.boss.parts.sphinx.clip, "idle");
+    assert.equal(f.boss.hurtboxes.length, 2, "both parts are vulnerable while idle");
     advance(f, 2.999);
     assert.equal(f.boss.state, "idle");
     advance(f, 0.001);
     assert.equal(f.boss.state, "sphinxAttack");
-    const large = fixture();
-    large.boss.start();
-    advance(large, 8.25);
-    assert.equal(large.boss.state, "sphinxAttack");
-    assert.equal(large.boss.timer, 4.75);
+    assert.equal(f.boss.timer, 5);
 });
 
-test("a swing damages shared health once; hit flashes rapidly and the three-second reaction returns directly to fire", () => {
+test("damage per weapon follows the original collision events", () => {
     const f = fixture();
     f.boss.start();
-    advance(f, 0.25);
-    const box = { x: f.boss.body.x, y: f.boss.parts.bastet.y, w: 256, h: 278 };
-    const swing = new Set();
-    f.level.strike(box, f.target.centerX, swing);
-    assert.equal(f.boss.health, Bastet.health - 1);
+    assert.equal(f.boss.damageFor("blade"), 0, "no damage while breathing fire");
+    advance(f, 5);
+    assert.equal(f.boss.state, "idle");
+    assert.equal(f.boss.damageFor("blade"), 17 / 20);
+    assert.equal(f.boss.damageFor("lightning"), 5 / 20);
+    assert.equal(f.boss.damageFor("hammer", { y: 400 * GAME_SCALE }), 10 / 20);
+    assert.equal(f.boss.damageFor("hammer", { y: 300 * GAME_SCALE }), 40 / 20);
+    assert.equal(f.boss.damageFor("spin"), 0);
+});
+
+test("a hit in idle recoils the mount and sends one tornado from the view's right edge until it leaves the left edge", () => {
+    const f = fixture();
+    f.boss.start();
+    advance(f, 5);
+    const x = f.boss.body.x;
+    blade(f);
+    assert.ok(Math.abs(f.boss.health - (Bastet.health - 17 / 20)) < 1e-9);
     assert.equal(f.boss.state, "bastetAttack");
+    assert.equal(f.boss.body.x, x + 20 * GAME_SCALE);
     assert.equal(f.boss.parts.sphinx.clip, "hit");
     assert.equal(f.boss.parts.bastet.clip, "attack");
     assert.equal(f.boss.tornadoes.length, 1);
-    f.level.strike(box, f.target.centerX, swing);
-    f.level.strike(box, f.target.centerX, new Set());
-    assert.equal(f.boss.health, Bastet.health - 1);
-    assert.equal(f.boss.tornadoes.length, 1);
-    const x = f.boss.body.x;
-    advance(f, 1 / 48);
-    assert.equal(f.boss.parts.sphinx.frame, 2);
-    advance(f, 1 / 48);
-    assert.equal(f.boss.parts.sphinx.frame, 1);
-    advance(f, 0.25 - 2 / 48);
-    assert.equal(f.boss.bastAttack.frame, 1);
-    advance(f, 0.25);
-    assert.equal(f.boss.bastAttack.frame, 0);
-    advance(f, 2.499);
-    assert.equal(f.boss.state, "bastetAttack");
-    assert.equal(f.boss.parts.sphinx.clip, "hit");
-    advance(f, 0.001);
-    assert.equal(f.boss.state, "sphinxAttack");
-    assert.ok(Math.abs(f.boss.timer - 5) < 1e-9);
-    assert.equal(f.boss.parts.sphinx.clip, "attack");
-    assert.equal(f.boss.parts.bastet.clip, "walk");
-    assert.equal(f.boss.fire.frame, 0);
-    assert.equal(f.boss.body.x, x);
-    assert.equal(f.boss.tornadoes.length, 1);
-    const rider = f.boss.parts.bastet;
-    f.level.strike({ x: rider.x, y: rider.y, w: 32, h: 10 }, f.target.centerX, new Set());
-    assert.equal(f.boss.health, Bastet.health - 2);
-    assert.equal(f.boss.tornadoes.length, 2); // One new tornado, not one per animation frame.
+    assert.equal(f.boss.tornadoes[0].body.x, view.x + view.w);
+    blade(f);
+    assert.equal(f.boss.tornadoes.length, 1, "invulnerable during the counterattack");
+    advance(f, 0.1);
+    assert.ok(f.boss.tornadoes[0].body.x < view.x + view.w);
+    runUntil(f, () => f.boss.state === "sphinxAttack");
+    assert.equal(f.boss.tornadoes.length, 0);
+    assert.equal(f.boss.timer, 5);
+    assert.ok(f.boss.health > Bastet.health - 1);
 });
 
-test("a hit during idle skips the remaining pause; crossing the counterattack endpoint immediately advances with fire", () => {
+test("tornado and fire hurt the player with the original contact damage and persist on contact", () => {
     const f = fixture();
     f.boss.start();
-    advance(f, 5.5);
-    assert.equal(f.boss.state, "idle");
-    f.level.strike(f.boss.body, f.target.centerX, new Set());
-    assert.equal(f.boss.state, "bastetAttack");
-    const x = f.boss.body.x;
-    advance(f, 3.25);
-    assert.equal(f.boss.state, "sphinxAttack");
-    assert.equal(f.boss.timer, 4.75);
-    assert.equal(f.boss.body.x, x - GAME_SCALE);
-    assert.equal(f.boss.fire.frame, 1);
-    assert.equal(f.boss.tornadoes.length, 1);
-});
-
-test("ten hits using the player's blade reach remain safely beyond the kill zone, even after ten full fire phases", () => {
-    const f = fixture();
-    const startX = f.boss.body.x;
-    const player = Object.create(Player.prototype);
-    player.attacking = true;
-    player.facingLeft = false;
-    const kill = map.colliders.kill;
-    let killRight = 0;
-    for (let i = 0; i < kill.length; i += 4) {
-        killRight = Math.max(killRight, (kill[i] + kill[i + 2]) * GAME_SCALE);
-    }
-    f.boss.start();
-    for (let hit = 1; hit <= 10; hit++) {
-        // One hit only after the full five-second fire phase, rather than
-        // depending on the player hitting immediately whenever fire resumes.
-        advance(f, 5);
-        f.target.x = f.boss.body.x - 58 * GAME_SCALE;
-        f.target.y = f.boss.body.bottom - 12 * GAME_SCALE;
-        f.target.w = f.target.h = 12 * GAME_SCALE;
-        player.pos = { x: f.target.centerX, y: f.boss.body.bottom - 16 * GAME_SCALE };
-        assert.ok(f.target.x > killRight, `player stance is clear of kill on hit ${hit}`);
-        f.level.strike(player.hitbox, player.pos.x, new Set());
-        assert.equal(f.boss.health, 10 - hit);
-        if (hit < 10) {
-            advance(f, 3);
-            assert.equal(f.boss.state, "sphinxAttack");
-        }
-    }
-    assert.equal(f.boss.state, "defeated");
-    assert.equal(startX - f.boss.body.x, 200 * GAME_SCALE);
-    assert.ok(f.target.x - killRight >= 62 * GAME_SCALE);
-});
-
-test("tornadoes start at Sphinx's rear base, aim from that point, and are spent on contact", () => {
-    for (const [offset, dir] of [[-400, -1], [400, 1], [32, -1]]) {
-        const f = fixture();
-        f.boss.start();
-        f.target.x = f.boss.body.centerX + offset;
-        advance(f, 0);
-        f.boss.hurt(f.target.centerX);
-        const tornado = f.boss.tornadoes[0];
-        assert.equal(Math.sign(tornado.body.vx), dir);
-        assert.equal(tornado.body.right, f.boss.body.right);
-        assert.equal(tornado.body.bottom, f.boss.body.bottom);
-        const x = tornado.body.x;
-        advance(f, 0.25);
-        assert.equal(tornado.body.x, x + dir * 32);
-        assert.equal(tornado.body.bottom, 400 * GAME_SCALE);
-        tornado.body.x = f.boss.body.x - 300;
-        const box = { x: tornado.body.x, y: tornado.body.y, w: 64, h: 64 };
-        assert.notEqual(f.level.hitPlayer(box, true), null);
-        assert.equal(tornado.body.valid, false);
-        assert.equal(f.boss.tornadoes.length, 0);
-        assert.equal(f.level.hitPlayer(box), null);
-    }
-});
-
-test("tornado damage uses a centered 16x16 hitbox and excludes the sprite's outer margins", () => {
-    const f = fixture();
-    f.boss.start();
-    f.boss.hurt(f.target.centerX);
+    const fire = { x: f.boss.fire.x + 4, y: f.boss.body.bottom - 16, w: 8, h: 8 };
+    assert.notEqual(f.level.hitPlayer(fire), null);
+    assert.notEqual(f.level.hitPlayer(fire, true), null, "fire cannot be blocked");
+    advance(f, 5);
+    blade(f);
     const tornado = f.boss.tornadoes[0];
     tornado.body.x = f.boss.body.x - 300;
     f.boss.sync();
-    assert.equal(tornado.sprite.scale, GAME_SCALE);
-    assert.equal(tornado.sprite.sheet.frameWidth, 32);
     const { x, y, right, bottom } = tornado.body;
     for (const box of [
-        { x, y: y + 20, w: 8, h: 8 },
-        { x: right - 8, y: y + 20, w: 8, h: 8 },
-        { x: x + 20, y, w: 8, h: 8 },
-        { x: x + 20, y: bottom - 8, w: 8, h: 8 }
-    ]) {
-        assert.equal(f.level.hitPlayer(box), null);
-        assert.equal(tornado.body.valid, true);
-    }
-    assert.notEqual(f.level.hitPlayer({
-        x: x + 8 * GAME_SCALE, y: y + 8 * GAME_SCALE,
-        w: 16 * GAME_SCALE, h: 16 * GAME_SCALE
-    }), null);
-    assert.equal(tornado.body.valid, false);
+        { x, y: y + 20, w: 8, h: 8 }, { x: right - 8, y: y + 20, w: 8, h: 8 },
+        { x: x + 20, y, w: 8, h: 8 }, { x: x + 20, y: bottom - 8, w: 8, h: 8 }
+    ]) assert.equal(f.level.hitPlayer(box), null, "outer sprite margins are harmless");
+    const center = { x: x + 8 * GAME_SCALE, y: y + 8 * GAME_SCALE, w: 16 * GAME_SCALE, h: 16 * GAME_SCALE };
+    assert.notEqual(f.level.hitPlayer(center), null);
+    assert.equal(tornado.body.valid, true);
+    assert.notEqual(f.level.hitPlayer(center), null, "hits again while overlapping");
 });
 
-test("active effects deal continuous damage while expired or wall-blocked tornadoes are removed", () => {
+test("contact with the mount hurts for two", () => {
     const f = fixture();
     f.boss.start();
-    const box = { x: f.boss.fire.x + 4, y: f.boss.body.bottom - 16, w: 8, h: 8 };
-    assert.notEqual(f.level.hitPlayer(box), null);
-    assert.notEqual(f.level.hitPlayer(box, true), null);
-    f.boss.hurt(f.target.centerX);
-    box.x = f.boss.bastAttack.x + 4;
-    assert.notEqual(f.level.hitPlayer(box), null);
-    const tornado = f.boss.tornadoes[0];
-    tornado.body.onWall = -1;
-    advance(f, 0);
-    assert.equal(tornado.body.valid, false);
-    f.boss._spawnTornado(f.target.centerX);
-    const expiring = f.boss.tornadoes[0];
-    advance(f, 8);
-    assert.equal(expiring.body.valid, false);
-    assert.equal(f.boss.tornadoes.length, 0);
+    assert.notEqual(f.level.hitPlayer(f.boss.body), null);
+    assert.equal(f.level.lastHitDamage, Bastet.contactDamage);
 });
 
-test("zero health stops combat without starting death, removing the boss, or granting a reward", () => {
+test("emptying the life bar stuns the mount without removing it or granting a reward", () => {
     const f = fixture();
     f.boss.start();
-    f.boss.health = 1;
-    f.boss._spawnTornado(f.target.centerX);
-    const tornado = f.boss.tornadoes[0];
-    f.level.strike(f.boss.body, f.target.centerX, new Set());
+    advance(f, 5);
+    f.boss.health = 0.5;
+    blade(f);
     assert.equal(f.boss.health, 0);
     assert.equal(f.boss.state, "defeated");
-    assert.equal(f.boss.parts.bastet.clip, "idle");
-    assert.equal(f.boss.parts.sphinx.clip, "idle");
-    assert.equal(tornado.body.valid, false);
+    assert.equal(f.boss.dying, true);
+    assert.equal(f.boss.tornadoes.length, 0);
     const x = f.boss.body.x;
     advance(f, 20);
     assert.equal(f.boss.body.x, x);
     assert.ok(f.level.enemies.includes(f.boss));
     assert.equal(f.level.bossReward, null);
-    assert.equal(f.level.hitPlayer(f.boss.body), null);
-    assert.deepEqual(f.boss.hurtboxes, []);
+    assert.equal(f.boss.finisherBox, f.boss.body);
     assert.equal(fixture().boss.health, Bastet.health);
+});
+
+test("the Gorgon Head then a blade on the fallen rider finishes the fight and grants Blade Storm", () => {
+    const f = fixture();
+    f.boss.start();
+    f.boss.health = 0;
+    f.boss.die();
+    const body = f.boss.body;
+    // Blades alone do nothing to the stunned mount.
+    f.level.strike(body, f.target.centerX, new Set());
+    assert.equal(f.boss.state, "defeated");
+    f.level.strike(body, f.target.centerX, new Set(), "gorgon");
+    assert.equal(f.boss.state, "stoning");
+    advance(f, 13 / 8 + 0.01);
+    assert.equal(f.boss.state, "finishReady");
+    assert.equal(f.level.bossReward, null);
+    const spot = f.boss.finisherBox;
+    f.level.strike(spot, f.target.centerX, new Set(), "lightning");
+    assert.equal(f.boss.state, "finishReady", "only a blade finishes it");
+    f.level.strike(spot, f.target.centerX, new Set());
+    assert.equal(f.boss.state, "finishing");
+    advance(f, 33 / 8 + 0.01);
+    assert.equal(f.boss.dead, true);
+    assert.equal(f.level.enemies.includes(f.boss), false);
+    assert.equal(f.level.bossReward, "gotBladeStorm");
 });
 
 test("pause freezes boss animation and timers; drawing includes each part and only its active effect", () => {
@@ -397,6 +321,10 @@ test("other enemies still take one damage per swing and are removed normally", (
     f.level.strike(enemy.hurtbox, 0, swing);
     f.level.strike(enemy.hurtbox, 0, swing);
     assert.equal(enemy.health, 1);
+    assert.ok(enemy.hitCooldown > 0, "a quarter-second cooldown follows each hit");
+    f.level.strike(enemy.hurtbox, 0, new Set());
+    assert.equal(enemy.health, 1);
+    enemy.hitCooldown = 0;
     f.level.strike(enemy.hurtbox, 0, new Set());
     assert.equal(f.level.enemies.includes(enemy), false);
 });

@@ -1,12 +1,17 @@
-import { GAME_SCALE, LAYER } from "../../shared/lib/constants.js";
+import { GAME_SCALE, LAYER, ORIGINAL_HZ, pxPerStep } from "../../shared/lib/constants.js";
 
 const TILE = 16 * GAME_SCALE;
 
 // Which way the enSkelbow and arrow art look in their sheets (flipped otherwise).
 const FACES_RIGHT = true;
 
-const COOLDOWN = 2;               // seconds between shots
-const ARROW_SPEED = 240;          // units per second
+// enSkelbow: a 5 frame animation at image_speed .15 loops every 33.3 steps; the
+// arrow is created when it crosses frame 3 (20 steps in), only while on screen.
+// Turning to face Kratos creates a new object, which restarts that loop.
+const CYCLE = 5 / 0.15 / ORIGINAL_HZ;      // seconds per loop
+const FIRE_AT = 3 / 0.15 / ORIGINAL_HZ;    // seconds into the loop
+const COOLDOWN = CYCLE;
+const ARROW_SPEED = pxPerStep(5);   // 5 px per step
 const VIEW_MARGIN = 2 * TILE;     // an arrow this far outside the camera's view disappears
 const TURN_DEADZONE = 2;          // does not turn for a player right above or below it
 
@@ -32,11 +37,10 @@ export class Skelbow {
         this.x = x;
         this.y = y;
         this.dir = FACES_RIGHT ? 1 : -1;
-        this.cooldown = 0; // Start drawing the bow as soon as the enemy is visible.
+        this.cycle = 0;
         this.shooting = false;
         this.arrows = [];
 
-        this.sprite.on("end", () => this._release());
     }
 
     // Box the blade can hit.
@@ -65,33 +69,33 @@ export class Skelbow {
         const visible = this.x + TILE > view.x && this.x < view.x + view.w &&
             this.y + TILE > view.y && this.y < view.y + view.h;
 
-        if (Math.abs(dx) > TURN_DEADZONE) this.dir = dx > 0 ? 1 : -1;
+        if (Math.abs(dx) > TURN_DEADZONE && (dx > 0 ? 1 : -1) !== this.dir) {
+            this.dir = dx > 0 ? 1 : -1;
+            this.cycle = 0;                // a new object: the animation starts over
+        }
         this.sprite.flipX = (this.dir > 0) !== FACES_RIGHT;
 
-        if (this.cooldown > 0) this.cooldown -= dt;
-        if (!visible && this.shooting) {
-            this.shooting = false;
-            this.sprite.play("idle");
+        const prev = this.cycle;
+        this.cycle += dt;
+        let crossed = prev < FIRE_AT && this.cycle >= FIRE_AT;
+        if (this.cycle >= CYCLE) this.cycle -= CYCLE;
+        // The bow is drawn during the half second before the shot.
+        const drawing = this.cycle >= FIRE_AT - 0.5 && this.cycle < FIRE_AT + 0.1;
+        if (drawing !== this.shooting) {
+            this.shooting = drawing;
+            this.sprite.play(drawing ? "shoot" : "idle", { restart: true });
         }
-        if (visible && !this.shooting && this.cooldown <= 0) {
-            this.shooting = true;
-            this.sprite.play("shoot", { restart: true });
-        }
+        if (visible && crossed) this._release();
 
         this._moveArrows(dt, view);
     }
 
     // The bow is loosed when the draw animation ends.
     _release() {
-        if (!this.shooting) return;
-
-        this.shooting = false;
-        this.cooldown = this.constructor.cooldown;
-        this.sprite.play("idle");
 
         const { arrowWidth, arrowHeight } = this.constructor;
         const x = this.dir > 0 ? this.x + TILE : this.x - arrowWidth;
-        const y = this.y + TILE / 2 - arrowHeight / 2;
+        const y = this.y + TILE / 2 - arrowHeight / 2 - (this.constructor.arrowLift ?? 0);
         const sprite = new Sprite.Instance(this.arrowSheet, {
             clip: "fly", scale: GAME_SCALE, x, y, flipX: (this.dir > 0) !== FACES_RIGHT
         });

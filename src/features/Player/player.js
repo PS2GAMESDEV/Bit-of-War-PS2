@@ -1,7 +1,9 @@
 import {
-    GAME_SCALE, LAYER, PLAYER_ANIMATIONS as ANIM, PLAYER_HURT as HURT, PLAYER_MOVEMENT as MOVE
+    GAME_SCALE, LAYER, PLAYER_ANIMATIONS as ANIM, PLAYER_HURT as HURT, PLAYER_MOVEMENT as MOVE, stepsToSeconds
 } from "../../shared/lib/constants.js";
 import { PLAYER_CONTROLS as KEY } from "../../shared/config/controls.js";
+import { PlayerPowers } from "./powers.js";
+import { PathMotion } from "../Enemies/shadowKratos.js";
 
 const SIZE = 16 * GAME_SCALE;
 const HALF = SIZE / 2;
@@ -48,6 +50,8 @@ export class Player {
         this.canMove = true;
         this.defending = false;
         this.attacking = false;
+        this.attackGap = 0;
+        this.knock = null;
         this.struck = new Set();    // enemies already hit by the current swing
         this.openingChest = false;
         this.climbing = false;
@@ -59,34 +63,48 @@ export class Player {
         this.deathDone = false;     // the death animation has finished
         this.stun = 0;              // seconds left without control after a hit
         this.invulnerable = 0;      // seconds left immune (and translucent)
+        this.selectedPower = 0;
+        this.unlockedPowers = 1;
+        this.levelBounds = null;
+        this.deathTime = 0;
+        this.powers = new PlayerPowers(this, sheets, sfx);
     }
 
     get vulnerable() {
-        return this.invulnerable <= 0 && this.health > 0;
+        return this.invulnerable <= 0 && this.health > 0 && !this.powers?.spinning;
     }
 
     // Hit by something at `fromX` (its center): loses health and is thrown up
     // and away from it.
-    hurt(fromX) {
-        if (!this.vulnerable) return;
+    // `pierces`: the Sphinx and its fire hurt a spinning Kratos (every other source,
+    // checked in its collision event, ignores him while flagSpin is set).
+    hurt(fromX, damage = 1, pierces = false) {
+        if (!(this.vulnerable || pierces && this.invulnerable <= 0 && this.health > 0)) return;
 
         const body = this.body;
 
         this.defending = false;
-        this.health--;
+        this.health = Math.max(0, this.health - damage);
         this.sfxHurt.play();
         if (this.health <= 0) return this._die();
         this.stun = HURT.STUN;
         this.invulnerable = HURT.INVULNERABLE;
         this.openingChest = false;
+        this.powers?.stopAura();
         if (this.climbing) this._stopClimbing();
         if (this.attacking) {
             this.attacking = false;
             this.blade.stop();
         }
 
-        body.vx = (fromX > this.pos.x ? -1 : 1) * HURT.KNOCK_X;
-        body.vy = -HURT.KNOCK_Y;
+        // The original follows path 1 (facing right: pushed left) or 2 (facing left: pushed
+        // right) at 6 px per step, while gravity keeps pulling him down.
+        body.vx = 0;
+        const motion = new PathMotion(this.facingLeft ? 2 : 1, HURT.PATH_SPEED, 0, 0);
+        let steps = 0;
+        for (const probe = new PathMotion(this.facingLeft ? 2 : 1, HURT.PATH_SPEED, 0, 0); !probe.done; steps++) probe.step();
+        this.knock = { motion, last: { x: 0, y: 0 }, acc: 0 };
+        this.stun = stepsToSeconds(steps);
     }
 
     _die() {
@@ -95,6 +113,7 @@ export class Player {
         this.health = 0;
         this.dead = true;
         this.deathDone = false;
+        this.deathTime = 0;
         this.canMove = false;
         this.defending = false;
         this.invulnerable = 0;
@@ -103,6 +122,7 @@ export class Player {
         if (this.climbing) this._stopClimbing();
         this.attacking = false;
         this.blade.stop();
+        this.powers?.clear();
         this.body.vx = 0;
         this.sprite.color = NORMAL;
         this.sprite.play(ANIM.DIE, { restart: true });
@@ -118,6 +138,19 @@ export class Player {
         this.stun = 0;
         this.facingLeft = false;
         this.defending = false;
+        this.powers?.clear();
+    }
+
+    // Room-space coordinates, already multiplied by GAME_SCALE. Camera bottom
+    // is intentionally not used: vertically scrolling rooms have platforms below.
+    setBounds(width, height) {
+        this.levelBounds = { width, height };
+    }
+
+    get attackHitboxes() {
+        const attacks = this.powers?.attacks ?? [];
+        const blade = this.hitbox;
+        return blade ? [{ box: blade, kind: "blade", struck: this.struck, damage: 1, sourceX: this.pos.x }, ...attacks] : attacks;
     }
 
     // Where the blade is while it swings (the box that is drawn), or null.
@@ -183,27 +216,43 @@ export class Player {
         this.jumps = MOVE.JUMPS;
         this.attacking = false;
         this.stun = 0;
+        this.knock = null;
         this.struck.clear();
         this.blade.stop();
+        this.powers.clear();
         this._syncPos();
     }
 
     update(dt, pad) {
         const body = this.body;
         this.defending = false;
+        this.attackGap = Math.max(0, this.attackGap - dt);
 
         if (this.dead) {
             // He falls where he died (no control, no knockback) and lies there.
             body.vx = 0;
             this.world.step(dt);
             this._syncPos();
+            // A sprite below the room may be culled and never emit "end".
+            this.deathTime += dt;
+            if (this.deathTime >= 1.35) this.deathDone = true;
             return;
         }
 
         if (this.invulnerable > 0) this.invulnerable -= dt;
 
-        // Stunned, the velocity of the hit is kept and the pad is ignored.
+        // Stunned, the pad is ignored while the hit path carries him.
         const stunned = this.stun > 0;
+        if (this.knock) {
+            this.knock.acc += dt;
+            while (this.knock.acc >= stepsToSeconds(1) - 1e-9 && !this.knock.motion.done) {
+                this.knock.acc -= stepsToSeconds(1);
+                const at = this.knock.motion.step();
+                body.move(at.x - this.knock.last.x, at.y - this.knock.last.y);
+                this.knock.last = at;
+            }
+            if (this.knock.motion.done) this.knock = null;
+        }
         if (stunned) this.stun -= dt;
         else if (this.canMove) {
             this._checkLadder(pad, body);
@@ -221,12 +270,16 @@ export class Player {
 
         if (this.canMove && !stunned) {
             this._checkLadder(pad, body);
-            this.defending = !this.climbing && body.onGround && pad.pressed(KEY.BLOCK);
+            this.defending = !this.climbing && !this.powers.spinning && body.onGround && pad.pressed(KEY.BLOCK);
             if (this.defending && this.attacking) {
                 this.attacking = false;
                 this.blade.stop();
             }
-            if (!this.defending && pad.justPressed(KEY.ATK) && !this.attacking) this._attack();
+            const special = KEY.SPECIAL ?? Gamepad.L2;
+            this._syncPos();
+            if (!this.defending && pad.justPressed(special)) this.powers.cast(this.selectedPower);
+            if (!this.defending && !this.powers.spinning && !this.powers.channeling && this.powers.castTime <= 0 &&
+                pad.justPressed(KEY.ATK) && !this.attacking && this.attackGap <= 0) this._attack();
         }
 
         if (this.openingChest && (this.attacking || body.vx !== 0 || !body.onGround || pad.pressed(KEY.BLOCK))) {
@@ -234,12 +287,17 @@ export class Player {
         }
 
         this._syncPos();
+        this.powers.update(dt, pad.pressed(KEY.SPECIAL ?? Gamepad.L2), this.selectedPower);
+        if (this.levelBounds && this.origin.y > this.levelBounds.height) {
+            this._die();
+            return;
+        }
         this._animate(pad, body);
     }
 
     _input(pad, body) {
         if (this.climbing) {
-            this.climbDir = pad.anyPressed(Gamepad.UP | Gamepad.TRIANGLE) ? -1
+            this.climbDir = pad.pressed(Gamepad.UP) ? -1
                 : pad.pressed(Gamepad.DOWN) ? 1 : 0;
             body.vy = this.climbDir * MOVE.CLIMB_SPEED;
             if (this._pastLadder(body, this.climbDir)) body.vy = 0;
@@ -255,7 +313,7 @@ export class Player {
             return;
         }
 
-        const defending = pad.pressed(KEY.BLOCK) && body.onGround;
+        const defending = pad.pressed(KEY.BLOCK) && body.onGround && !this.powers.spinning;
 
         if (pad.pressed(Gamepad.RIGHT)) this.facingLeft = false;
         else if (pad.pressed(Gamepad.LEFT)) this.facingLeft = true;
@@ -277,6 +335,7 @@ export class Player {
     _attack() {
         this.attacking = true;
         this.struck.clear();
+        this.attackGap = stepsToSeconds(9);      // countPunch 6 counting down to below -2
         this.blade.play("swing", { restart: true });
         this.sfxBlades.play();
     }
@@ -387,6 +446,7 @@ export class Player {
         }
 
         if (this.attacking) clip = left ? ANIM.ATK_L : ANIM.ATK_R;
+        if (this.powers.castTime > 0 || this.powers.channeling) clip = left ? ANIM.ATK_L : ANIM.ATK_R;
         if (clip) sprite.play(clip);
     }
 
@@ -400,6 +460,7 @@ export class Player {
             this.blade.draw(hitbox.x, hitbox.y);
         }
 
-        this.sprite.draw(x, y);
+        if (!this.powers?.spinning) this.sprite.draw(x, y);
+        this.powers?.draw();
     }
 }

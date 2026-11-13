@@ -2,7 +2,6 @@ import { GLYPHS, LANGS, getLang, setLang, t } from "../shared/lang/lang.js";
 import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
 import { Save } from "../shared/lib/save.js";
 import { loadSettings, saveSettings, settings } from "../shared/lib/settings.js";
-import { Scene01 } from "./scene1-1.js";
 import Game, { LEVELS } from "./Game.js";
 import { log } from "../shared/lib/boot_log.js";
 
@@ -15,13 +14,25 @@ const DIAG_NO_MUSIC = false;
 //   "images" no image draw on the main screen: only the text is drawn
 const DIAG_SKIP = "";
 
-// Temporary testing menu; disable to hide the level selector.
-const TEMP_LEVEL_SELECT = true;
+// Developer menu with every map (the hidden original level select is separate); set true to show it.
+const TEMP_LEVEL_SELECT = false;
 const LEVEL_ROWS = 6;
 
 const GRAY =Color.new(72, 72, 72);
 const RED = Color.new(255, 0, 0);
 const WHITE = Color.new(255, 255, 255);
+const BLACK = Color.new(0, 0, 0);
+
+// Level select (hold L1 and press R1; the original uses D then J on the keyboard).
+const LEVEL_SELECT_HOLD = Gamepad.L1;
+const LEVEL_SELECT_PRESS = Gamepad.R1;
+// Checkpoints of the original menu and the weapons it hands out per world.
+const WORLDS = Object.freeze([
+    { label: "Level 1 - Mt. Olympus", level: 0, weapons: 1 },
+    { label: "Level 2 - Armada", level: 6, weapons: 2 },
+    { label: "Level 3 - Desert", level: 11, weapons: 3 },
+    { label: "Level 4 - Fusion", level: 16, weapons: 4 }
+]);
 
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
@@ -57,6 +68,7 @@ export class Menu extends Scene {
         await loadSettings();
         this.langIndex = LANGS.indexOf(getLang());
 
+        this.unlockAll = false;
         this.screens = this._screens();
         if (TEMP_LEVEL_SELECT && Number.isInteger(params?.testLevelIndex)) {
             this._go("levels", clamp(params.testLevelIndex, 0, LEVELS.length - 1));
@@ -136,17 +148,55 @@ export class Menu extends Scene {
         return {
             main: {
                 update() {
+                    // The original's hidden level select: hold D and press J on the keyboard.
+                    if (menu.pad.pressed(LEVEL_SELECT_HOLD) && menu.pad.justPressed(LEVEL_SELECT_PRESS)) {
+                        menu._go("levelSelect");
+                        return;
+                    }
                     menu._move(TEMP_LEVEL_SELECT ? 4 : 3);
                     if (!confirm()) return;
-                    if (menu.selected === 0) Scene.go(Scene01);
+                    // New Game / Continue / Gauntlet; the original's "Exit" is Options on the console.
+                    if (menu.selected === 0) Scene.go(Game);
                     else if (menu.selected === 1) menu._openLoad();
-                    else menu._go(["", "", "options", "extras", "levels"][menu.selected]);
+                    else if (menu.selected === 2) Scene.go(Game, { params: { gauntlet: true } });
+                    else menu._go(["", "", "", "options", "levels"][menu.selected]);
                 },
                 draw() {
                     if (DIAG_SKIP !== "images") images.main.draw(48, 16, menu.mainSize);
-                    const labels = [menu._t("newgame"), menu._t("load"), menu._t("options"), menu._t("extra")];
-                    if (TEMP_LEVEL_SELECT) labels.push(menu._t("testLevels"));
+                    const labels = [menu._t("newgame"), menu._t("load"), menu._t("gauntlet"), menu._t("options")];
+                    if (TEMP_LEVEL_SELECT) {
+                        labels.push(menu._t("testLevels"));
+                        // The temporary row falls outside the artwork's black box.
+                        Draw.rect(120, 244 + 4 * 20 - 2, 400, 24, BLACK);
+                    }
                     menu._list(244, 20, labels);
+                }
+            },
+
+            // controllerLevelSelectMenu: four worlds and a weapons toggle, on black.
+            levelSelect: {
+                update() {
+                    menu._move(4);
+                    if (menu.pad.justPressed(Gamepad.CIRCLE)) { menu._go("main", 0); return; }
+                    if (!confirm()) return;
+                    if (menu.selected === 4) {
+                        menu.unlockAll = !menu.unlockAll;
+                        sfx.selected.play();
+                        return;
+                    }
+                    const world = WORLDS[menu.selected];
+                    Scene.go(Game, { params: {
+                        skipIntro: true,
+                        save: {
+                            levelIndex: world.level, playTime: 0, player: null, chests: [], resources: null,
+                            unlockedPowers: menu.unlockAll ? 4 : world.weapons, selectedPower: 0
+                        }
+                    } });
+                },
+                draw() {
+                    menu._print(60 * 2 + 16, "- LEVEL SELECT -", WHITE);
+                    for (let i = 0; i < 4; i++) menu._print(80 * 2 + 16 + i * 20, WORLDS[i].label, i === menu.selected ? RED : WHITE);
+                    menu._print(80 * 2 + 16 + 80, menu.unlockAll ? "Weapons - Unlock All" : "Weapons - Normal", menu.selected === 4 ? RED : WHITE);
                 }
             },
 
@@ -199,7 +249,7 @@ export class Menu extends Scene {
 
             options: {
                 update() {
-                    menu._move(4);
+                    menu._move(6);
 
                     const dir = (menu.pad.justPressed(Gamepad.RIGHT) ? 1 : 0) - (menu.pad.justPressed(Gamepad.LEFT) ? 1 : 0);
                     if (dir !== 0) {
@@ -218,9 +268,10 @@ export class Menu extends Scene {
 
                     if (!confirm()) return;
                     if (menu.selected === 2) menu._go("controls");
-                    if (menu.selected === 4) {
+                    if (menu.selected === 4) menu._go("credits");
+                    if (menu.selected === 5) {
                         saveSettings(); // volumes and language go to the memory card
-                        menu._go("main", 2);
+                        menu._go("main", 3);
                     }
                 },
                 draw() {
@@ -229,9 +280,10 @@ export class Menu extends Scene {
                         menu._t("music") + settings.music,
                         menu._t("sfx") + settings.sfx,
                         menu._t("controller"),
-                        menu._t("language")
+                        menu._t("language"),
+                        menu._t("credits")
                     ]);
-                    menu._print(345, menu._t("back"), menu.selected === 4 ? RED : WHITE);
+                    menu._print(365, menu._t("back"), menu.selected === 5 ? RED : WHITE);
                 }
             },
 
@@ -241,38 +293,14 @@ export class Menu extends Scene {
                 },
                 draw() {
                     menu._logo(menu._t("controller"));
-                    ["ATTACK: SQUARE", "JUMP: CROSS", "MOVE: < >", "MAGIC: L2", "BLOCK: L1"]
+                    ["ATTACK: SQUARE", "JUMP: CROSS", "MOVE: < >", "MAGIC: L2 / SELECT: TRIANGLE", "BLOCK: L1 / OPEN: CIRCLE"]
                         .forEach((line, i) => menu._print(245 + i * 20, line, WHITE));
-                }
-            },
-
-            extras: {
-                update() {
-                    menu._move(3);
-                    if (!confirm()) return;
-                    if (menu.selected === 1) menu._go("challenges");
-                    if (menu.selected === 2) menu._go("credits");
-                    if (menu.selected === 3) menu._go("main", 3);
-                },
-                draw() {
-                    menu._logo("EXTRAS");
-                    menu._list(245, 20, [menu._t("gauntlet"), menu._t("challenges"), menu._t("credits")]);
-                    menu._print(325, menu._t("back"), menu.selected === 3 ? RED : WHITE);
-                }
-            },
-
-            challenges: {
-                update() {
-                    if (confirm()) menu._go("extras", 1);
-                },
-                draw() {
-                    menu._print(205, menu._t("EXTRAS"), GRAY, menu.header);
                 }
             },
 
             credits: {
                 update() {
-                    if (confirm()) menu._go("extras", 2);
+                    if (confirm()) menu._go("options", 4);
                 },
                 draw() {
                     images.logo.draw(0, 0, menu.logoSize);

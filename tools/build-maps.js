@@ -20,6 +20,8 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const file of fs.readdirSync(SRC).filter(f => f.endsWith(".json"))) {
     const map = JSON.parse(fs.readFileSync(path.join(SRC, file), "utf8"));
     const out = { backgroundColor: map.backgroundColor ?? "#000000", layers: [], colliders: {}, markers: {} };
+    // Original room size in pixels, when the export knows it (rooms bigger than their tiles).
+    if (map.size) out.size = map.size;
     const byLayer = new Map();
 
     for (const [id, placements] of Object.entries(map.tiles)) {

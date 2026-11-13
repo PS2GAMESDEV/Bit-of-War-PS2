@@ -46,11 +46,16 @@ export class Walker {
 
     // Hit from `fromX` (the attacker's center): turns to face him and is
     // pushed the other way.
-    hurt(fromX) {
+    // The original moves it 10 px away at once when that spot is free (not
+    // for Lightning, which only turns it) and plays no push afterwards.
+    hurt(fromX, kind = "blade") {
         const toAttacker = fromX > this.body.centerX ? 1 : -1;
 
         this.dir = toAttacker;
-        this.knock = -toAttacker * KNOCKBACK_SPEED;
+        if (kind === "lightning") return;
+        const step = -toAttacker * 10 * SIZE / 16;
+        const x = step > 0 ? this.body.right : this.body.x + step;
+        if (!this.world.solidAt(x, this.body.y + SIZE / 2, LAYER.SOLID)) this.body.move(step, 0);
     }
 
     die() {
@@ -76,9 +81,7 @@ export class Walker {
         // After the turn, so it does not chase what is now behind it.
         this.running = this.runSpeed > 0 && this._sees(target);
 
-        body.vx = this.dir * (this.running ? this.runSpeed : this.walkSpeed) + this.knock;
-        this.knock *= Math.max(0, 1 - KNOCKBACK_DECAY * dt);
-        if (Math.abs(this.knock) < 1) this.knock = 0;
+        body.vx = this.dir * (this.running ? this.runSpeed : this.walkSpeed);
         this.sprite.flipX = (this.dir > 0) !== this.facesRight;
         this.sprite.play(this.running ? "run" : "walk");
     }
@@ -89,17 +92,11 @@ export class Walker {
         this.sprite.y = this.body.y;
     }
 
+    // enMinotaur: charges whenever Kratos is ahead of it on exactly its own row
+    // (|y difference| < 1 px), at any distance and through anything.
     _sees(target) {
         const body = this.body;
-        // Free distance between the facing edge and the target's near edge.
-        const gap = this.dir > 0 ? target.x - body.right : body.x - target.right;
-
-        if (gap <= -SIZE / 2 || gap > this.sight) return false;
-        if (Math.abs(target.centerY - body.centerY) >= SIZE) return false;
-
-        return this.world.raycast(
-            body.centerX, body.centerY, target.centerX, target.centerY,
-            { mask: LAYER.SOLID }
-        ) === null;
+        const ahead = this.dir > 0 ? target.centerX > body.centerX : target.centerX < body.centerX;
+        return ahead && Math.abs(target.bottom - body.bottom) < SIZE / 16;
     }
 }

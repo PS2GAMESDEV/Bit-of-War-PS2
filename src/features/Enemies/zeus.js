@@ -1,262 +1,81 @@
-import { GAME_SCALE } from "../../shared/lib/constants.js";
+import { GAME_SCALE, LAYER } from "../../shared/lib/constants.js";
+import { ShadowKratos, PathMotion } from "./shadowKratos.js";
 
-const SIZE = 16 * GAME_SCALE;
-const TRANSPORT_W = 32 * GAME_SCALE;
-const TRANSPORT_H = 16 * GAME_SCALE;
+const S = GAME_SCALE;
 
-// Which way the bossZeus art looks in the sheet (flipped to face the player).
-const FACES_RIGHT = false;
-
-const SPEED = 80 * GAME_SCALE;            // units per second, first float to zeusMove1
-const TRANSPORT_SPEED = 320 * GAME_SCALE; // units per second between markers
-const ATTACKS = 3;              // attacks at every zeusMove marker before he moves on
-const ATTACK_INTERVAL = 3;      // seconds between the start of one attack and the next, at full health
-const ATTACK_INTERVAL_MIN = 1.2;    // the same once all his health is gone
-const TURN_DEADZONE = 2;
-
-// The lightning: a fan of bolts flying down and away from him. Each entry is
-// an angle below the horizontal; the first shot and the last use all of them,
-// the middle one drops the lowest (the last entry).
-const BOLT_ANGLES = [20, 45, 70].map(deg => deg * Math.PI / 180);
-const BOLT_ART_ANGLE = 20 * Math.PI / 180;   // slope of the bolt drawn in the sheet
-const BOLT_SPEED = 300;         // units per second at full health
-const BOLT_SPEED_GAIN = 1;      // extra speed, as a fraction of BOLT_SPEED, once all his health is gone
-const DEATH_HOLD = 0.8;         // seconds the last frame of "die" stays before he is removed
-const BOLT_SIZE = 8 * GAME_SCALE;   // side of the box that hurts
-const BOLT_FRAME = 16 * GAME_SCALE;
-const VIEW_MARGIN = 2 * 16 * GAME_SCALE;    // a bolt this far outside the camera disappears
+// Frames of the zeusBody strip, cut from lwZeus (125, 198), lwZeusAttack/R
+// (194, 203), lwZeusOuch/R (204, 205), lwZeusCroak/R (196, 199) and
+// lwZeusFloat (195).
+export const ZEUS_FRAMES = Object.freeze({
+    walkL: [0, 0], walkR: [1, 1], zeusL: [2, 6], zeusR: [7, 11],
+    hitL: [12, 31], hitR: [32, 51], croakL: [52, 79], croakR: [80, 107], float: [108, 108]
+});
 
 /**
- * bossZeus: waits at his placement (clip "idle") until the camera sees him,
- * then floats (clip "float") to zeusMove1. On arrival he attacks ATTACKS times,
- * one every `attackInterval` seconds (BOLT_ANGLES bolts when the attack ends,
- * one fewer on the second), then travels to the other marker
- * (zeusMove2, zeusMove1, ...) as the zeusTransport sprite instead of himself,
- * and repeats. He has no body in the world.
- *
- * Other clips ready in the sheet: "damage" (frame 4 alone) and "die".
+ * bossZeus / bossZeusR of the original, driven by the same routines as skZeus:
+ * the ZeusFloatUp room (path 18 at 5 px per step) leads into the fight at
+ * zeusMove1; barrages at steps 30/60/90 and a transport at 120 (10/20/30/50
+ * with 40 health or less); each blade hit takes 20 of 100 health, plays the
+ * 20 frame "ouch" and then transports; the last one plays the 28 frame croak
+ * at 0.25 frames per step before the weapon is granted. Zeus has no body that
+ * hurts Kratos, and only the blades have a collision handler.
  */
-export class Zeus {
+export class Zeus extends ShadowKratos {
     static clip = "idle";
     static selfDrawn = true;
-    static health = 5;
+    static health = 100;
     static reward = "gotZeusLightning";
+    static contactDamage = 1;
 
-    constructor(sprite, world, x, y, sheets, markers, sfx) {
-        this.sprite = sprite;
-        this.sfxShoot = sfx?.zeusShoot;
-        this.sfxTransport = sfx?.zeusTransport;
-        this.dying = false;
-        this.dead = false;          // the Level removes him once this is true
-        this.deathTimer = 0;
-        this.boltSheet = sheets.lighting;
-        this.bolts = [];
-        this.hurting = false;       // the "hit" clip is playing
-        this.attackInterval = ATTACK_INTERVAL;  // seconds; shortens as he loses health
-        this.boltSpeed = BOLT_SPEED;    // units per second; raise it as he loses health
-        this.transport = new Sprite.Instance(sheets.zeusTransport, { clip: "transport", scale: GAME_SCALE });
-        this.transporting = false;
-        this.x = x;
-        this.y = y;
-        this.stops = [markers.zeusMove1?.[0], markers.zeusMove2?.[0]].filter(Boolean);
-        this.stop = 0;
-        this.started = false;
-        this.arrived = false;
-        this.attacking = false;
-        this.attacks = 0;
-        this.cooldown = 0;
-        this.facingRight = FACES_RIGHT;
-        this.healthBarVisible = false;
-
-        this.sprite.on("end", () => this._attackEnded());
+    constructor(sprite, world, x, y, sheets, markers = {}, sfx = {}) {
+        const fight = markers.zeusMove1?.[0] ?? { x, y };
+        super(null, world, x, y, sheets, markers, sfx, "zeus", {
+            campaign: true, frames: ZEUS_FRAMES, transportY: fight.y,
+            sheets: {
+                body: "zeus", transport: "zeusTransportBoss",
+                lightning: ["zeusLightningLeft", "zeusLightningRight"]
+            }
+        });
+        this.fight = fight;
+        this.petrifiable = false;
+        this.bossName = "Zeus";
+        // Zeus is created by the ZeusFloatUp room at the start of path 18.
+        this.state = "intro";
+        this.intro = new PathMotion(18, 5, 0, 0, true);
+        this.body.setPosition(this.intro.x * S, this.intro.y * S);
+        this._pose("float");
     }
 
-    // Box the blade can hit: only while he is on the scene and not in transport.
-    get hurtbox() {
-        return this.started && !this.transporting && !this.dying ? { x: this.x, y: this.y, w: SIZE, h: SIZE } : null;
-    }
+    // Kratos is held in place while the cinematic plays.
+    get introActive() { return this.state === "intro"; }
+    get contactBox() { return null; }
+    damageFor(weapon = "blade") { return weapon === "blade" ? 20 : 0; }
 
-    // Hit: plays the "hit" clip (frame 4 flashing with "float"), then transports to the
-    // other marker. The bolts get faster and come sooner as his health runs out.
-    hurt() {
-        const lost = 1 - Math.max(this.health, 0) / Zeus.health;
-
-        this.boltSpeed = BOLT_SPEED * (1 + BOLT_SPEED_GAIN * lost);
-        this.attackInterval = ATTACK_INTERVAL + (ATTACK_INTERVAL_MIN - ATTACK_INTERVAL) * lost;
-        this.hurting = true;
-        this.attacking = false;     // an attack cut short by the hit is lost
-        this.sprite.play("hit", { restart: true });
-    }
-
-    // Out of health: plays "die" (once) and is removed by the Level a moment after it ends.
     die() {
+        if (this.dying) return;
+        this.health = 0;
         this.dying = true;
-        this.hurting = false;
-        this.transporting = false;
-        this.bolts.length = 0;
-        this.deathTimer = Infinity;
-        this.sprite.flipX = this.facingRight !== FACES_RIGHT;
-        this.sprite.play("die", { restart: true });
+        this.state = "croak";
+        this.stateTicks = 0;
+        this.body.mask = 0;
+        this._pose(this.direction < 0 ? "croakL" : "croakR");
     }
 
-    // A bolt that touches `box` is spent: returns its center x, or null.
-    arrowHit(box) {
-        const bolts = this.bolts;
-
-        for (let i = bolts.length - 1; i >= 0; i--) {
-            const { x, y } = bolts[i];
-            if (!Collision.overlaps(box, { x: x - BOLT_SIZE / 2, y: y - BOLT_SIZE / 2, w: BOLT_SIZE, h: BOLT_SIZE })) continue;
-
-            bolts.splice(i, 1);
-            return x;
-        }
-        return null;
-    }
-
-    update(target, dt, view) {
-        if (this.dying) {
-            if ((this.deathTimer -= dt) <= 0) this.dead = true;
-            return;
-        }
-
-        this._moveBolts(dt, view);
-
-        if (!this.started) {
-            const visible = this.x + SIZE > view.x && this.x < view.x + view.w &&
-                this.y + SIZE > view.y && this.y < view.y + view.h;
-            if (!visible || this.stops.length === 0) return;
-
-            this.started = true;
-            this.sprite.play("float");
-        }
-
-        // Frozen while he flashes.
-        if (!this.hurting) {
-            if (!this.arrived) this._fly(dt);
-            else this._attack(dt);
-        }
-
-        const toPlayer = target.centerX - (this.x + SIZE / 2);
-        if (Math.abs(toPlayer) > TURN_DEADZONE) this.facingRight = toPlayer > 0;
-        this.sprite.flipX = this.facingRight !== FACES_RIGHT;
-    }
-
-    _fly(dt) {
-        const to = this.stops[this.stop];
-        const dx = to.x - this.x;
-        const dy = to.y - this.y;
-        const distance = Math.hypot(dx, dy);
-        const step = Math.min((this.transporting ? TRANSPORT_SPEED : SPEED) * dt, distance);
-
-        if (distance > 0) {
-            this.x += (dx / distance) * step;
-            this.y += (dy / distance) * step;
-        }
-
-        if (step >= distance) {
-            this.arrived = true;
-            this.transporting = false;
-            this.attacks = 0;
-            this.cooldown = 0;   // the first attack comes right away
-            this.healthBarVisible = true;
-        }
-    }
-
-    _attack(dt) {
-        this.cooldown -= dt;
-        if (this.attacking || this.cooldown > 0) return;
-
-        this.attacking = true;
-        this.attacks++;
-        this.cooldown = this.attackInterval;
-        this.sprite.play("attack", { restart: true });
-    }
-
-    // The attack clip plays once; after the last attack he moves to the next marker.
-    _attackEnded() {
-        if (this.dying) {
-            this.deathTimer = DEATH_HOLD;
-            return;
-        }
-        if (this.hurting) {
-            this.hurting = false;
-            this.sprite.play("idle");
-            this._transport();
-            return;
-        }
-        if (!this.attacking) return;
-
-        this.attacking = false;
-        this.sprite.play("idle");
-        this._strike();
-
-        if (this.attacks >= ATTACKS) this._transport();
-    }
-
-    // Leaves for the other marker as the zeusTransport sprite.
-    _transport() {
-        this.arrived = false;
-        this.transporting = true;
-        this.transport.play("transport", { restart: true });
-        this.sfxTransport?.play();
-        this.stop = (this.stop + 1) % this.stops.length;
-    }
-
-    // Lightning from his center, towards the side the player is on.
-    _strike() {
-        const count = this.attacks === 2 ? BOLT_ANGLES.length - 1 : BOLT_ANGLES.length;
-        const dir = this.facingRight ? 1 : -1;
-
-        this.sfxShoot?.play();
-        const x = this.x + SIZE / 2;
-        const y = this.y + SIZE / 2;
-
-        for (let i = 0; i < count; i++) {
-            const angle = BOLT_ANGLES[i];
-            const sprite = new Sprite.Instance(this.boltSheet, {
-                clip: "fly", scale: GAME_SCALE, origin: [0.5, 0.5], x, y, flipX: dir < 0
-            });
-            sprite.rotation = dir * (angle - BOLT_ART_ANGLE);
-            this.bolts.push({ sprite, x, y, vx: dir * Math.cos(angle) * this.boltSpeed, vy: Math.sin(angle) * this.boltSpeed });
-        }
-    }
-
-    // Bolts go through walls; they end only on the player (arrowHit) or outside the view plus VIEW_MARGIN.
-    _moveBolts(dt, view) {
-        const bolts = this.bolts;
-
-        for (let i = bolts.length - 1; i >= 0; i--) {
-            const bolt = bolts[i];
-
-            bolt.x += bolt.vx * dt;
-            bolt.y += bolt.vy * dt;
-            bolt.sprite.x = bolt.x;
-            bolt.sprite.y = bolt.y;
-
-            const outside = bolt.x < view.x - VIEW_MARGIN - BOLT_FRAME || bolt.x > view.x + view.w + VIEW_MARGIN + BOLT_FRAME ||
-                bolt.y < view.y - VIEW_MARGIN - BOLT_FRAME || bolt.y > view.y + view.h + VIEW_MARGIN + BOLT_FRAME;
-            if (outside) bolts.splice(i, 1);
-        }
-    }
-
-    // After the world step: the sprites follow.
-    sync() {
-        this.sprite.x = this.x;
-        this.sprite.y = this.y;
-        this.transport.x = this.x + (SIZE - TRANSPORT_W) / 2;
-        this.transport.y = this.y + (SIZE - TRANSPORT_H) / 2;
-    }
-
-    draw() {
-        if(this.healthBarVisible) {
-        Draw.rect(392, 36, 104, 8, Color.new(0, 0, 0));
-        
-        if(this.health > 0) {
-            Draw.rect(394, 38, this.health * 20, 4, Color.new(255, 0, 0));
-        }
-        }
-        
-        (this.transporting ? this.transport : this.sprite).draw();
-        for (const bolt of this.bolts) bolt.sprite.draw();
+    _step(target) {
+        if (this.state === "intro") {
+            this._stepProjectiles();
+            const p = this.intro.step();
+            this.body.setPosition(p.x, p.y);
+            this._pose("float");
+            if (this.intro.done) {
+                this.body.setPosition(this.fight.x, this.fight.y);
+                this._resumeCombat(target, true);
+            }
+        } else if (this.state === "croak") {
+            this._stepProjectiles();
+            this.stateTicks++;
+            this._pose(this.direction < 0 ? "croakL" : "croakR", Math.min(27, Math.floor(this.stateTicks * 0.25)));
+            if (this.stateTicks >= 28 / 0.25) this._complete();    // animation end: next room
+        } else super._step(target);
     }
 }

@@ -42,8 +42,12 @@ export const Save = Object.freeze({
     },
 
     // The save file, or null without a card, without a file, or unreadable.
-    //   { version, progress: Progress | null, bestTime: seconds | null, settings: Settings | null }
-    // Progress: { levelIndex, playTime, player: { x, y, facingLeft }, chests: [opened indices] }
+    //   { version, progress: Progress | null, bestTime: seconds | null, settings: Settings | null,
+    //     gauntletBest?: seconds, weapons?: 1..4 }
+    // The last two were added with Gauntlet mode; slots without them read as
+    // "no record" and "gorgon head only" (the version is unchanged on purpose).
+    // Progress also carries resources, unlockedPowers and selectedPower. Old
+    // version-1 slots omit these; Game infers unlocked weapons from the level.
     // Settings: { music, sfx, lang }
     async load() {
         if (!Save.exists()) return null;
@@ -57,7 +61,18 @@ export const Save = Object.freeze({
 
     // Stores a game in progress. False when it could not be written.
     saveProgress(progress) {
-        return Save._update(() => ({ progress }));
+        return Save._update(() => ({
+            progress,
+            // New Game resets the unlock flags in the original, so this follows the
+            // current game rather than keeping a maximum.
+            weapons: Math.min(4, Math.max(1, Number(progress?.unlockedPowers) || 1))
+        }));
+    },
+
+    // Weapons earned so far (1 = Gorgon Head only): what Gauntlet mode starts with.
+    weaponsOf(data) {
+        const owned = Number(data?.weapons ?? data?.progress?.unlockedPowers);
+        return Number.isFinite(owned) ? Math.min(4, Math.max(1, Math.floor(owned))) : 1;
     },
 
     // The game was finished in `time` seconds: clears the progress, keeps the
@@ -65,10 +80,17 @@ export const Save = Object.freeze({
     async saveCompletion(time) {
         let bestTime = time;
         await Save._update(data => {
-            if (data.bestTime !== null) bestTime = Math.min(data.bestTime, time);
-            return { progress: null, bestTime };
+            if (Number.isFinite(data.bestTime) && data.bestTime >= 0) bestTime = Math.min(data.bestTime, time);
+            return { progress: null, bestTime, weapons: 4 };
         });
         return bestTime;
+    },
+
+    // A Gauntlet run ended in `seconds`: keeps it only if it beats the record.
+    saveGauntlet(seconds) {
+        return Save._update(data => ({
+            gauntletBest: Number.isFinite(data.gauntletBest) && data.gauntletBest <= seconds ? data.gauntletBest : seconds
+        }));
     },
 
     saveSettings(settings) {

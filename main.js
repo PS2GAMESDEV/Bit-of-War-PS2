@@ -1,4 +1,5 @@
 import { Menu } from "./src/scenes/menu.js";
+import { Story } from "./src/scenes/story.js";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
 import { log } from "./src/shared/lib/boot_log.js";
 
@@ -52,5 +53,5 @@ function log_step(what, frame) {
 // slows the game down instead of running several updates (which would repeat
 // the pad's justPressed edges).
 log("before Scene.run");
-Scene.run(Menu, {}, { fixedStep: 1 / 60, maxSteps: 1 });
+Scene.run(Story, { params: { sequence: "splash", then: Menu } }, { fixedStep: 1 / 60, maxSteps: 1 });
 log("after Scene.run");

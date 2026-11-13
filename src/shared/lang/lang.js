@@ -6,7 +6,6 @@ export const LANG = {
         restartLevel: "RESTART LEVEL",
         load: "LOAD",
         options: "OPTIONS",
-        extra: "EXTRA",
 
         LOAD: "LOAD",
 
@@ -20,7 +19,6 @@ export const LANG = {
         off: "OFF",
 
         gauntlet: "GAUNTLET",
-        challenges: "CHALLENGES",
         credits: "CREDITS",
 
         back: "BACK",
@@ -41,7 +39,14 @@ export const LANG = {
         restartSave: "RESTART FROM LAST SAVE",
         saveQuit: "SAVE AND QUIT",
         quitNoSave: "QUIT WITHOUT SAVING",
-        saveFailed: "COULD NOT SAVE - CHECK THE MEMORY CARD"
+        saveFailed: "COULD NOT SAVE - CHECK THE MEMORY CARD",
+        useGorgon: "USE THE GORGON HEAD (L2)",
+        finishBlade: "FINISH BASTET WITH THE BLADES (SQUARE)",
+        tryAgain: "TRY AGAIN",
+        gauntletTime: "Time: ",
+        gauntletPrevious: "Previous Best Time: ",
+        newRecord: "New Record!",
+        defeatWave: "DEFEAT ALL ENEMIES TO OPEN THE EXIT"
     },
 
     br: {
@@ -51,7 +56,6 @@ export const LANG = {
         restartLevel: "REINICIAR FASE",
         load: "CARREGAR",
         options: "OPÇÕES",
-        extra: "EXTRA",
 
         LOAD: "CARREGAR",
 
@@ -65,7 +69,6 @@ export const LANG = {
         off: "DES.",
 
         gauntlet: "GAUNTLET",
-        challenges: "DESAFIOS",
         credits: "CRÉDITOS",
 
         back: "VOLTAR",
@@ -86,7 +89,14 @@ export const LANG = {
         restartSave: "REINICIAR DO ÚLTIMO SAVE",
         saveQuit: "SALVAR E SAIR",
         quitNoSave: "SAIR SEM SALVAR",
-        saveFailed: "NÃO FOI POSSÍVEL SALVAR - VERIFIQUE O MEMORY CARD"
+        saveFailed: "NÃO FOI POSSÍVEL SALVAR - VERIFIQUE O MEMORY CARD",
+        useGorgon: "USE A CABEÇA DA GÓRGONA (L2)",
+        finishBlade: "FINALIZE BASTET COM AS LÂMINAS (QUADRADO)",
+        tryAgain: "TENTAR NOVAMENTE",
+        gauntletTime: "Tempo: ",
+        gauntletPrevious: "Melhor Tempo Anterior: ",
+        newRecord: "Novo Recorde!",
+        defeatWave: "DERROTE OS INIMIGOS PARA ABRIR A SAÍDA"
     },
 
     sp: {
@@ -96,7 +106,6 @@ export const LANG = {
         restartLevel: "REINICIAR NIVEL",
         load: "CARGA",
         options: "OPCIONES",
-        extra: "EXTRA",
 
         LOAD: "CARGAR",
 
@@ -110,7 +119,6 @@ export const LANG = {
         off: "NO",
 
         gauntlet: "GAUNTLET",
-        challenges: "DESAFÍOS",
         credits: "CRÉDITOS",
 
         back: "ATRÁS",
@@ -131,7 +139,14 @@ export const LANG = {
         restartSave: "REINICIAR DESDE LA ÚLTIMA PARTIDA",
         saveQuit: "GUARDAR Y SALIR",
         quitNoSave: "SALIR SIN GUARDAR",
-        saveFailed: "NO SE PUDO GUARDAR - REVISA LA MEMORY CARD"
+        saveFailed: "NO SE PUDO GUARDAR - REVISA LA MEMORY CARD",
+        useGorgon: "USA LA CABEZA DE GORGONA (L2)",
+        finishBlade: "REMATA A BASTET CON LAS ESPADAS (CUADRADO)",
+        tryAgain: "INTENTAR DE NUEVO",
+        gauntletTime: "Tiempo: ",
+        gauntletPrevious: "Mejor Tiempo Anterior: ",
+        newRecord: "¡Nuevo Récord!",
+        defeatWave: "DERROTA A LOS ENEMIGOS PARA ABRIR LA SALIDA"
     }
 };
 

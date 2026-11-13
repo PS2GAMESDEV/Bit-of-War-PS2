@@ -1,12 +1,26 @@
 # Bit-of-War-PS2
 
-Para testar uma fase diretamente, abra **TESTAR FASES (TEMP)** no menu principal
-(**TEST LEVELS (TEMP)** se o idioma estiver em inglês). Use cima/baixo para escolher
-a fase e **X** para jogar; **O** volta ao menu principal.
+Port para PS2 (AthenaEnv) de **Bit of War 1.10**, da Holmade Games.
 
-Durante o teste, **START** abre a pausa, onde você pode reiniciar a fase ou voltar
-à seleção. Ao concluir a fase, o jogo também retorna ao seletor. Esse modo pula
-as cenas de introdução e não grava progresso ou recordes da campanha.
+## Menu
 
-Para ocultar a opção temporária, defina `TEMP_LEVEL_SELECT = false` em
-`src/scenes/menu.js`.
+Como no original: **New Game**, **Load** (Continue), **Gauntlet** (Boss Rush) e,
+no lugar de "Exit", **Options** (volumes, idioma, controles e créditos).
+
+- **Gauntlet** usa as armas já conquistadas na campanha, uma única vida e grava o
+  melhor tempo no Memory Card.
+- **Seletor de fases escondido** (o original usa D + J no teclado): segure **L1** e
+  aperte **R1** no menu principal. Escolha um dos quatro mundos ou alterne
+  "Weapons - Normal/Unlock All".
+
+Para depuração existe o seletor com todas as fases: defina `TEMP_LEVEL_SELECT = true`
+em `src/scenes/menu.js`. Nesse modo nada é gravado no Memory Card.
+
+## Ferramentas (`tools/`)
+
+- `build-maps.js` compila `maps-src/*.json` em `src/data`.
+- `gml-room-to-map.mjs` converte uma sala extraída do executável original em `maps-src`.
+- `gml-path-to-js.mjs` expande os caminhos (paths) do original.
+- `tests/*.test.mjs`: `node tools/tests/<arquivo>.test.mjs`.
+
+A extração do executável (`references/shadow-kratos/extraction`) usa o crate `gm8exe` do OpenGMK.

@@ -1,24 +1,24 @@
-import { GAME_SCALE, KNOCKBACK_DECAY, KNOCKBACK_SPEED } from "../../shared/lib/constants.js";
+import { GAME_SCALE, pxPerStep } from "../../shared/lib/constants.js";
 
 const TILE = 16 * GAME_SCALE;
 
 // Which way the enHarpie art looks in the sheet (flipped when she goes the other way).
 const FACES_RIGHT = true;
 
-const SIGHT = 6 * TILE;         // distance at which she notices the player
-const SPEED = 90;               // units per second
-const ARRIVED = 2;              // closer than this to the player she stops, so she does not jitter
+const WAKE = 50 * GAME_SCALE;               // |dx| < 50 and |dy| < 50 px
+const SPEED = pxPerStep(2);                 // move_point(kratos, 2): 2 px per step
 const TURN_DEADZONE = 2;
 
 /**
- * enHarpie: waits in the air on frame 2 (clip "idle") until the player comes
- * within SIGHT, then flies after him for good (clip "fly", frames 0-1). She
- * has no body in the world, so she goes through blocks.
+ * enHarpie (also enDragon and enScarab, whose events are identical): perched
+ * until Kratos is within 50 px on both axes, then she screeches and flaps.
+ * While Kratos stays inside that box every step re-aims her at him at 2 px per
+ * step; once he leaves it she keeps flying along her last heading. Blocks do
+ * not stop her. With Kratos dead (or after being turned to stone) she stops.
  */
 export class Harpie {
     static clip = "idle";
     static health = 1;
-    static speed = SPEED;
 
     constructor(sprite, world, x, y, sheets, markers, sfx) {
         this.sprite = sprite;
@@ -27,14 +27,15 @@ export class Harpie {
         this.x = x;
         this.y = y;
         this.chasing = false;
+        this.vx = 0;
+        this.vy = 0;
         this.facingRight = FACES_RIGHT;
-        this.knock = 0;     // push from a hit, units per second (fades out)
     }
 
-    // Hit from `fromX` (the attacker's center): pushed the other way.
-    hurt(fromX) {
-        this.knock = (fromX > this.x + TILE / 2 ? -1 : 1) * KNOCKBACK_SPEED;
-    }
+    // Lightning, blades and the rest only count the hit: no knockback for her.
+    hurt() {}
+
+    die() { this.sfxScreech?.stop?.(); }
 
     // Box the blade can hit.
     get hurtbox() {
@@ -42,32 +43,30 @@ export class Harpie {
     }
 
     update(target, dt) {
-        if (this.knock !== 0) {
-            this.x += this.knock * dt;
-            this.knock *= Math.max(0, 1 - KNOCKBACK_DECAY * dt);
-            if (Math.abs(this.knock) < 1) this.knock = 0;
+        if (target.dead) {
+            this.vx = this.vy = 0;
+        } else {
+            const dx = target.centerX - (this.x + TILE / 2);
+            const dy = target.centerY - (this.y + TILE / 2);
+            if (Math.abs(dx) < WAKE && Math.abs(dy) < WAKE) {
+                if (!this.chasing) {
+                    this.chasing = true;
+                    this.sprite.flipY = false;
+                    this.sprite.play("fly");
+                    this.sfxScreech?.play();
+                }
+                const distance = Math.hypot(dx, dy);
+                if (distance > 0) {
+                    this.vx = dx / distance * SPEED;
+                    this.vy = dy / distance * SPEED;
+                }
+            }
         }
-
-        const dx = target.centerX - (this.x + TILE / 2);
-        const dy = target.centerY - (this.y + TILE / 2);
-        const distance = Math.hypot(dx, dy);
-
-        if (!this.chasing && distance <= SIGHT) {
-            this.chasing = true;
-            this.sprite.flipY = false;
-            this.sprite.play("fly");
-            this.sfxScreech?.play();
-        }
+        this.x += this.vx * dt;
+        this.y += this.vy * dt;
         if (!this.chasing) return;
-
-        if (Math.abs(dx) > TURN_DEADZONE) this.facingRight = dx > 0;
+        if (Math.abs(this.vx) > TURN_DEADZONE) this.facingRight = this.vx > 0;
         this.sprite.flipX = this.facingRight !== FACES_RIGHT;
-
-        if (distance > ARRIVED) {
-            const step = Math.min(this.constructor.speed * dt, distance);
-            this.x += (dx / distance) * step;
-            this.y += (dy / distance) * step;
-        }
     }
 
     // After the world step: the sprite follows.

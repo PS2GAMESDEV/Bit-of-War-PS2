@@ -1,0 +1,98 @@
+{
+  "source": "references/Bit of War 1.10.exe",
+  "source_sha256": "4d19f7692252cfe1e6fd8e199e226865909100a6bd1a880dfa7d81b581f73236",
+  "decoder": "OpenGMK gm8exe at 9e4282e6d19f4dd00961811840ddc3e11da6dd5a",
+  "pixel_conversion": "BGRA to RGBA, lossless PNG, no scaling; panels at y=0,256,...",
+  "story_objects": "objects 287-369 and379 in original extraction",
+  "language": "Original rasterized English story text preserved; controls EN/BR/SP",
+  "adaptations": [
+    "START skips an entire sequence",
+    "X accelerates narrative timelines sevenfold, including ending",
+    "Bastet cinematic keeps original artwork and confirmation points; optional grunt sounds and original button-mashing overlay omitted",
+    "Movie frames are held at their final frame rather than destroying the image; original backdrop is shown throughout",
+    "Only the current and next four-frame image blocks remain loaded; text/movie time pauses if an image block is still loading"
+  ],
+  "validation": "All referenced source frame paths present; all exported texture panels <=512x256; timing, streaming, skip, confirmation, credits tested with Node Athena stubs",
+  "shadow_introduction": {
+    "source_room": 33,
+    "view_y": 208,
+    "background": "shadowCorridor.png, lossless composition of original static room instances at original depths",
+    "actors": {
+      "player": {
+        "sprite_id": 27,
+        "x": 57,
+        "y": 384,
+        "frame": 0
+      },
+      "shadow_jump": {
+        "sprite_id": 239,
+        "path_id": 22,
+        "path_kind": "smooth",
+        "precision": 4,
+        "absolute": true,
+        "speed_pixels_per_step": 10,
+        "steps_per_second": 20
+      },
+      "pause_seconds": 1.5,
+      "pop_out": {
+        "sprite_id": 257,
+        "frames": 4,
+        "fps": 20
+      }
+    },
+    "music": "ID13 musicBoss, starts after the silent Shadow dialogue",
+    "controls": "START skips; X acceleration disabled for this native animation"
+  },
+  "music_verification": {
+    "method": "ffprobe durations of sound.data extracted with gm8exe, compared with packaged tracks; durations alone do not prove waveforms identical",
+    "gameplay_world1": {
+      "id": 1,
+      "source_name": "musicLevel1_old",
+      "duration": 154.752449,
+      "asset": "musicLevel1_old.ogg"
+    },
+    "cinemas": {
+      "id": 7,
+      "source_name": "musicLevel1",
+      "duration": 88.241633,
+      "asset_duration": 88.200998,
+      "asset": "level1.ogg"
+    },
+    "world2": {
+      "id": 2,
+      "duration": 127.686531,
+      "asset": "musicLevel2.ogg"
+    },
+    "world3": {
+      "id": 22,
+      "duration": 53.138866,
+      "asset": "musicLevel3.wav"
+    },
+    "world4": {
+      "id": 21,
+      "duration": 71.862857,
+      "asset": "musicLevel4.ogg"
+    },
+    "boss": {
+      "id": 13,
+      "duration": 65.097143,
+      "asset": "musicBoss.ogg"
+    },
+    "theme": {
+      "id": 14,
+      "duration": 19.3,
+      "asset": "musicTheme.ogg"
+    },
+    "menu_and_credits": {
+      "id": 36,
+      "duration": 46.14,
+      "asset": "musicMenu.ogg"
+    },
+    "ending": {
+      "id": 38,
+      "duration": 68.597551,
+      "asset": "musicEndCinema.ogg"
+    },
+    "empty_room_chest_room_boss_hall_final": "Silence: CinemaWorldGone calls sound_stop_all; these rooms have no music controllers."
+  }
+}
