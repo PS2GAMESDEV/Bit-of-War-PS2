@@ -8,26 +8,17 @@ import { PathMotion } from "../Enemies/shadowKratos.js";
 const SIZE = 16 * GAME_SCALE;
 const HALF = SIZE / 2;
 
-// The body is smaller than the 16x16 sprite so Kratos does not catch between
-// two blocks. It is centered on the sprite and rests on its bottom edge.
 const BODY = 12 * GAME_SCALE;
 const BODY_PAD_X = (SIZE - BODY) / 2;
 const BODY_PAD_Y = SIZE - BODY;
 const BLADE_WIDTH = 48 * GAME_SCALE;
 const PIXEL = 2 * GAME_SCALE;
 
-// The ladder probe and the door test are the body inset by this.
 const INSET = 4;
 
-// Sprite tints (128 per channel is the texture unchanged).
 const NORMAL = Color.new(128, 128, 128, 128);
 const GHOST = Color.new(128, 128, 128, 56);
 
-/**
- * Kratos. Position, gravity, floors and walls are handled by a dynamic body of
- * Collision.World; this class only turns the pad into velocities.
- * `pos` is the horizontal center / top of the body (what the camera follows).
- */
 export class Player {
     constructor({ sheets, sfx }) {
         this.sprite = new Sprite.Instance(sheets.kratos, { clip: ANIM.IDLE_R, scale: GAME_SCALE, origin: [0.5, 0] });
@@ -52,17 +43,17 @@ export class Player {
         this.attacking = false;
         this.attackGap = 0;
         this.knock = null;
-        this.struck = new Set();    // enemies already hit by the current swing
+        this.struck = new Set();
         this.openingChest = false;
         this.climbing = false;
         this.climbDir = 0;
         this.jumps = MOVE.JUMPS;
         this.health = HURT.HEALTH;
         this.magic = HURT.MAGIC;
-        this.dead = false;          // plays ANIM.DIE and ignores the pad
-        this.deathDone = false;     // the death animation has finished
-        this.stun = 0;              // seconds left without control after a hit
-        this.invulnerable = 0;      // seconds left immune (and translucent)
+        this.dead = false;
+        this.deathDone = false;
+        this.stun = 0;
+        this.invulnerable = 0;
         this.selectedPower = 0;
         this.unlockedPowers = 1;
         this.levelBounds = null;
@@ -74,10 +65,6 @@ export class Player {
         return this.invulnerable <= 0 && this.health > 0 && !this.powers?.spinning;
     }
 
-    // Hit by something at `fromX` (its center): loses health and is thrown up
-    // and away from it.
-    // `pierces`: the Sphinx and its fire hurt a spinning Kratos (every other source,
-    // checked in its collision event, ignores him while flagSpin is set).
     hurt(fromX, damage = 1, pierces = false) {
         if (!(this.vulnerable || pierces && this.invulnerable <= 0 && this.health > 0)) return;
 
@@ -97,8 +84,6 @@ export class Player {
             this.blade.stop();
         }
 
-        // The original follows path 1 (facing right: pushed left) or 2 (facing left: pushed
-        // right) at 6 px per step, while gravity keeps pulling him down.
         body.vx = 0;
         const motion = new PathMotion(this.facingLeft ? 2 : 1, HURT.PATH_SPEED, 0, 0);
         let steps = 0;
@@ -128,7 +113,6 @@ export class Player {
         this.sprite.play(ANIM.DIE, { restart: true });
     }
 
-    // Back to full health after a game over (attach() puts him in the level).
     revive() {
         this.health = HURT.HEALTH;
         this.magic = HURT.MAGIC;
@@ -141,8 +125,6 @@ export class Player {
         this.powers?.clear();
     }
 
-    // Room-space coordinates, already multiplied by GAME_SCALE. Camera bottom
-    // is intentionally not used: vertically scrolling rooms have platforms below.
     setBounds(width, height) {
         this.levelBounds = { width, height };
     }
@@ -153,7 +135,6 @@ export class Player {
         return blade ? [{ box: blade, kind: "blade", struck: this.struck, damage: 1, sourceX: this.pos.x }, ...attacks] : attacks;
     }
 
-    // Where the blade is while it swings (the box that is drawn), or null.
     get hitbox() {
         if (!this.attacking) return null;
 
@@ -166,13 +147,10 @@ export class Player {
         };
     }
 
-    // Top-left of the sprite box: what attach() takes to put him back here.
     get origin() {
         return { x: this.pos.x - HALF, y: this.pos.y };
     }
 
-    // Puts the player in `world` (a new level clears it). (x, y) is the top-left
-    // of the 16x16 sprite box; the smaller body sits at its feet.
     attach(world, x, y) {
         this.world = world;
         this.body = world.add({
@@ -184,10 +162,6 @@ export class Player {
             maxSpeedY: MOVE.MAX_FALL_SPEED
         });
 
-        // A sensor that follows the body: the world tells which ladders it
-        // overlaps, so nothing is queried (or allocated) per frame. It must not
-        // be static: two static bodies (the ladders are) are never a pair, so
-        // onEnter would never fire.
         this.probe = world.add({
             type: "kinematic",
             x: x + BODY_PAD_X + INSET, y: y + BODY_PAD_Y + INSET,
@@ -223,17 +197,17 @@ export class Player {
         this._syncPos();
     }
 
-    update(dt, pad) {
+    update(dt, pad, view = null) {
         const body = this.body;
         this.defending = false;
         this.attackGap = Math.max(0, this.attackGap - dt);
 
         if (this.dead) {
-            // He falls where he died (no control, no knockback) and lies there.
+
             body.vx = 0;
             this.world.step(dt);
             this._syncPos();
-            // A sprite below the room may be culled and never emit "end".
+
             this.deathTime += dt;
             if (this.deathTime >= 1.35) this.deathDone = true;
             return;
@@ -241,7 +215,6 @@ export class Player {
 
         if (this.invulnerable > 0) this.invulnerable -= dt;
 
-        // Stunned, the pad is ignored while the hit path carries him.
         const stunned = this.stun > 0;
         if (this.knock) {
             this.knock.acc += dt;
@@ -261,7 +234,7 @@ export class Player {
         else body.vx = 0;
 
         this.world.step(dt);
-        // A kill sensor can start death during the step. Keep its animation.
+
         if (this.dead) {
             this._syncPos();
             return;
@@ -288,7 +261,9 @@ export class Player {
 
         this._syncPos();
         this.powers.update(dt, pad.pressed(KEY.SPECIAL ?? Gamepad.L2), this.selectedPower);
-        if (this.levelBounds && this.origin.y > this.levelBounds.height) {
+
+        const bottom = view ? view.y + view.h : this.levelBounds?.height;
+        if (bottom !== undefined && body.y > bottom) {
             this._die();
             return;
         }
@@ -335,13 +310,13 @@ export class Player {
     _attack() {
         this.attacking = true;
         this.struck.clear();
-        this.attackGap = stepsToSeconds(9);      // countPunch 6 counting down to below -2
+        this.attackGap = stepsToSeconds(9);
         this.blade.play("swing", { restart: true });
         this.sfxBlades.play();
     }
 
     _checkLadder(pad, body) {
-        // Standing on the ladder top leaves the probe above the ladder sensor.
+
         const ladder = this.ladders.values().next().value ??
             (pad.pressed(Gamepad.DOWN) && body.ground?.oneWay
                 ? this.world.query(body.x + INSET, body.bottom, BODY - 2 * INSET, INSET, LAYER.LADDER)[0]
@@ -358,8 +333,7 @@ export class Player {
             const landed = this.climbDir > 0 && body.onGround;
             if (landed) this._stopClimbing();
             else if (ladder) this.lastLadder = ladder;
-            // Without a ladder the player stays on the rope: at the top of the
-            // last one, LEFT/RIGHT (or jump) steps onto the platform.
+
             else if (!this.lastLadder) this._stopClimbing();
             return;
         }
@@ -376,7 +350,6 @@ export class Player {
         }
     }
 
-    // Stop at the ladder endpoints, even after the inset probe leaves the sensor.
     _pastLadder(body, dir) {
         const ladder = this.lastLadder;
         if (dir === 0 || ladder === null) return false;
@@ -455,7 +428,7 @@ export class Player {
         const hitbox = this.hitbox;
 
         if (hitbox) {
-            //Draw.rect(hitbox.x, hitbox.y, BLADE_WIDTH, 16, Color.new(255, 0, 0, 96))
+
             this.blade.flipX = !this.facingLeft;
             this.blade.draw(hitbox.x, hitbox.y);
         }

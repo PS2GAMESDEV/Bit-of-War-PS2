@@ -7,7 +7,6 @@ log("---- main.js start");
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 
-// The pad is polled once per frame, before any scene updates.
 Loop.addSystem({
     name: "gamepad",
     priority: -100,
@@ -16,7 +15,6 @@ Loop.addSystem({
     }
 });
 
-// Loading screen: dark background and Kratos spinning his blades.
 const spinner = new Sprite.Instance(
     Sprite.Sheet.fromGrid(new Image("assets/images/sprites/kratos/kratos_spin_atk.png"), {
         frameWidth: 80,
@@ -35,7 +33,7 @@ Scene.loadingScreen = (progress, { loaded, total }) => {
         lastLoaded = loaded;
         log(`loading ${loaded}/${total} (frame ${loadingFrames})`);
     } else if (loadingFrames % 60 === 0) {
-        // Heartbeat: still alive, still waiting. It stops if the main thread hangs.
+
         log(`  loading ${loaded}/${total} still waiting (frame ${loadingFrames})`);
     }
     log_step("draw begin", loadingFrames);
@@ -44,14 +42,10 @@ Scene.loadingScreen = (progress, { loaded, total }) => {
     log_step("draw end", loadingFrames);
 };
 
-// First frames only: tells a hang inside the draw from one outside it.
 function log_step(what, frame) {
     if (frame <= 3) log(`  loadingScreen #${frame} ${what}`);
 }
 
-// Fixed 60 Hz step, one per frame at most: like the original, a slow frame
-// slows the game down instead of running several updates (which would repeat
-// the pad's justPressed edges).
 log("before Scene.run");
 Scene.run(Story, { params: { sequence: "splash", then: Menu } }, { fixedStep: 1 / 60, maxSteps: 1 });
 log("after Scene.run");

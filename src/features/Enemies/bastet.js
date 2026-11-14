@@ -10,16 +10,13 @@ const BAST_H = 128 * GAME_SCALE;
 const TORNADO_SIZE = 32 * GAME_SCALE;
 const TORNADO_HIT_SIZE = 16 * GAME_SCALE;
 const TORNADO_HIT_INSET = (TORNADO_SIZE - TORNADO_HIT_SIZE) / 2;
-const SPHINX_TIME = stepsToSeconds(100);      // alarm 1 -> 0: fire for 100 steps
+const SPHINX_TIME = stepsToSeconds(100);
 const IDLE_TIME = stepsToSeconds(60);
-const ADVANCE_SPEED = pxPerStep(0.5);          // -0.5 px per step
-const TORNADO_SPEED = pxPerStep(5);            // -5 px per step
-const FINISH_FPS = 0.4 * ORIGINAL_HZ;          // stoning/finishing sprites at image_speed .4
+const ADVANCE_SPEED = pxPerStep(0.5);
+const TORNADO_SPEED = pxPerStep(5);
+const FINISH_FPS = 0.4 * ORIGINAL_HZ;
 const RECOIL = 20 * GAME_SCALE;
 
-// Both map placements belong to one boss, so a swing damages their shared
-// health only once. Only the breathing pause is vulnerable; a successful hit
-// triggers Bastet's shield and tornado until it crosses the viewport.
 export class Bastet {
     static health = 5;
     static reward = "gotBladeStorm";
@@ -75,7 +72,6 @@ export class Bastet {
             target.centerX >= this.startMarker.x;
     }
 
-    // Called after the introductory cutscene.
     start() {
         if (this.started || !this.body || !this.parts.bastet) return;
         this.started = true;
@@ -98,8 +94,6 @@ export class Bastet {
         return this.started && this.health > 0 ? this.body : null;
     }
 
-    // Original bossSphinx/Collision 27,105,116. No handler for spin/121.
-    // Hammer receives an additional 30/100 when its y coordinate is above 320.
     damageFor(kind, hitbox) {
         if (this.state === "finishReady") return kind === "blade" ? 1 : 0;
         if (!this.hurtbox) return 0;
@@ -115,13 +109,12 @@ export class Bastet {
         this.body.move(RECOIL, 0);
         this._setState("bastetAttack");
         this._spawnTornado();
-        this.sfx.bastetTornado?.play();   // bossBastet: soundBastetTornado
+        this.sfx.bastetTornado?.play();
     }
 
-    // The empty life bar stuns the mount; it still needs the Gorgon finisher.
     die() {
         if (this.state === "idle") this.body.move(RECOIL, 0);
-        this.sfx.thorDizzy?.play();       // stunnedBastet/Create: soundThorDizzy
+        this.sfx.thorDizzy?.play();
         this.health = 0;
         this.dying = true;
         this._setState("defeated");
@@ -135,8 +128,6 @@ export class Bastet {
         return { x: this.fallen.x, y: this.fallen.y, w: RIDER_SIZE, h: RIDER_SIZE };
     }
 
-    // The original requires the Gorgon Head on the stunned mount, then a
-    // blade hit on the fallen rider; emptying the life bar alone is not a win.
     gorgonize() {
         if (this.state !== "defeated") return false;
         this.state = "stoning";
@@ -154,7 +145,7 @@ export class Bastet {
         if (this.state !== "finishReady" || kind !== "blade") return;
         this.state = "finishing";
         this.sfx.bastetFinish?.play();
-        this.sfx.bastetGrunt?.play();     // stunnedBastet: soundThorCrumble + soundBastetGrunt
+        this.sfx.bastetGrunt?.play();
         this.finishTime = 0;
         this.fallen = new Sprite.Instance(this.finishSheets.bastetFinish, { scale: GAME_SCALE, autoUpdate: false,
             x: this.fallen.x, y: this.fallen.y });
@@ -171,8 +162,7 @@ export class Bastet {
             rider.play("walk", { restart: true });
             this.fire.play("burn", { restart: true });
         } else if (state === "bastetAttack") {
-            // Reset by the counterattack tornado crossing the viewport's left
-            // edge (object245/Step), rather than a fixed three-second timer.
+
             this.timer = (this.view?.w ?? 272 * GAME_SCALE) / TORNADO_SPEED;
             sphinx.play("hit", { restart: true });
             rider.play("attack", { restart: true });
@@ -185,8 +175,6 @@ export class Bastet {
         this.sync();
     }
 
-    // soundBastetSphinxFire loops from the Sphinx's attack until the tornado
-    // has crossed the viewport, and is cut when it breathes in or is stunned.
     _fireLoop(on) {
         if (on === this.firing) return;
         this.firing = on;
@@ -194,7 +182,6 @@ export class Bastet {
         else this.sfx.bastetFire?.stop?.();
     }
 
-    // The attack and counterattack effects block weapons ("arrow blocked" noise).
     get deflectBoxes() {
         if (!this.started || this.health <= 0 || this.state === "idle" || this.state === "defeated") return [];
         const rider = this.parts.bastet;
@@ -229,8 +216,6 @@ export class Bastet {
         }
         if (!this.started || this.health <= 0) return;
 
-        // Spend only the time belonging to each phase, including a frame
-        // that crosses its endpoint. The last fire frame still moves fully.
         let remaining = dt;
         while (remaining > 0) {
             if (this.state === "bastetAttack" && this.tornadoes.length) {
@@ -253,8 +238,7 @@ export class Bastet {
                     for (const tornado of this.tornadoes) tornado.body.remove();
                     this.tornadoes.length = 0;
                 }
-                // Fire lasts100 steps, idle60. Counterattack ends when its
-                // tornado crosses the camera, then starts a fresh fire cycle.
+
                 this._setState(this.state === "sphinxAttack" ? "idle" : "sphinxAttack");
             }
         }
@@ -282,9 +266,6 @@ export class Bastet {
         }
     }
 
-    // All original attack effects persist on contact. Player invulnerability
-    // prevents every overlapping frame from counting as a fresh hit.
-    // Like other boss projectiles, neither can be blocked by the player.
     arrowHit(box) {
         this.sync();
         const effect = this.state === "sphinxAttack" ? this.fire
@@ -326,7 +307,6 @@ export class Bastet {
         }
     }
 
-    // The two character sprites are already drawn with their map layers.
     draw() {
         if (this.stone) {
             this.stone.draw(this.body.x, this.body.y - 16 * GAME_SCALE);

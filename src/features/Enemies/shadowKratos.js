@@ -15,8 +15,6 @@ const image = (name, width, clips) => ({
     path: `images/enemies/shadow${name}.png`, frameWidth: width, frameHeight: 16, clips
 });
 
-// All clips are also available to the engine, although the controller selects
-// frames itself so a paused scene cannot advance an attack animation.
 export const SHADOW_SHEETS = Object.freeze({
     shadowBody: image("Body", 16, Object.fromEntries([
         ["walk", { frames: "0-1", fps: 4 }],
@@ -33,8 +31,6 @@ export const SHADOW_SHEETS = Object.freeze({
     shadowLightningRight: image("LightningRight", 16, { fly: { frames: "0-1", fps: ORIGINAL_HZ } })
 });
 
-// The binary stores these as absolute or relative GM paths. Distances and
-// speeds here remain original pixels per 20 Hz step, scaled only at drawing.
 export class PathMotion {
     constructor(id, speed, x = 0, y = 0, absolute = false) {
         this.points = SHADOW_PATHS[id];
@@ -69,20 +65,12 @@ export class PathMotion {
     }
 }
 
-/** Three original Shadow encounters, simulated at their original 20 Hz.
- * The Level advances world physics separately. This controller moves its body
- * explicitly and leaves vx/vy zero, avoiding double integration at 60 Hz.
- */
 export class ShadowKratos {
     static clip = "walk";
     static selfDrawn = true;
     static health = 100;
     static reward = "shadowStageComplete";
 
-    // `options` lets the campaign Zeus and Thor reuse these original routines
-    // (bossZeus/skZeus and bossThor/skThor differ only in art, damage, start and death):
-    //   frames  pose table; sheets  body/transport/projectile sheet names; campaign  no pop-in
-    //   and no Shadow-only sounds; transportY, spiralPath, walkFps  the room's own values.
     constructor(sprite, world, x, y, sheets, markers = {}, sfx = {}, phase = "final", options = {}) {
         this.frames = options.frames ?? BODY_FRAMES;
         this.names = {
@@ -128,7 +116,7 @@ export class ShadowKratos {
         });
         this.sprite = sprite ?? this._sprite(this.names.body);
         this.spin = this._sprite("shadowSpin");
-        // obHammerSpiral hovers 16 px above the floating Thor until it is launched.
+
         this.spiral = phase === "thor" ? this._sprite(this.names.hammer[1]) : null;
         this.transport = this._sprite(this.names.transport);
         this.bladesLeft = this._sprite("shadowBladesLeft");
@@ -168,7 +156,7 @@ export class ShadowKratos {
         this.stateTicks = 0;
         this.attackTicks = 0;
         this.blade = null;
-        if (!this.campaign) this.sfx.shadowHurt?.play();    // the Level plays it for Zeus and Thor
+        if (!this.campaign) this.sfx.shadowHurt?.play();
         this.body.mask = this.phase === "zeus" ? 0 : LAYER.SOLID;
         this.recoil = this.phase === "zeus" ? null : new PathMotion(fromX < this.body.centerX ? 2 : 1, 6, this.body.x, this.body.y);
         this.recoilLast = this.recoil ? { x: this.body.x, y: this.body.y } : null;
@@ -224,8 +212,7 @@ export class ShadowKratos {
             }
         } else if (this.state === "hurt") {
             this._pose(this.direction < 0 ? "hitL" : "hitR", this.stateTicks);
-            // bossThorOuch/skOuch: the path moves it while its own step event keeps applying
-            // gravity (.98 per step), so it slides sideways and does not stay up in the air.
+
             if (this.recoil && !this.recoil.done) {
                 const p = this.recoil.step();
                 this.body.move(p.x - this.recoilLast.x, p.y - this.recoilLast.y);
@@ -319,8 +306,7 @@ export class ShadowKratos {
     _groundAt(x, y) {
         return this.world.query(x, y, Math.max(1, 10 * S), S, LAYER.SOLID).some(b => !b.sensor);
     }
-    // `jumped`: on the frame of the jump no gravity is set (the floor is still below), so the
-    // first move is the full -9 px and the hop is 46 px high.
+
     _fall(jumped = false) {
         if (!jumped) this.verticalSpeed = Math.min(12 * S, this.verticalSpeed + 0.98 * S);
         this.body.move(0, this.verticalSpeed);
@@ -329,8 +315,7 @@ export class ShadowKratos {
     _thorStep() {
         const b = this.body;
         const grounded = this._groundAt(b.x + 3 * S, b.bottom);
-        // The grey masts only occupy the two room edges; the central solid
-        // block is a crate to jump over, not a wall that reverses direction.
+
         if ((this.direction < 0 && b.x <= 16 * S) || (this.direction > 0 && b.x >= 240 * S)) this.direction *= -1;
         const ahead = this.direction < 0 ? b.x - 16 * S : b.right + 1;
         let jumped = false;
@@ -362,7 +347,7 @@ export class ShadowKratos {
         const amount = Math.min(distance, 6 * S);
         if (distance > 0) this.body.setPosition(this.body.x + dx / distance * amount, this.body.y + dy / distance * amount);
         if (amount >= distance) {
-            // bossThorFloat/skThorFloat: end the float sound, launch the spiral hammer (soundBastetTornado).
+
             this.sfx.zeusTransport?.stop?.();
             this.sfx.bastetTornado?.play();
             this._spawnProjectile(this.spiralPath, 20, "hammer", true);

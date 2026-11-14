@@ -73,9 +73,8 @@ export class Scene03 extends Scene {
         this.frameTimer += (this.fast ? FAST_FRAME_RATE
         : this.animation === 1 ? FRAME_RATE_1 : FRAME_RATE_2) * dt;
 
-
         if (this.frameTimer >= FRAME_TIME) {
-            
+
             this.frameTimer = 0;
 
             if (this.animation === 1) {
@@ -88,7 +87,7 @@ export class Scene03 extends Scene {
                 if (this._frame(this.chunks1, nextFrame, this.sizes1)) {
                     this.frameIndex = nextFrame;
                 }
-                
+
         } else {
             const nextFrame = this.frameIndex + 1;
 
@@ -136,7 +135,7 @@ export class Scene03 extends Scene {
 
     draw() {
         const { images } = this;
-        
+
         images.scroll.draw(48, this.scrollY, this.scrollSize);
         images.mask.draw(0, 0, this.maskSize);
 

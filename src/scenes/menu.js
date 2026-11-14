@@ -5,16 +5,10 @@ import { loadSettings, saveSettings, settings } from "../shared/lib/settings.js"
 import Game, { LEVELS } from "./Game.js";
 import { log } from "../shared/lib/boot_log.js";
 
-// Diagnostic: true skips music.play(); the music is already ruled out (same freeze without it).
 const DIAG_NO_MUSIC = false;
 
-// Diagnostic: which draws the menu skips, to find the one that hangs the frame.
-//   ""       nothing skipped (the freeze)
-//   "text"   no font.print at all: only the images are drawn
-//   "images" no image draw on the main screen: only the text is drawn
 const DIAG_SKIP = "";
 
-// Developer menu with every map (the hidden original level select is separate); set true to show it.
 const TEMP_LEVEL_SELECT = false;
 const LEVEL_ROWS = 6;
 
@@ -23,10 +17,9 @@ const RED = Color.new(255, 0, 0);
 const WHITE = Color.new(255, 255, 255);
 const BLACK = Color.new(0, 0, 0);
 
-// Level select (hold L1 and press R1; the original uses D then J on the keyboard).
 const LEVEL_SELECT_HOLD = Gamepad.L1;
 const LEVEL_SELECT_PRESS = Gamepad.R1;
-// Checkpoints of the original menu and the weapons it hands out per world.
+
 const WORLDS = Object.freeze([
     { label: "Level 1 - Mt. Olympus", level: 0, weapons: 1 },
     { label: "Level 2 - Armada", level: 6, weapons: 2 },
@@ -64,7 +57,7 @@ export class Menu extends Scene {
         this.logoSize = scaled(images.logo, 2);
 
         this.selected = 0;
-        // Volumes and language stored on the memory card (read once per run).
+
         await loadSettings();
         this.langIndex = LANGS.indexOf(getLang());
 
@@ -85,7 +78,7 @@ export class Menu extends Scene {
     }
 
     update() {
-        // Diagnostic: first frames, then a heartbeat every ~2 s.
+
         this.dbgU = (this.dbgU || 0) + 1;
         if (this.dbgU <= 3 || this.dbgU % 120 === 0) log(`Menu.update #${this.dbgU} busy=${Scene.busy}`);
         if (!Scene.busy) this.screen.update();
@@ -107,8 +100,6 @@ export class Menu extends Scene {
         this._print(205, title, GRAY, this.header);
     }
 
-    // Load Game: shows the screen at once and fills `slot` when the card has been read
-    // (undefined while reading, null without a save).
     async _openLoad() {
         this.slot = undefined;
         this._go("load");
@@ -126,7 +117,6 @@ export class Menu extends Scene {
         font.print(centeredX(font, text), y, text);
     }
 
-    // Prints `labels` one per row, highlighting the selected one.
     _list(y, step, labels) {
         for (let i = 0; i < labels.length; i++) {
             this._print(y + i * step, labels[i], i === this.selected ? RED : WHITE);
@@ -148,14 +138,14 @@ export class Menu extends Scene {
         return {
             main: {
                 update() {
-                    // The original's hidden level select: hold D and press J on the keyboard.
+
                     if (menu.pad.pressed(LEVEL_SELECT_HOLD) && menu.pad.justPressed(LEVEL_SELECT_PRESS)) {
                         menu._go("levelSelect");
                         return;
                     }
                     menu._move(TEMP_LEVEL_SELECT ? 4 : 3);
                     if (!confirm()) return;
-                    // New Game / Continue / Gauntlet; the original's "Exit" is Options on the console.
+
                     if (menu.selected === 0) Scene.go(Game);
                     else if (menu.selected === 1) menu._openLoad();
                     else if (menu.selected === 2) Scene.go(Game, { params: { gauntlet: true } });
@@ -166,14 +156,13 @@ export class Menu extends Scene {
                     const labels = [menu._t("newgame"), menu._t("load"), menu._t("gauntlet"), menu._t("options")];
                     if (TEMP_LEVEL_SELECT) {
                         labels.push(menu._t("testLevels"));
-                        // The temporary row falls outside the artwork's black box.
+
                         Draw.rect(120, 244 + 4 * 20 - 2, 400, 24, BLACK);
                     }
                     menu._list(244, 20, labels);
                 }
             },
 
-            // controllerLevelSelectMenu: four worlds and a weapons toggle, on black.
             levelSelect: {
                 update() {
                     menu._move(4);
@@ -224,7 +213,7 @@ export class Menu extends Scene {
             load: {
                 update() {
                     const slot = menu.slot;
-                    if (slot === undefined) return; // still reading the card
+                    if (slot === undefined) return;
 
                     if (menu.pad.justPressed(Gamepad.CIRCLE) || (confirm() && !slot?.progress)) {
                         menu._go("main", 1);
@@ -270,7 +259,7 @@ export class Menu extends Scene {
                     if (menu.selected === 2) menu._go("controls");
                     if (menu.selected === 4) menu._go("credits");
                     if (menu.selected === 5) {
-                        saveSettings(); // volumes and language go to the memory card
+                        saveSettings();
                         menu._go("main", 3);
                     }
                 },

@@ -2,20 +2,6 @@ import { GAME_SCALE, KNOCKBACK_DECAY, KNOCKBACK_SPEED, LAYER, PLAYER_MOVEMENT as
 
 const SIZE = 16 * GAME_SCALE;
 
-/**
- * Enemy that walks ahead until a wall blocks it or the floor ends, then turns
- * around. With `runSpeed` and `sight` it runs (and plays "run") while it sees
- * the player: in front of it, within `sight` units, on its row, and with no
- * solid between them.
- *
- * A dynamic body of the Collision.World (gravity, floors and walls); it only
- * collides with LAYER.SOLID, so the player walks through it.
- *
- *   facesRight  which way the art looks in the sheet (it is flipped otherwise)
- *   walkSpeed   units per second
- *   runSpeed    0: never runs
- *   sight       units; 0: blind
- */
 export class Walker {
     static clip = "walk";
 
@@ -27,7 +13,7 @@ export class Walker {
         this.runSpeed = runSpeed;
         this.sight = sight;
         this.running = false;
-        this.knock = 0;     // push from a hit, units per second (fades out)
+        this.knock = 0;
         this.dir = facesRight ? 1 : -1;
         this.body = world.add({
             type: "dynamic",
@@ -39,15 +25,10 @@ export class Walker {
         });
     }
 
-    // Box the blade can hit.
     get hurtbox() {
         return this.body;
     }
 
-    // Hit from `fromX` (the attacker's center): turns to face him and is
-    // pushed the other way.
-    // The original moves it 10 px away at once when that spot is free (not
-    // for Lightning, which only turns it) and plays no push afterwards.
     hurt(fromX, kind = "blade") {
         const toAttacker = fromX > this.body.centerX ? 1 : -1;
 
@@ -62,14 +43,11 @@ export class Walker {
         this.body.remove();
     }
 
-    // Before the world step: picks the direction and sets the velocity.
-    // `target` is the player's body.
     update(target, dt) {
         const body = this.body;
 
         if (body.onGround) {
-            // One unit past the leading edge: the wall in front, and the
-            // floor under the next step.
+
             const front = this.dir > 0 ? body.right + 1 : body.x - 1;
             const wall = this.world.solidAt(front, body.y + SIZE / 2, LAYER.SOLID);
             const floor = this.world.solidAt(front, body.bottom + 1, LAYER.SOLID) ||
@@ -78,7 +56,6 @@ export class Walker {
             if (wall || !floor) this.dir = -this.dir;
         }
 
-        // After the turn, so it does not chase what is now behind it.
         this.running = this.runSpeed > 0 && this._sees(target);
 
         body.vx = this.dir * (this.running ? this.runSpeed : this.walkSpeed);
@@ -86,14 +63,11 @@ export class Walker {
         this.sprite.play(this.running ? "run" : "walk");
     }
 
-    // After the step: the sprite follows the body.
     sync() {
         this.sprite.x = this.body.x;
         this.sprite.y = this.body.y;
     }
 
-    // enMinotaur: charges whenever Kratos is ahead of it on exactly its own row
-    // (|y difference| < 1 px), at any distance and through anything.
     _sees(target) {
         const body = this.body;
         const ahead = this.dir > 0 ? target.centerX > body.centerX : target.centerX < body.centerX;

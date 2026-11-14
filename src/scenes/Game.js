@@ -21,7 +21,6 @@ import {
     isNewRecord, previousBest
 } from "../shared/lib/gauntlet.js";
 
-
 export const LEVELS = Object.freeze([
     "GaiaArm.json", "OlympusMntI01.json", "OlympusMntClimb.json",
     "Summit.json", "BossHall1.json", "Boss1.json", "ThorArmada1.json",
@@ -33,7 +32,6 @@ export const LEVELS = Object.freeze([
     "BossHallFinal.json", "ShadowRoom1.json", "ShadowRoom2.json", "FinalBossRoom.json"
 ]);
 
-// Level index -> cutscene shown before that level.
 const CUTSCENES = Object.freeze({
     5: Scene02,
     6: Scene03,
@@ -58,12 +56,11 @@ const HEALTHCOLORS = Object.freeze([
     Color.new(0, 255, 0, 255),
 ]);
 
-// Pause menu rows (lang keys), top to bottom.
 const PAUSE_OPTIONS = Object.freeze(["resume", "saveGame", "quit"]);
 const GAME_OVER_OPTIONS = Object.freeze(["restartSave", "saveQuit", "quitNoSave"]);
 const TEST_PAUSE_OPTIONS = Object.freeze(["resume", "restartLevel", "testLevels"]);
 const TEST_GAME_OVER_OPTIONS = Object.freeze(["restartLevel", "testLevels"]);
-// Gauntlet: one life; GameOvrBossRush offers "Try Again" / "Quit".
+
 const GAUNTLET_PAUSE_OPTIONS = Object.freeze(["resume", "quit"]);
 const GAUNTLET_GAME_OVER_OPTIONS = Object.freeze(["tryAgain", "quit"]);
 
@@ -75,9 +72,9 @@ const WHITE = Color.new(255, 255, 255);
 const RED = Color.new(255, 0, 0);
 const BLUE = Color.new(0, 0, 255, 255);
 const NOTICE_TIME = 2;
-const BOSS_REWARD_TIME = stepsToSeconds(40);   // controllerGotWeapon: alarm of 40 steps
+const BOSS_REWARD_TIME = stepsToSeconds(40);
 const FLASH_TIME = 0.1;
-const CAMERA_LERP = 8 //6;
+const CAMERA_LERP = 8
 const INSET = 4;
 
 const grid = { frameWidth: 16, frameHeight: 16 };
@@ -174,7 +171,7 @@ export default class Game extends Scene {
                 path: "images/sprites/kratos/blade.png",
                 frameWidth: 48,
                 frameHeight: 16,
-                // spriteBlades is removed when image_index reaches 5: five frames at 20 Hz.
+
                 clips: { swing: { frames: "0-4", fps: ORIGINAL_HZ, mode: "once" } }
             },
             torch: {
@@ -204,7 +201,7 @@ export default class Game extends Scene {
                 ...grid,
                 clips: { fly: { frames: "0-1", fps: 12 } }
             },
-            // Original lwZeus*/lwThor* strips (see ZEUS_FRAMES / THOR_FRAMES).
+
             zeus: { path: "images/enemies/zeusBody.png", ...grid, clips: { idle: "0" } },
             zeusTransportBoss: {
                 path: "images/enemies/zeusTransportBoss.png", frameWidth: 32, frameHeight: 16,
@@ -276,7 +273,7 @@ export default class Game extends Scene {
                 ...grid,
                 clips: { splash: "0" }
             },
-            // `rubbled` (3 frames) / `rubbleexplode` (4 frames): one play at 20 Hz, then the last frame stays.
+
             rubbled: {
                 path: "images/vfx/rubbled.png",
                 ...grid,
@@ -288,7 +285,7 @@ export default class Game extends Scene {
                 clips: { fall: { frames: "0-3", fps: ORIGINAL_HZ, mode: "once" } }
             },
             stones: { path: "images/enemies/stones.png", ...grid, clips: { idle: "0" } },
-            // `zapped`: 2 frames at image_speed 0.9, alive 10 steps at 20 Hz.
+
             zapped: {
                 path: "images/vfx/zapped.png",
                 ...grid,
@@ -332,7 +329,6 @@ export default class Game extends Scene {
         }
     };
 
-    // `params.save` restores campaign progress; `testLevelIndex` opens a test session.
     async enter(assets, params) {
         const { images, sheets } = assets;
         const testIndex = params?.testLevelIndex;
@@ -348,14 +344,13 @@ export default class Game extends Scene {
             this.gauntletBest = saved?.gauntletBest ?? null;
         }
 
-        // Textures used every frame stay resident in VRAM.
         sheets.atlas.image.lock();
         sheets.kratos.image.lock();
         sheets.blade.image.lock();
 
         this.hud = images.hud;
         this.powerup = images.powerup;
-        
+
         this.powerupIndex = 0;
         this.unlockedPowerups = 1;
         this.powerups = [
@@ -364,7 +359,7 @@ export default class Game extends Scene {
             images.puHammer,
             images.puSpinAttack
         ];
-        
+
         this.powerupSize = scaled(images.powerup, GAME_SCALE);
         this.hudSize = scaled(images.hud, GAME_SCALE);
         this.powerupSize = scaled(images.powerup, GAME_SCALE);
@@ -387,18 +382,11 @@ export default class Game extends Scene {
         this.menuSelected = 0;
         this.saving = false;
 
-        // A loaded level that has a cutscene before it shows it first (from
-        // update: a scene cannot push another while it is being entered);
-        // resume() then builds the level with this progress.
         this.introCutscene = this.testMode || this.gauntlet || params?.skipIntro ? null : this._cutsceneFor(this.levelIndex);
         this.resumeProgress = this.introCutscene ? progress : null;
 
-        // With a cutscene first, the level is not even loaded: resume() builds it
-        // once the cutscene is over, so it is never seen before the story starts.
         if (this.introCutscene) return;
-        // A loaded game or the level select builds its level on the first frames, after the
-        // loading screen: map parsing and tile maps can take seconds on the console, and
-        // doing it inside enter() looks like a frozen load.
+
         if (!this.testMode && !this.gauntlet) {
             this.pendingBuild = { progress };
             return;
@@ -422,7 +410,6 @@ export default class Game extends Scene {
         }
     }
 
-    // Map file of route position `index` (the campaign, or the Gauntlet route).
     _file(index) { return this.route[index]; }
 
     update(dt) {
@@ -440,11 +427,10 @@ export default class Game extends Scene {
         }
         if (!this.level) return;
         if (this.state === STATE.TRANSITIONING) {
-            this.gauntlet?.update(dt);     // timerBossRush is persistent: it runs through fades
+            this.gauntlet?.update(dt);
             return;
         }
 
-        // No input or world steps while the weapon acquisition image is shown.
         if (this.state === STATE.BOSS_REWARD) {
             if ((this.bossReward.time -= dt) <= 0) {
                 this.bossReward = null;
@@ -467,11 +453,11 @@ export default class Game extends Scene {
             return;
         }
 
-        const pad = Gamepad.player(0);    
-        
+        const pad = Gamepad.player(0);
+
         if (this.state === STATE.PLAYING && !this.player.dead && pad.justPressed(KEY.NEXT_POWER) && this.unlockedPowerups > 0) {
             this.powerupIndex++;
-        
+
             if (this.powerupIndex >= this.unlockedPowerups) {
                 this.powerupIndex = 0;
             }
@@ -531,23 +517,22 @@ export default class Game extends Scene {
 
         if (this.level.bastet?.state === "defeated") this.player.magic = 5;
 
-        this.player.body.dead = this.player.dead;      // enemies stop chasing a dead Kratos
+        this.player.body.dead = this.player.dead;
         this.level.update(this.player.body, dt, this.camera.visibleRect());
-        // ZeusFloatUp: Kratos only watches until Zeus has floated into place.
+
         const intro = this.level.enemies.some(e => e.introActive);
         if (intro !== this.introLocked) {
             this.introLocked = intro;
             this.player.canMove = !intro;
         }
         if (this.state === STATE.PLAYING && !this.player.dead && this.level.touchSpazz(this.player.body)) {
-            this.player.health = 5;     // "he's such a good pig": life and magic to 100
+            this.player.health = 5;
             this.player.magic = 5;
         }
         if (this.state === STATE.PLAYING && this.level.bossReward) {
             const reward = this.level.bossReward;
             this.level.bossReward = null;
-            // Gauntlet: no weapon card and no story, straight to the next room
-            // (transition_steps = 10); the last Shadow fight ends at the totals.
+
             if (this.gauntlet || reward === "shadowStageComplete") {
                 this._nextLevel();
                 return;
@@ -558,7 +543,7 @@ export default class Game extends Scene {
             const image = this.assets.images[reward];
             this.player.powers?.stopAura();
             this.bossReward = { image, size: scaled(image, GAME_SCALE), time: BOSS_REWARD_TIME };
-            this.assets.sfx.weaponGet?.play();      // Got* rooms: soundWeaponGet
+            this.assets.sfx.weaponGet?.play();
             this.state = STATE.BOSS_REWARD;
             this.player.canMove = false;
             this.player.body.vx = 0;
@@ -566,7 +551,7 @@ export default class Game extends Scene {
             return;
         }
         if (this.player.powers) this.player.powers.view = this.camera.visibleRect();
-        this.player.update(dt, pad); // steps the world, enemies included
+        this.player.update(dt, pad, this.camera.visibleRect());
 
         if (this.player.attackHitboxes) {
             for (const hit of this.player.attackHitboxes) this.level.strike(hit.box, hit.sourceX, hit.struck, hit.kind, hit.damage);
@@ -595,8 +580,6 @@ export default class Game extends Scene {
         Camera2D.screenSpace(this.drawHud);
     }
 
-    // Everything needed to put the player back where he stopped. `midLevel`
-    // false is the start of the current level (the player appears at the spawn).
     _progress(midLevel) {
         const chests = [];
         if (midLevel) this.level.chests.forEach((c, i) => { if (c.opened) chests.push(i); });
@@ -627,15 +610,13 @@ export default class Game extends Scene {
             if (!music.playing()) music.play();
             return;
         }
-        
+
         this.music?.stop();
         this.music = music;
-        
+
         music.play();
     }
 
-    // Pause and game over menus: UP/DOWN pick a row, CROSS confirms (START
-    // also resumes from the pause).
     _menuOptions() {
         const paused = this.state === STATE.PAUSED;
         if (this.gauntlet) return paused ? GAUNTLET_PAUSE_OPTIONS : GAUNTLET_GAME_OVER_OPTIONS;
@@ -666,8 +647,6 @@ export default class Game extends Scene {
         else Scene.go(Menu, { params: this.testMode ? { testLevelIndex: this.levelIndex } : {} });
     }
 
-    // Game over: the last checkpoint on the card, or the start of this level
-    // when there is none.
     async _restartFromSave() {
         this.saving = true;
         const data = this.testMode ? null : await Save.load();
@@ -682,7 +661,6 @@ export default class Game extends Scene {
         this._build(map, progress);
     }
 
-    // Game over: saves the start of this level and goes back to the menu.
     async _saveAndQuit() {
         this.saving = true;
         const saved = await Save.saveProgress(this._progress(false));
@@ -698,7 +676,6 @@ export default class Game extends Scene {
         if (this.level.bastet?.firing) this.assets.sfx.bastetFire?.play();
     }
 
-    // Writes the state to the memory card; the pause menu stays open.
     async _saveGame() {
         this.saving = true;
         const saved = await Save.saveProgress(this._progress(true));
@@ -706,7 +683,6 @@ export default class Game extends Scene {
         this.notice = { key: saved ? "gameSaved" : "saveFailed", time: NOTICE_TIME };
     }
 
-    // A cutscene was pushed over the game: free the level, hand the screen back.
     pause() {
         this.player.powers?.stopAura();
         this.music?.pause();
@@ -714,7 +690,6 @@ export default class Game extends Scene {
         Camera2D.main.makeCurrent();
     }
 
-    // The cutscene ended: the level it interrupted is loaded now.
     async resume() {
         this.camera.makeCurrent();
         if (this.inlineStory) {
@@ -741,11 +716,10 @@ export default class Game extends Scene {
         this._unload();
         this.music?.stop();
         this.music = null;
-        
+
         Camera2D.main.makeCurrent();
     }
 
-    // `progress`, when given, puts the player and the opened chests back.
     _build(map, progress = null) {
         this.bossReward = null;
         this.introLocked = false;
@@ -757,7 +731,7 @@ export default class Game extends Scene {
         this.player.attach(this.world, at.x, at.y);
         this.player.setBounds(this.level.width, this.level.height);
         this.player.facingLeft = at.facingLeft ?? false;
-        // Gauntlet: the weapons earned in the campaign, whatever the room.
+
         const inferred = this.gauntlet ? this.gauntletWeapons
             : this.levelIndex >= 16 ? 4 : this.levelIndex >= 11 ? 3 : this.levelIndex >= 6 ? 2 : 1;
         this.unlockedPowerups = Math.max(inferred, Math.min(4, progress?.unlockedPowers ?? this.unlockedPowerups ?? 1));
@@ -781,16 +755,15 @@ export default class Game extends Scene {
             .follow(this.player.pos, { lerp: CAMERA_LERP, deadzone: { w: 0, h: 96 } });
 
         this.state = STATE.PLAYING;
-        // BossRush8's Sphinx fights at once: the gauntlet has no cutscene to wait for.
+
         if (this.gauntlet) this.level.bastet?.start();
 
         this._playLevelMusic();
-        // EmptyRoom loops soundWindWaves; it ends with the room.
+
         if (!this.gauntlet && this._file(this.levelIndex) === "EmptyRoom.json") this.assets.sfx.windWaves?.play();
         std.gc();
     }
 
-    // Looping effects (Shadow's spin, the Sphinx's fire, the wind) end with their room.
     _stopLoops() {
         this.assets.sfx.shadowSpin?.stop();
         this.assets.sfx.bastetFire?.stop();
@@ -848,7 +821,6 @@ export default class Game extends Scene {
         const cutscene = this._cutsceneFor(next);
         const finished = next >= LEVELS.length;
 
-        // The next map is read on a worker while the screen fades out.
         const [, map] = await Promise.all([
             this.camera.fade(FADE_OUT, DOOR_CONFIG.TRANSITION_DELAY),
             cutscene || finished ? null : readMap(this._file(next))
@@ -863,7 +835,7 @@ export default class Game extends Scene {
             this.endingStory = true;
             Scene.push(Story, { params: { sequence: "ending" }, drawBelow: false });
         } else {
-            // Checkpoint at the start of the new level.
+
             Save.saveProgress(this._progress(false));
 
             if (cutscene) {
@@ -875,8 +847,6 @@ export default class Game extends Scene {
         }
     }
 
-    // Doors and fallen bosses lead to the next BossRush room; after the last
-    // one (skDefeat) the totals screen replaces the ending.
     async _nextGauntletRoom() {
         const next = this.levelIndex + 1;
         const finished = next >= this.route.length;
@@ -890,11 +860,9 @@ export default class Game extends Scene {
         this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
     }
 
-    // controllerBossRushTotals: silence, a tone (new record or weapon-get),
-    // and after 40 steps any button saves the record and returns to the menu.
     _showTotals() {
         this.state = STATE.GAUNTLET_TOTALS;
-        this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);     // the door's fade-out is still on screen
+        this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
         this._stopLoops();
         this.music?.stop();
         this.music = null;
@@ -915,7 +883,7 @@ export default class Game extends Scene {
         totals.wait = Math.max(0, totals.wait - dt);
         if (totals.wait > 0 || totals.leaving) return;
         const pad = Gamepad.player(0);
-        // A, S, Z and X of the original: jump, attack, next power and special.
+
         const any = KEY.JUMP | KEY.ATK | KEY.NEXT_POWER | KEY.SPECIAL;
         if (!pad.anyJustPressed(any)) return;
         totals.leaving = true;
@@ -923,8 +891,6 @@ export default class Game extends Scene {
         Scene.go(Menu, { params: {} });
     }
 
-    // GameOvrBossRush "Try Again": SetUpAndGo refills life and magic and
-    // BossRush1 resets the clock.
     async _restartGauntlet() {
         this.saving = true;
         const map = await readMap(this._file(0));
@@ -961,7 +927,7 @@ export default class Game extends Scene {
             const art = this.assets.images.bossRushTotals;
             const size = scaled(art, GAME_SCALE);
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLACK);
-            art.draw((SCREEN_WIDTH - size.width) / 2, (SCREEN_HEIGHT - size.height) / 2, size);   // "Guantlet Complete"
+            art.draw((SCREEN_WIDTH - size.width) / 2, (SCREEN_HEIGHT - size.height) / 2, size);
             font.color = seconds < DEVELOPER_TIME ? RED : WHITE;
             font.print(x, y(80), t("gauntletTime") + clock);
             font.color = WHITE;
@@ -984,7 +950,7 @@ export default class Game extends Scene {
             const { width, height } = this.gameOverSize;
             Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BLACK);
             this.assets.images.gameOver.draw((SCREEN_WIDTH - width) / 2, (SCREEN_HEIGHT - height) / 2, this.gameOverSize);
-            // GameOvrBossRush: the same background, rows at y 110 and 120 of the 272x208 room.
+
             const top = this.gauntlet ? 110 * GAME_SCALE + (SCREEN_HEIGHT - 208 * GAME_SCALE) / 2 : 300;
             const gap = this.gauntlet ? 10 * GAME_SCALE : 30;
             this._menuOptions().forEach((key, i) => line(top + i * gap, t(key), i === this.menuSelected ? RED : WHITE));
@@ -1005,7 +971,7 @@ export default class Game extends Scene {
         const magicWidth = Math.max(0, Math.min(5, this.player.magic)) * 20;
 
         this.hud.draw(x, 0, this.hudSize);
-        
+
         const powerup = this.powerups[this.powerupIndex];
 
         if (powerup) {
@@ -1015,7 +981,7 @@ export default class Game extends Scene {
                 this.powerupSize
             );
         }
-        
+
         Draw.rect(x + 92, 36, 104, 8, BLACK);
         Draw.rect(x + 92, 46, 104, 8, BLACK);
 
@@ -1023,7 +989,7 @@ export default class Game extends Scene {
             let healthColor = HEALTHCOLORS[Math.max(0, Math.ceil(health) - 1)];
             Draw.rect(x + 94, 38, healthWidth, 4, healthColor);
         }
-        
+
         if(magicWidth > 0) Draw.rect(x + 94, 48, magicWidth, 4, BLUE);
         const boss = this.level.enemies.find(e => e.constructor.reward && (e.started !== false || e.healthBarVisible));
         if (boss) {
@@ -1037,7 +1003,7 @@ export default class Game extends Scene {
             const at = centeredX(font, text);
             const base = 190 * GAME_SCALE + (SCREEN_HEIGHT - 208 * GAME_SCALE) / 2;
             font.color = BLACK;
-            font.print(at + 1, base + 1, text);      // drop shadow, as drawn by timerBossRush
+            font.print(at + 1, base + 1, text);
             font.color = WHITE;
             font.print(at, base, text);
         }

@@ -2,20 +2,12 @@ import { GAME_SCALE, pxPerStep } from "../../shared/lib/constants.js";
 
 const TILE = 16 * GAME_SCALE;
 
-// Which way the enHarpie art looks in the sheet (flipped when she goes the other way).
 const FACES_RIGHT = true;
 
-const WAKE = 50 * GAME_SCALE;               // |dx| < 50 and |dy| < 50 px
-const SPEED = pxPerStep(2);                 // move_point(kratos, 2): 2 px per step
+const WAKE = 50 * GAME_SCALE;
+const SPEED = pxPerStep(2);
 const TURN_DEADZONE = 2;
 
-/**
- * enHarpie (also enDragon and enScarab, whose events are identical): perched
- * until Kratos is within 50 px on both axes, then she screeches and flaps.
- * While Kratos stays inside that box every step re-aims her at him at 2 px per
- * step; once he leaves it she keeps flying along her last heading. Blocks do
- * not stop her. With Kratos dead (or after being turned to stone) she stops.
- */
 export class Harpie {
     static clip = "idle";
     static health = 1;
@@ -32,12 +24,10 @@ export class Harpie {
         this.facingRight = FACES_RIGHT;
     }
 
-    // Lightning, blades and the rest only count the hit: no knockback for her.
     hurt() {}
 
     die() { this.sfxScreech?.stop?.(); }
 
-    // Box the blade can hit.
     get hurtbox() {
         return { x: this.x, y: this.y, w: TILE, h: TILE };
     }
@@ -69,7 +59,6 @@ export class Harpie {
         this.sprite.flipX = this.facingRight !== FACES_RIGHT;
     }
 
-    // After the world step: the sprite follows.
     sync() {
         this.sprite.x = this.x;
         this.sprite.y = this.y;

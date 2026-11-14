@@ -1,12 +1,7 @@
 import { GAME_SCALE, stepsToSeconds } from "../../shared/lib/constants.js";
 
-const LIFETIME = stepsToSeconds(10);   // object `zapped`: removed after 10 steps
+const LIFETIME = stepsToSeconds(10);
 
-/**
- * The electric shock drawn on an ordinary enemy struck by the Lightning
- * power (object `zapped`, created at the enemy's origin; it plays
- * soundZappyPoo when created).
- */
 export class Zap {
     constructor(sheet, sfx) {
         this.sheet = sheet;

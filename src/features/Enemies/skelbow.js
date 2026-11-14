@@ -2,24 +2,15 @@ import { GAME_SCALE, LAYER, ORIGINAL_HZ, pxPerStep } from "../../shared/lib/cons
 
 const TILE = 16 * GAME_SCALE;
 
-// Which way the enSkelbow and arrow art look in their sheets (flipped otherwise).
 const FACES_RIGHT = true;
 
-// enSkelbow: a 5 frame animation at image_speed .15 loops every 33.3 steps; the
-// arrow is created when it crosses frame 3 (20 steps in), only while on screen.
-// Turning to face Kratos creates a new object, which restarts that loop.
-const CYCLE = 5 / 0.15 / ORIGINAL_HZ;      // seconds per loop
-const FIRE_AT = 3 / 0.15 / ORIGINAL_HZ;    // seconds into the loop
+const CYCLE = 5 / 0.15 / ORIGINAL_HZ;
+const FIRE_AT = 3 / 0.15 / ORIGINAL_HZ;
 const COOLDOWN = CYCLE;
-const ARROW_SPEED = pxPerStep(5);   // 5 px per step
-const VIEW_MARGIN = 2 * TILE;     // an arrow this far outside the camera's view disappears
-const TURN_DEADZONE = 2;          // does not turn for a player right above or below it
+const ARROW_SPEED = pxPerStep(5);
+const VIEW_MARGIN = 2 * TILE;
+const TURN_DEADZONE = 2;
 
-/**
- * enSkelbow: stays put, always faces the player and, while visible on camera,
- * draws its bow (clip "shoot", frames 0-1) and shoots an arrow ahead. Arrows
- * fly straight and disappear against a solid.
- */
 export class Skelbow {
     static clip = "idle";
     static health = 1;
@@ -43,12 +34,10 @@ export class Skelbow {
 
     }
 
-    // Box the blade can hit.
     get hurtbox() {
         return { x: this.x, y: this.y, w: TILE, h: TILE };
     }
 
-    // An arrow that touches `box` is spent: returns its center x, or null.
     arrowHit(box) {
         const arrows = this.arrows;
         const { arrowWidth, arrowHeight } = this.constructor;
@@ -63,7 +52,6 @@ export class Skelbow {
         return null;
     }
 
-    // `view` is the camera's visible rectangle { x, y, w, h }.
     update(target, dt, view) {
         const dx = target.centerX - (this.x + TILE / 2);
         const visible = this.x + TILE > view.x && this.x < view.x + view.w &&
@@ -71,7 +59,7 @@ export class Skelbow {
 
         if (Math.abs(dx) > TURN_DEADZONE && (dx > 0 ? 1 : -1) !== this.dir) {
             this.dir = dx > 0 ? 1 : -1;
-            this.cycle = 0;                // a new object: the animation starts over
+            this.cycle = 0;
         }
         this.sprite.flipX = (this.dir > 0) !== FACES_RIGHT;
 
@@ -79,7 +67,7 @@ export class Skelbow {
         this.cycle += dt;
         let crossed = prev < FIRE_AT && this.cycle >= FIRE_AT;
         if (this.cycle >= CYCLE) this.cycle -= CYCLE;
-        // The bow is drawn during the half second before the shot.
+
         const drawing = this.cycle >= FIRE_AT - 0.5 && this.cycle < FIRE_AT + 0.1;
         if (drawing !== this.shooting) {
             this.shooting = drawing;
@@ -90,7 +78,6 @@ export class Skelbow {
         this._moveArrows(dt, view);
     }
 
-    // The bow is loosed when the draw animation ends.
     _release() {
 
         const { arrowWidth, arrowHeight } = this.constructor;
@@ -102,7 +89,6 @@ export class Skelbow {
         this.arrows.push({ sprite, x, y, dir: this.dir });
     }
 
-    // Arrows fly on until they hit a solid or leave the view plus VIEW_MARGIN.
     _moveArrows(dt, view) {
         const arrows = this.arrows;
         const { arrowWidth, arrowHeight } = this.constructor;
@@ -125,7 +111,6 @@ export class Skelbow {
         }
     }
 
-    // The Skelbow does not move: nothing to follow.
     sync() {}
 
     draw() {

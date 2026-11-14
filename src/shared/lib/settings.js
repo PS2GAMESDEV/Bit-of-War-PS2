@@ -1,7 +1,6 @@
 import { LANGS, getLang, setLang } from "../lang/lang.js";
 import { Save } from "./save.js";
 
-// Options menu values, kept on the memory card with the save.
 export const settings = { music: 10, sfx: 10 };
 
 const clampVolume = v => Math.min(Math.max(Math.round(Number(v)), 0), 10);
@@ -13,8 +12,6 @@ export function applySettings() {
 
 let loaded = false;
 
-// Reads the options from the card once per run (the menu comes back many times)
-// and applies them. Without a card or a stored value the defaults stay.
 export async function loadSettings() {
     if (loaded) return;
     loaded = true;

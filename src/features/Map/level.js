@@ -20,17 +20,6 @@ import { Rubble } from "../Vfx/rubble.js";
 import { stoneFor, STONE_FPS } from "../Enemies/stone.js";
 import { ShadowKratos, ShadowZeus, ShadowThor } from "../Enemies/shadowKratos.js";
 
-// Sheet name -> enemy class, made from the map placements. A class has a
-// static `clip` (the sprite's first animation) and the methods update(target,
-// dt, view), sync() and, optionally, draw(). One the blade can hit also has a
-// static `health` and a `hurtbox` ({ x, y, w, h }), and optionally hurt(fromX)
-// and die() (one that sets `dying` stays until it sets `dead`); one whose hurtbox
-// is null is not hit. Optional hurtboxes exposes several parts of the same
-// enemy; a swing still deals damage only once. Optional deathHit() advances a death sequence per hit;
-// contactBox can differ from hurtbox to keep a corpse hittable but harmless.
-// A class with a static `selfDrawn`
-// draws its sprite itself in draw() instead of being drawn with the props. The constructor gets
-// (sprite, world, x, y, sheets, markers, sfx).
 const ENEMY_CLASS = Object.freeze({
     undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus, thor: Thor,
     dragon: Dragon, vbow: Vbow, vsoldier: VSoldier, spearman: Spearman,
@@ -41,7 +30,6 @@ const TILE = 16 * GAME_SCALE;
 
 const BASTET_PART = Object.freeze({ bossBastet: "bastet", lwSphinx: "sphinx" });
 
-// Editor tile variants share artwork; collision comes from map.colliders.
 const TILE_ALIAS = Object.freeze({
     tileMastSolid: "tileMast",
     tileEgyptianPillarSolid: "tileEgyptianPillar",
@@ -58,7 +46,6 @@ const BLEND = Screen.alphaEquation(
     0
 );
 
-// Map ids that are placed as sprites instead of atlas tiles -> sheet name.
 const PROP_SHEET = Object.freeze({
     bgCloud: "bgCloud",
     bgGreyCloud: "bgGreyCloud",
@@ -101,7 +88,6 @@ const COLLIDER_LAYER = Object.freeze({
     kill: LAYER.KILL
 });
 
-// "#rrggbb" -> packed color; black when missing or malformed.
 function parseColor(hex) {
     const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex ?? "");
     return m
@@ -109,7 +95,6 @@ function parseColor(hex) {
         : Color.new(0, 0, 0);
 }
 
-// First index whose value is >= `value` in a sorted Float32Array.
 function lowerBound(values, value) {
     let lo = 0;
     let hi = values.length;
@@ -127,12 +112,6 @@ function findFrame(atlas, id) {
     return index >= 0 ? index : atlas.findFrame(name);
 }
 
-/**
- * One map: per layer a TileMap for the static tiles (drawn by VU1) plus the
- * Sprite instances of torches, enemies and chests, and the solid/door/ladder/kill
- * bodies in `world`. Layers are drawn in ascending order; the player is drawn
- * in the layer of the spawn point (spriteKratos).
- */
 export class Level {
     constructor(map, sheets, world, sfx = {}, options = {}) {
         this.world = world;
@@ -159,7 +138,6 @@ export class Level {
         this.playerLayer = 0;
         this._range = { first: 0, count: 0 };
 
-        // Named points, scaled: { name: [{ x, y }, ...] }.
         for (const [rawName, points] of Object.entries(map.markers ?? {})) {
             const name = rawName.trim();
             this.markers[name] = [];
@@ -177,8 +155,7 @@ export class Level {
             const layer = COLLIDER_LAYER[type];
 
             for (let i = 0; i < rects.length; i += 4) {
-                // Collision rects only: walls just outside the room (GaiaArm's right edge) must not
-                // enlarge the camera bounds, or an empty column of tiles shows.
+
                 world.add({
                     x: rects[i] * GAME_SCALE,
                     y: rects[i + 1] * GAME_SCALE,
@@ -191,7 +168,7 @@ export class Level {
         }
 
         if (map.size) {
-            // The original room: its size, not the extent of what was drawn in it.
+
             this.width = map.size.width * GAME_SCALE;
             this.height = map.size.height * GAME_SCALE;
         }
@@ -207,7 +184,6 @@ export class Level {
             layer.enemies.push(boss);
         }
 
-        // Bridge ladder openings only between two solid platform edges.
         const ladders = map.colliders.ladder ?? [];
         for (let i = 0; i < ladders.length; i += 4) {
             const x = ladders[i] * GAME_SCALE;
@@ -230,16 +206,13 @@ export class Level {
         const layer = { index, groups, props: [], enemies: [], tiles: null };
 
         for (const [id, placements] of Object.entries(tiles)) {
-            // Scene-level audio/HUD and marker-created Shadow controllers
-            // have no tile artwork; their behavior is owned by Game/Level.
+
             if (id.startsWith("controllerMusic") || id === "healthBarBoss" ||
                 id === "skZeusPopIn" || id === "skThorPopIn" || id === "skPopIn") continue;
             if (id === "secretInvisibleBlocks") {
                 for (let i = 0; i < placements.length; i += 2) {
                     const x = placements[i] * GAME_SCALE, y = placements[i + 1] * GAME_SCALE;
-                    // Collision only: these blocks sit just outside the room (below the Bastet hall,
-                    // past the right edge of the armada) and must not enlarge the camera bounds,
-                    // which would show an empty row or column of tiles.
+
                     world.add({ x, y, w: TILE, h: TILE, layer: LAYER.SOLID });
                 }
                 continue;
@@ -253,7 +226,7 @@ export class Level {
                 this.exitLocked = true;
                 continue;
             }
-            // Generator effects are decorative; the wave controller owns the exit lock.
+
             if (id === "obMonsterDoorIn" || id === "obMonsterDoor" || id === "obMonsterDoorOut") continue;
             if (id === "spriteKratos") {
                 this.spawn = { x: placements[0] * GAME_SCALE, y: placements[1] * GAME_SCALE };
@@ -279,8 +252,6 @@ export class Level {
                 continue;
             }
 
-            // Placements come sorted by x (tools/build-maps.js), so the visible
-            // slice of a group is found by bisection.
             const frame = atlas.getFrame(frameIndex);
             const count = placements.length / 2;
             const xs = new Float32Array(count);
@@ -327,8 +298,7 @@ export class Level {
 
         const sprite = this.bastet.addPart(name, sheets[name],
             placements[0] * GAME_SCALE, placements[1] * GAME_SCALE);
-        // Draw the mount before its rider when they share a layer, regardless
-        // of the order of the map's entries.
+
         const rider = layer.props.indexOf(this.bastet.parts.bastet);
         if (name === "sphinx" && rider >= 0) layer.props.splice(rider, 0, sprite);
         else layer.props.push(sprite);
@@ -357,16 +327,12 @@ export class Level {
                 layer.enemies.push(enemy);
             }
 
-            // spriteSpazz: purrs and refills life and magic when Kratos touches it.
             if (sheetName === "spazz") this.spazz.push({ x, y, w: 32 * GAME_SCALE, h: TILE, cooldown: 0 });
 
-            // The chest rect doubles as a Collision shape for Collision.overlaps().
             if (flash) this.chests.push({ sprite, x, y, w: TILE, h: TILE, type: sheetName === "lifeChest" ? "life" : "magic", flash, opened: false });
         }
     }
 
-    // Enemy AI; call before the world is stepped. `target` is the player's
-    // body and `view` the camera's visible rectangle.
     update(target, dt, view) {
         this._updateGenerators(dt);
         for (const enemy of this.enemies) {
@@ -388,7 +354,6 @@ export class Level {
             stone.sprite.frame = stone.art.first + Math.min(stone.art.count - 1, Math.floor(stone.time * STONE_FPS));
         }
 
-        // An enemy with a death animation stays until it says it is `dead`.
         for (let i = this.enemies.length - 1; i >= 0; i--) {
             const enemy = this.enemies[i];
             if (!enemy.constructor.reward && enemy.body?.y > this.height + TILE) {
@@ -398,7 +363,7 @@ export class Level {
             if (enemy.dead) this._remove(enemy);
         }
         if (this.exitLocked && this.generators.every(g => g.rolls >= 26) &&
-            this.enemies.every(e => e.petrified)) this.exitLocked = false;   // stone enemies are other objects: they do not count
+            this.enemies.every(e => e.petrified)) this.exitLocked = false;
     }
 
     _updateGenerators(dt) {
@@ -407,7 +372,7 @@ export class Level {
             while (g.timer <= 0 && g.rolls < 26) {
                 g.timer += 1;
                 g.rolls++;
-                // The original rolls 1..3, with no spawn for 3, for counts 0..25 inclusive.
+
                 const choice = Math.floor(Math.random() * 3);
                 if (choice < 2) {
                     const name = g.types[choice];
@@ -417,9 +382,6 @@ export class Level {
         }
     }
 
-    // The blade at `hitbox` (swung by the player at `fromX`) hits every enemy
-    // it touches that is not in `struck` yet: they bleed, react and, out of
-    // health, are removed. `struck` keeps one swing from hitting twice.
     strike(hitbox, fromX, struck, kind = "blade", damage = BLADE_DAMAGE) {
         for (let i = this.enemies.length - 1; i >= 0; i--) {
             const enemy = this.enemies[i];
@@ -437,7 +399,7 @@ export class Level {
             const box = boxes ? boxes.find(box => box && Collision.overlaps(hitbox, box)) : enemy.hurtbox;
             if (!box && enemy.deflectBoxes?.some(shield => Collision.overlaps(hitbox, shield))) {
                 struck.add(enemy);
-                this.sfx.blockArrows?.play();      // soundBlockArrows
+                this.sfx.blockArrows?.play();
                 continue;
             }
             if (!box || (!boxes && !Collision.overlaps(hitbox, box))) continue;
@@ -450,7 +412,7 @@ export class Level {
                 const art = stoneFor(enemy);
                 const layer = this.layers.find(l => l.enemies.includes(enemy));
                 if (art && layer && enemy.sprite) {
-                    // The enemy object is replaced by its stone object: hide it and draw the stone art.
+
                     const sprite = new Sprite.Instance(this.sheets.stones, { scale: GAME_SCALE, x: box.x, y: box.y, autoUpdate: false });
                     sprite.frame = art.first;
                     enemy.stoneArt = { sprite, art, time: 0, layer };
@@ -464,10 +426,10 @@ export class Level {
             if (dealt <= 0) continue;
             struck.add(enemy);
             if (!enemy.constructor.reward && !enemy.petrified) enemy.hitCooldown = 0.25;
-            // `box` can be the enemy's own physics body, which die() removes: copy its spot now.
+
             const spot = { x: box.x, y: box.y };
             const centerX = box.x + box.w / 2;
-            // Lightning shocks ordinary enemies (`zapped`); every other hit bleeds.
+
             if (kind === "lightning" && !enemy.constructor.reward) this.zaps.spawn(box.x, box.y);
             else this.blood.spawn(centerX, box.y + box.h / 2, fromX > centerX);
 
@@ -475,7 +437,7 @@ export class Level {
                 enemy.deathHit(kind);
                 continue;
             }
-            // soundZeusOuch: Zeus, Thor and the Sphinx cry out when hurt (Shadow Kratos has his own).
+
             if (enemy.constructor.reward && enemy.constructor.reward !== "shadowStageComplete") this.sfx.shadowHurt?.play();
 
             enemy.health = enemy.petrified ? 0 : Math.max(0, enemy.health - dealt);
@@ -483,7 +445,7 @@ export class Level {
                 enemy.hurt?.(fromX, kind);
             } else {
                 enemy.die?.();
-                // Stone enemies shatter (soundRubbled) instead of dying.
+
                 this.sfx[enemy.petrified ? "rubbled" : enemy.constructor.dieSfx ?? "enemyDie"]?.play();
                 if (enemy.petrified) this.rubble.spawn(spot.x, spot.y, enemy instanceof Harpie || enemy instanceof Dragon || enemy instanceof Scarab);
                 if (!enemy.dying) this._remove(enemy);
@@ -491,7 +453,6 @@ export class Level {
         }
     }
 
-    // Kratos at `body` touches Spazz: true once per purr (alarm of 40 steps).
     touchSpazz(body) {
         for (const cat of this.spazz) {
             if (cat.cooldown > 0 || !Collision.overlaps(body, cat)) continue;
@@ -502,9 +463,6 @@ export class Level {
         return false;
     }
 
-    // What hurts a player whose body is `box`: an enemy touching it, or an
-    // projectile (which is spent). Only archer arrows can be blocked;
-    // contact and other projectiles still hurt while defending.
     hitPlayer(box, blocking = false, facingLeft = false) {
         let fromX = null;
         this.lastHitDamage = 1;
@@ -523,14 +481,13 @@ export class Level {
                     if (fromX === null) fromX = contactX;
                 }
 
-                // The shield only stops arrows and spikes that come from the side Kratos faces.
                 const blockArrows = blocking && enemy.constructor.blockableArrows;
                 const center = box.x + box.w / 2;
                 let blocked;
                 do {
                     const arrowX = enemy.arrowHit?.(box) ?? null;
                     blocked = blockArrows && arrowX !== null && (facingLeft ? arrowX < center : arrowX > center);
-                    if (blocked) this.sfx.blockArrows?.play();   // soundBlockArrows
+                    if (blocked) this.sfx.blockArrows?.play();
                     else if (arrowX !== null) {
                         this.lastHitDamage = enemy.arrowDamage ?? 1;
                         this.lastHitPierces = enemy === this.bastet && enemy.state === "sphinxAttack";
@@ -562,13 +519,9 @@ export class Level {
             if (prop >= 0) layer.props.splice(prop, 1);
         }
 
-        // A boss grants its reward only after its death animation and removal.
         if (enemy.constructor.reward) this.bossReward = enemy.constructor.reward;
     }
 
-    // Draws the layers in ascending order, only the slice of every tile group
-    // that the camera can see. `drawPlayer` runs after the entities of the
-    // player's layer, so higher layers are drawn over the player.
     render(camera, drawPlayer) {
         for (const enemy of this.enemies) enemy.sync();
 

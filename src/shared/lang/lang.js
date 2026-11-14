@@ -150,7 +150,6 @@ export const LANG = {
     }
 };
 
-// Language picked in the options menu, shared with the game scenes.
 export const LANGS = ["en", "br", "sp"];
 let current = LANGS[0];
 
@@ -158,5 +157,4 @@ export const getLang = () => current;
 export const setLang = lang => { current = lang; };
 export const t = key => LANG[current][key] || key;
 
-// Every glyph the menus can print, rasterized while the scene loads.
 export const GLYPHS = Font.ASCII + [...new Set(Object.values(LANG).flatMap(strings => Object.values(strings).join("")))].join("");

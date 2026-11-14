@@ -6,8 +6,7 @@ const CHUNK = 6;
 const FRAME_TIME = 30;
 const FRAME_RATE = 60;
 const FAST_FRAME_RATE = 360;
-//const SCROLL_SPEED = 30;
-//const FAST_SCROLL_SPEED = 120;
+
 const SCROLL_END = -672;
 const END_WAIT = 9;
 
@@ -26,8 +25,6 @@ export class Scene01 extends Scene {
         music: { level1: "sounds/music/level1.ogg" }
     };
 
-    // The 51 frames are streamed in chunks: the one on screen and the next
-    // are resident, the ones already shown are released.
     async enter({ images, music }) {
         this.images = images;
         this.scrollSize = scaled(images.scroll, 2);
@@ -61,7 +58,6 @@ export class Scene01 extends Scene {
         this.scrollY -= (this.fast ? FAST_SCROLL_SPEED : SCROLL_SPEED) * dt;
         this.frameTimer += (this.fast ? FAST_FRAME_RATE : FRAME_RATE) * dt;
 
-        // Waits (keeping the timer) while the next frame is still loading.
         if (this.frameTimer >= FRAME_TIME && this.frameIndex < FRAME_COUNT - 1 && this._frame(this.frameIndex + 1)) {
             this.frameTimer = 0;
             this._advance();
@@ -100,7 +96,6 @@ export class Scene01 extends Scene {
         this.chunks[chunk] = this.acquire({ images: frames });
     }
 
-    // The frame's Image once its chunk has loaded, else null.
     _frame(index) {
         const group = this.chunks[(index / CHUNK) | 0];
         if (!group || !group.done) return null;
