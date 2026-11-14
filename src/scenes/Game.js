@@ -9,7 +9,6 @@ import { GLYPHS, t } from "../shared/lang/lang.js";
 import { Save } from "../shared/lib/save.js";
 import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
 import { Menu } from "./menu.js";
-import { log } from "../shared/lib/boot_log.js";
 import { formatClock as formatClockText } from "../shared/lib/gauntlet.js";
 import { Scene02 } from "./scene1-2.js";
 import { Scene03 } from "./scene2-1.js";
@@ -397,17 +396,9 @@ export default class Game extends Scene {
     async _buildPending() {
         const { progress } = this.pendingBuild;
         this.pendingBuild = null;
-        try {
-            log(`Game: reading ${this._file(this.levelIndex)}`);
-            const map = await readMap(this._file(this.levelIndex));
-            log("Game: map read, building");
-            this._build(map, progress);
-            log("Game: level built");
-            this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
-        } catch (error) {
-            log(`Game: build failed: ${error?.message ?? error}`);
-            throw error;
-        }
+        const map = await readMap(this._file(this.levelIndex));
+        this._build(map, progress);
+        this.camera.fade(FADE_CLEAR, DOOR_CONFIG.FADE_IN);
     }
 
     _file(index) { return this.route[index]; }

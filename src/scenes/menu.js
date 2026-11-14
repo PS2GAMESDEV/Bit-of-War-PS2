@@ -3,7 +3,6 @@ import { centeredX, formatTime, scaled } from "../shared/lib/ui.js";
 import { Save } from "../shared/lib/save.js";
 import { loadSettings, saveSettings, settings } from "../shared/lib/settings.js";
 import Game, { LEVELS } from "./Game.js";
-import { log } from "../shared/lib/boot_log.js";
 
 const DIAG_NO_MUSIC = false;
 
@@ -49,7 +48,6 @@ export class Menu extends Scene {
     };
 
     async enter({ images, fonts, music }, params) {
-        log("Menu.enter");
         this.pad = Gamepad.player(0);
         this.text = fonts.text;
         this.header = fonts.header;
@@ -68,9 +66,7 @@ export class Menu extends Scene {
         } else {
             this._go("main");
         }
-        log("Menu.enter: before music.play");
         if (!DIAG_NO_MUSIC) music.menu.play();
-        log("Menu.enter: done");
     }
 
     exit() {
@@ -79,16 +75,11 @@ export class Menu extends Scene {
 
     update() {
 
-        this.dbgU = (this.dbgU || 0) + 1;
-        if (this.dbgU <= 3 || this.dbgU % 120 === 0) log(`Menu.update #${this.dbgU} busy=${Scene.busy}`);
         if (!Scene.busy) this.screen.update();
     }
 
     draw() {
-        this.dbgD = (this.dbgD || 0) + 1;
-        if (this.dbgD <= 3 || this.dbgD % 120 === 0) log(`Menu.draw #${this.dbgD} begin`);
         this.screen.draw();
-        if (this.dbgD <= 3) log(`Menu.draw #${this.dbgD} end`);
     }
 
     _t(key) {

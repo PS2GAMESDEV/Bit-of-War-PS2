@@ -1,9 +1,6 @@
 import { Menu } from "./src/scenes/menu.js";
 import { Story } from "./src/scenes/story.js";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./src/shared/lib/constants.js";
-import { log } from "./src/shared/lib/boot_log.js";
-
-log("---- main.js start");
 
 Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 
@@ -25,27 +22,9 @@ const spinner = new Sprite.Instance(
 );
 const background = Color.new(8, 8, 8);
 
-let lastLoaded = -1;
-let loadingFrames = 0;
-Scene.loadingScreen = (progress, { loaded, total }) => {
-    loadingFrames++;
-    if (loaded !== lastLoaded) {
-        lastLoaded = loaded;
-        log(`loading ${loaded}/${total} (frame ${loadingFrames})`);
-    } else if (loadingFrames % 60 === 0) {
-
-        log(`  loading ${loaded}/${total} still waiting (frame ${loadingFrames})`);
-    }
-    log_step("draw begin", loadingFrames);
+Scene.loadingScreen = () => {
     Draw.rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, background);
     spinner.draw();
-    log_step("draw end", loadingFrames);
 };
 
-function log_step(what, frame) {
-    if (frame <= 3) log(`  loadingScreen #${frame} ${what}`);
-}
-
-log("before Scene.run");
 Scene.run(Story, { params: { sequence: "splash", then: Menu } }, { fixedStep: 1 / 60, maxSteps: 1 });
-log("after Scene.run");

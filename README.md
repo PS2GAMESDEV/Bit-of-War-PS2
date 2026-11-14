@@ -2,6 +2,24 @@
 
 Port para PS2 (AthenaEnv) de **Bit of War 1.10**, da Holmade Games.
 
+## Execução pelo USB no PS2
+
+Copie `athena.elf`, `athena.ini`, `main.js`, `src/` e `assets/` para a mesma
+pasta do pendrive. Pelo uLaunchELF, abra `athena.elf` nessa pasta em `mass:`.
+Para atualizar uma instalação completa anterior, substitua o `athena.elf`.
+
+O ELF inclui os drivers USB `usbd`, `bdm`, `bdmfs_fatfs` e `usbmass_bd`.
+Eles são necessários porque o Athena reinicia o IOP durante o boot;
+os drivers carregados pelo uLaunchELF deixam de estar disponíveis.
+Também inclui o módulo `cdrom`, com o driver CDFS para leitura de CD/DVD.
+Os módulos `usbmass` e `cdrom` devem ser mantidos nas recompilações, mesmo
+que o jogo funcione por `host:` no PCSX2. A configuração está em
+`athena-build.json`.
+
+O boot por `mass:/BOW/athena.elf` foi validado no PCSX2 com wLaunchELF e USB
+FAT32 virtual, até o menu e a primeira fase. A validação no PS2 físico
+depende de executar o ELF atualizado no console.
+
 ## Menu
 
 Como no original: **New Game**, **Load** (Continue), **Gauntlet** (Boss Rush) e,
