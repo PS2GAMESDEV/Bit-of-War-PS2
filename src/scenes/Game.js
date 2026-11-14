@@ -1024,7 +1024,10 @@ export default class Game extends Scene {
             Draw.rect(x + 94, 38, healthWidth, 4, healthColor);
         }
         
-        if(magicWidth > 0) Draw.rect(x + 94, 48, magicWidth, 4, BLUE);
+        if(magicWidth > 1) {
+            Draw.rect(x + 94, 48, magicWidth, 4, BLUE);
+        }
+        
         const boss = this.level.enemies.find(e => e.constructor.reward && (e.started !== false || e.healthBarVisible));
         if (boss) {
             const ratio = Math.max(0, Math.min(1, boss.health / boss.constructor.health));
