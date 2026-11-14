@@ -1,4 +1,5 @@
 import { GAME_SCALE, stepsToSeconds } from "../../shared/lib/constants.js";
+import { drawSpriteItems } from "../../shared/lib/spriteBatch.js";
 
 const LIFETIME = stepsToSeconds(10);
 
@@ -7,6 +8,7 @@ export class Zap {
         this.sheet = sheet;
         this.sfx = sfx;
         this.zaps = [];
+        this._drawSprites = [];
     }
 
     spawn(x, y) {
@@ -22,6 +24,6 @@ export class Zap {
     }
 
     draw() {
-        for (const zap of this.zaps) zap.sprite.draw();
+        drawSpriteItems(this.zaps, this._drawSprites);
     }
 }

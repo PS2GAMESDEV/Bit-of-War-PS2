@@ -1,4 +1,5 @@
 import { GAME_SCALE } from "../../shared/lib/constants.js";
+import { drawSpriteItems } from "../../shared/lib/spriteBatch.js";
 
 const LIFETIME = 0.12;
 
@@ -8,6 +9,7 @@ export class Blood {
     constructor(sheet) {
         this.sheet = sheet;
         this.splashes = [];
+        this._drawSprites = [];
     }
 
     spawn(x, y, fromRight) {
@@ -27,6 +29,6 @@ export class Blood {
     }
 
     draw() {
-        for (const splash of this.splashes) splash.sprite.draw();
+        drawSpriteItems(this.splashes, this._drawSprites);
     }
 }

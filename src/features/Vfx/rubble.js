@@ -12,6 +12,7 @@ export class Rubble {
     }
 
     draw() {
-        for (const pile of this.piles) pile.draw();
+        if (this.piles.length === 1) this.piles[0].draw();
+        else if (this.piles.length > 1) Sprite.drawAll(this.piles);
     }
 }

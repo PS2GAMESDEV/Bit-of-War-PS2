@@ -15,6 +15,8 @@ export class Walker {
         this.running = false;
         this.knock = 0;
         this.dir = facesRight ? 1 : -1;
+        this._clip = null;
+        this._flipX = null;
         this.body = world.add({
             type: "dynamic",
             x, y,
@@ -47,11 +49,12 @@ export class Walker {
         const body = this.body;
 
         if (body.onGround) {
-
+            const y = body.y;
+            const bottom = body.bottom;
             const front = this.dir > 0 ? body.right + 1 : body.x - 1;
-            const wall = this.world.solidAt(front, body.y + SIZE / 2, LAYER.SOLID);
-            const floor = this.world.solidAt(front, body.bottom + 1, LAYER.SOLID) ||
-                this.world.raycast(front, body.bottom - 1, front, body.bottom + 2, { mask: LAYER.SOLID }) !== null;
+            const wall = this.world.solidAt(front, y + SIZE / 2, LAYER.SOLID);
+            const floor = wall || this.world.solidAt(front, bottom + 1, LAYER.SOLID) ||
+                this.world.raycast(front, bottom - 1, front, bottom + 2, { mask: LAYER.SOLID }) !== null;
 
             if (wall || !floor) this.dir = -this.dir;
         }
@@ -59,13 +62,19 @@ export class Walker {
         this.running = this.runSpeed > 0 && this._sees(target);
 
         body.vx = this.dir * (this.running ? this.runSpeed : this.walkSpeed);
-        this.sprite.flipX = (this.dir > 0) !== this.facesRight;
-        this.sprite.play(this.running ? "run" : "walk");
+        const flipX = (this.dir > 0) !== this.facesRight;
+        if (flipX !== this._flipX) this.sprite.flipX = this._flipX = flipX;
+        const clip = this.running ? "run" : "walk";
+        if (clip !== this._clip) {
+            this.sprite.play(clip);
+            this._clip = clip;
+        }
     }
 
     sync() {
-        this.sprite.x = this.body.x;
-        this.sprite.y = this.body.y;
+        const x = this.body.x, y = this.body.y;
+        if (x !== this._spriteX) this.sprite.x = this._spriteX = x;
+        if (y !== this._spriteY) this.sprite.y = this._spriteY = y;
     }
 
     _sees(target) {

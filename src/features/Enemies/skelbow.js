@@ -1,4 +1,5 @@
 import { GAME_SCALE, LAYER, ORIGINAL_HZ, pxPerStep } from "../../shared/lib/constants.js";
+import { drawSpriteItems } from "../../shared/lib/spriteBatch.js";
 
 const TILE = 16 * GAME_SCALE;
 
@@ -31,6 +32,7 @@ export class Skelbow {
         this.cycle = 0;
         this.shooting = false;
         this.arrows = [];
+        this._drawSprites = [];
 
     }
 
@@ -61,7 +63,8 @@ export class Skelbow {
             this.dir = dx > 0 ? 1 : -1;
             this.cycle = 0;
         }
-        this.sprite.flipX = (this.dir > 0) !== FACES_RIGHT;
+        const flipX = (this.dir > 0) !== FACES_RIGHT;
+        if (flipX !== this._flipX) this.sprite.flipX = this._flipX = flipX;
 
         const prev = this.cycle;
         this.cycle += dt;
@@ -114,6 +117,6 @@ export class Skelbow {
     sync() {}
 
     draw() {
-        for (const arrow of this.arrows) arrow.sprite.draw();
+        drawSpriteItems(this.arrows, this._drawSprites);
     }
 }

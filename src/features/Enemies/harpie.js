@@ -56,11 +56,12 @@ export class Harpie {
         this.y += this.vy * dt;
         if (!this.chasing) return;
         if (Math.abs(this.vx) > TURN_DEADZONE) this.facingRight = this.vx > 0;
-        this.sprite.flipX = this.facingRight !== FACES_RIGHT;
+        const flipX = this.facingRight !== FACES_RIGHT;
+        if (flipX !== this._flipX) this.sprite.flipX = this._flipX = flipX;
     }
 
     sync() {
-        this.sprite.x = this.x;
-        this.sprite.y = this.y;
+        if (this.x !== this._spriteX) this.sprite.x = this._spriteX = this.x;
+        if (this.y !== this._spriteY) this.sprite.y = this._spriteY = this.y;
     }
 }

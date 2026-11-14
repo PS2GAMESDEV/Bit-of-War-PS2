@@ -22,6 +22,10 @@ function hammerPath() {
     return nodes;
 }
 const HAMMER_PATH = hammerPath();
+const HAMMER_LENGTHS = HAMMER_PATH.slice(1).map((end, i) => {
+    const start = HAMMER_PATH[i];
+    return Math.hypot(end[0] - start[0], end[1] - start[1]);
+});
 
 export class PlayerPowers {
     constructor(player, sheets, sfx) {
@@ -143,7 +147,7 @@ export class PlayerPowers {
                 let segments = 0;
                 while (distance > 0 && a.pathIndex < HAMMER_PATH.length-1 && ++segments < 64) {
                     const start=HAMMER_PATH[a.pathIndex], end=HAMMER_PATH[a.pathIndex+1];
-                    const length=Math.hypot(end[0]-start[0],end[1]-start[1]);
+                    const length=HAMMER_LENGTHS[a.pathIndex];
                     const remaining=length-a.pathOffset;
                     if (distance >= remaining - 1e-3) {
                         distance -= Math.max(0, remaining);
@@ -172,6 +176,8 @@ export class PlayerPowers {
     get attacks() { return this.aura ? [...this.projectiles, this.aura] : this.projectiles; }
 
     draw() {
-        for (const a of this.attacks) a.sprite?.draw(a.x,a.y);
+        for (const a of this.projectiles) a.sprite?.draw(a.x,a.y);
+        const a = this.aura;
+        if (a) a.sprite?.draw(a.x,a.y);
     }
 }

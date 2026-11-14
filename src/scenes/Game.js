@@ -376,7 +376,6 @@ export default class Game extends Scene {
         this.bestTime = null;
         this.notice = null;
         this.bossReward = null;
-        this.debug = false;
         this.state = STATE.PLAYING;
         this.menuSelected = 0;
         this.saving = false;
@@ -487,7 +486,6 @@ export default class Game extends Scene {
             }
         }
 
-        if (pad.justPressed(Gamepad.SELECT)) this.debug = !this.debug;
         if (pad.justPressed(KEY.INTERACT)) this._interact();
 
         const boss = this.level.bastet;
@@ -509,7 +507,8 @@ export default class Game extends Scene {
         if (this.level.bastet?.state === "defeated") this.player.magic = 5;
 
         this.player.body.dead = this.player.dead;
-        this.level.update(this.player.body, dt, this.camera.visibleRect());
+        const view = this.camera.visibleRect();
+        this.level.update(this.player.body, dt, view);
 
         const intro = this.level.enemies.some(e => e.introActive);
         if (intro !== this.introLocked) {
@@ -541,11 +540,12 @@ export default class Game extends Scene {
             this.player.body.vy = 0;
             return;
         }
-        if (this.player.powers) this.player.powers.view = this.camera.visibleRect();
-        this.player.update(dt, pad, this.camera.visibleRect());
+        if (this.player.powers) this.player.powers.view = view;
+        this.player.update(dt, pad, view);
 
-        if (this.player.attackHitboxes) {
-            for (const hit of this.player.attackHitboxes) this.level.strike(hit.box, hit.sourceX, hit.struck, hit.kind, hit.damage);
+        const attackHitboxes = this.player.attackHitboxes;
+        if (attackHitboxes) {
+            for (const hit of attackHitboxes) this.level.strike(hit.box, hit.sourceX, hit.struck, hit.kind, hit.damage);
         } else {
             const hitbox = this.player.hitbox;
             if (hitbox) this.level.strike(hitbox, this.player.pos.x, this.player.struck);
@@ -565,8 +565,6 @@ export default class Game extends Scene {
 
         Screen.clear(this.level.background);
         this.level.render(this.camera, () => this.player.draw());
-
-        if (this.debug) this.world.drawDebug();
 
         Camera2D.screenSpace(this.drawHud);
     }

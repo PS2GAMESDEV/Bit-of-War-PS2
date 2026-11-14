@@ -19,6 +19,7 @@ import { Zap } from "../Vfx/zap.js";
 import { Rubble } from "../Vfx/rubble.js";
 import { stoneFor, STONE_FPS } from "../Enemies/stone.js";
 import { ShadowKratos, ShadowZeus, ShadowThor } from "../Enemies/shadowKratos.js";
+import { TileVisibility } from "./tileVisibility.js";
 
 const ENEMY_CLASS = Object.freeze({
     undead: Undead, minotaur: Minotaur, skelbow: Skelbow, harpie: Harpie, zeus: Zeus, thor: Thor,
@@ -95,17 +96,6 @@ function parseColor(hex) {
         : Color.new(0, 0, 0);
 }
 
-function lowerBound(values, value) {
-    let lo = 0;
-    let hi = values.length;
-    while (lo < hi) {
-        const mid = (lo + hi) >> 1;
-        if (values[mid] < value) lo = mid + 1;
-        else hi = mid;
-    }
-    return lo;
-}
-
 function findFrame(atlas, id) {
     const name = TILE_ALIAS[id] ?? id;
     const index = atlas.findFrame(name + ".png");
@@ -136,7 +126,6 @@ export class Level {
         this.width = 0;
         this.height = 0;
         this.playerLayer = 0;
-        this._range = { first: 0, count: 0 };
 
         for (const [rawName, points] of Object.entries(map.markers ?? {})) {
             const name = rawName.trim();
@@ -247,14 +236,12 @@ export class Level {
             }
 
             const frameIndex = findFrame(atlas, id);
-            if (frameIndex < 0) {
-                console.warn(`[Level] no atlas frame for "${id}"`);
-                continue;
-            }
+            if (frameIndex < 0) continue;
 
             const frame = atlas.getFrame(frameIndex);
             const count = placements.length / 2;
             const xs = new Float32Array(count);
+            const ys = new Float32Array(count);
             const w = frame.w * GAME_SCALE;
             const h = frame.h * GAME_SCALE;
 
@@ -263,6 +250,7 @@ export class Level {
                 const y = (placements[2 * i + 1] + frame.offsetY) * GAME_SCALE;
 
                 xs[i] = x;
+                ys[i] = y;
                 sprites.push({
                     x, y, w, h,
                     u1: frame.x, v1: frame.y,
@@ -273,10 +261,11 @@ export class Level {
                 if (y + h > this.height) this.height = y + h;
             }
 
-            groups.push({ first: sprites.length - count, xs, reach: w });
+            groups.push({ first: sprites.length - count, xs, ys, reach: w, height: h });
         }
 
         if (sprites.length) {
+            layer.visibility = new TileVisibility(groups);
             layer.tiles = new TileMap.Instance({
                 descriptor: new TileMap.Descriptor({
                     textures: [atlas.image],
@@ -351,7 +340,8 @@ export class Level {
             const stone = enemy.stoneArt;
             if (!stone) continue;
             stone.time += dt;
-            stone.sprite.frame = stone.art.first + Math.min(stone.art.count - 1, Math.floor(stone.time * STONE_FPS));
+            const frame = stone.art.first + Math.min(stone.art.count - 1, Math.floor(stone.time * STONE_FPS));
+            if (frame !== stone.frame) stone.sprite.frame = stone.frame = frame;
         }
 
         for (let i = this.enemies.length - 1; i >= 0; i--) {
@@ -415,7 +405,7 @@ export class Level {
 
                     const sprite = new Sprite.Instance(this.sheets.stones, { scale: GAME_SCALE, x: box.x, y: box.y, autoUpdate: false });
                     sprite.frame = art.first;
-                    enemy.stoneArt = { sprite, art, time: 0, layer };
+                    enemy.stoneArt = { sprite, art, time: 0, layer, frame: art.first };
                     layer.props.push(sprite);
                     enemy.sprite.color = Color.new(128, 128, 128, 0);
                 } else if (enemy.sprite) enemy.sprite.color = Color.new(95, 95, 95, 128);
@@ -467,7 +457,9 @@ export class Level {
         let fromX = null;
         this.lastHitDamage = 1;
         this.lastHitPierces = false;
-        for (const sources of [this.enemies, this.projectileGroups]) {
+        const center = blocking ? box.x + box.w / 2 : 0;
+        for (let sourceIndex = 0; sourceIndex < 2; sourceIndex++) {
+            const sources = sourceIndex === 0 ? this.enemies : this.projectileGroups;
             for (const enemy of sources) {
                 if (enemy.petrified) continue;
                 const contactBox = enemy.contactBox;
@@ -482,7 +474,6 @@ export class Level {
                 }
 
                 const blockArrows = blocking && enemy.constructor.blockableArrows;
-                const center = box.x + box.w / 2;
                 let blocked;
                 do {
                     const arrowX = enemy.arrowHit?.(box) ?? null;
@@ -526,8 +517,6 @@ export class Level {
         for (const enemy of this.enemies) enemy.sync();
 
         const view = camera.visibleRect();
-        const right = view.x + view.w;
-        const range = this._range;
         let playerDrawn = false;
 
         for (const layer of this.layers) {
@@ -537,13 +526,7 @@ export class Level {
             }
 
             if (layer.tiles) {
-                for (const group of layer.groups) {
-                    const from = lowerBound(group.xs, view.x - group.reach);
-                    const to = lowerBound(group.xs, right);
-                    if (to <= from) continue;
-
-                    range.first = group.first + from;
-                    range.count = to - from;
+                for (const range of layer.visibility.visibleRanges(view)) {
                     layer.tiles.render(0, 0, range);
                 }
             }

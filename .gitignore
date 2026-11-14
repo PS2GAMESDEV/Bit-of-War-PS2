@@ -3,3 +3,5 @@ tools/
 tools/gml-path-to-js.mjs
 tools/gml-room-to-map.mjs
 validation/
+tests/
+dist/
